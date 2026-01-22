@@ -4,8 +4,9 @@ psql \! chcp 1251
 
 
 CREATE TABLE app_user (
-    id SERIAL PRIMARY KEY, 
-    login VARCHAR(45) NOT NULL UNIQUE, 
+    id SERIAL PRIMARY KEY,
+    uid UUID DEFAULT gen_random_uuid() UNIQUE NOT NULL
+    login VARCHAR(45) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL
     );
 
