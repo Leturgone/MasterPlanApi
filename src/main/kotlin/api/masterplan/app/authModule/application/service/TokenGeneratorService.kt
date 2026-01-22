@@ -1,4 +1,4 @@
-package api.masterplan.app.authModule.application.services
+package api.masterplan.app.authModule.application.service
 
 import api.masterplan.app.authModule.application.dto.JwtToken
 import api.masterplan.app.authModule.domain.model.value.UserId

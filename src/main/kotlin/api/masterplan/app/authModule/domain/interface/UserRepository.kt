@@ -1,4 +1,4 @@
-package api.masterplan.app.authModule.domain.interfaces
+package api.masterplan.app.authModule.domain.`interface`
 
 import api.masterplan.app.authModule.domain.model.entity.AppUser
 import api.masterplan.app.authModule.domain.model.value.UserId
