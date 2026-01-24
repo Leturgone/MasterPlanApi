@@ -4,7 +4,7 @@ import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.authModule.infrastructure.database.entity.RoleEntity
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanDatabaseException
 
-object RoleEntityMapper {
+object RoleDatabaseMapper {
     fun toDomain(databaseRoles: MutableSet<RoleEntity>): Set<UserRole>{
         return databaseRoles.map { entity ->
             try {
