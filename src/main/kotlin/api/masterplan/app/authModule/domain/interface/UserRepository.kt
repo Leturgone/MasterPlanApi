@@ -10,6 +10,6 @@ interface UserRepository {
 
     suspend fun findByLogin(login: UserLogin): Result<AppUser>
 
-    suspend fun isUserExist(login: UserLogin): Result<Unit>
+    suspend fun isUserExist(login: UserLogin): Boolean
 
 }
