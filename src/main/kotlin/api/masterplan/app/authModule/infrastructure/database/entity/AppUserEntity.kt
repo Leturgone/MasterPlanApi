@@ -20,6 +20,10 @@ data class AppUserEntity(
     @Column(name = "password_hash", nullable = false)
     val passwordHash: String,
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val roles: MutableSet<String> = mutableSetOf()
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinTable(name = "app_user_has_role",
+        joinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+        )
+    val roles: MutableSet<RoleEntity> = hashSetOf()
 )
