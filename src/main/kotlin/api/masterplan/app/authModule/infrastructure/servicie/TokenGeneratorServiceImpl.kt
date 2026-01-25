@@ -7,9 +7,11 @@ import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanTokenException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
 
+@Service
 class TokenGeneratorServiceImpl(
     private val jwtSecret: String,
     private val expirationHours: Long = 12
