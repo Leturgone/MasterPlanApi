@@ -6,5 +6,5 @@ interface PasswordHasher {
 
     fun hash(password: UserPassword): UserPassword
 
-    fun  verify(password: UserPassword, hash: UserPassword)
+    fun  verify(password: UserPassword, hash: UserPassword): Boolean
 }
