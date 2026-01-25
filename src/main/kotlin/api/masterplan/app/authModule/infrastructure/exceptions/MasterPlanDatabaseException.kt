@@ -9,9 +9,7 @@ sealed class MasterPlanDatabaseException(message: String): Exception(message) {
         "Invalid role: '$rawTitle'"
     )
 
-    data class UserNotExistsWithLogin(val login: UserLogin): MasterPlanDatabaseException(
-        "User with login ${login.value} is not exists"
-    )
+
 
     data class UserNotExistsWithId(val id: UserId): MasterPlanDatabaseException(
         "User with id ${id.value} is not exists"
