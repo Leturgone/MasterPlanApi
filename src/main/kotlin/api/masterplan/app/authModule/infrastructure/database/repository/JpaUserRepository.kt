@@ -2,8 +2,7 @@ package api.masterplan.app.authModule.infrastructure.database.repository
 
 import api.masterplan.app.authModule.infrastructure.database.entity.AppUserEntity
 import org.springframework.data.repository.CrudRepository
-import java.rmi.server.UID
-import java.util.UUID
+import java.util.*
 
 interface JpaUserRepository: CrudRepository<AppUserEntity, Long> {
 
