@@ -1,7 +1,7 @@
 package api.masterplan.app.authModule.domain.model.value
 
 @JvmInline
-value class UserPassword(val password: String){
+value class UserPassword(val value: String){
     companion object {
         fun create(password: String): UserPassword{
             validateStrength(password)

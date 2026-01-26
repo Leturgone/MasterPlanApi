@@ -1,9 +1,9 @@
-package api.masterplan.app.authModule.application.usecases
+package api.masterplan.app.authModule.application.usecase
 
-import api.masterplan.app.authModule.application.commands.LoginCommand
+import api.masterplan.app.authModule.application.command.LoginCommand
 import api.masterplan.app.authModule.application.dto.JwtToken
-import api.masterplan.app.authModule.application.services.AuthService
-import api.masterplan.app.authModule.application.services.TokenGeneratorService
+import api.masterplan.app.authModule.application.service.AuthService
+import api.masterplan.app.authModule.application.service.TokenGeneratorService
 
 class LoginUseCase(
     private val authService: AuthService,

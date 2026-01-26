@@ -4,8 +4,9 @@ psql \! chcp 1251
 
 
 CREATE TABLE app_user (
-    id SERIAL PRIMARY KEY, 
-    login VARCHAR(45) NOT NULL UNIQUE, 
+    id SERIAL PRIMARY KEY,
+    uid UUID DEFAULT UNIQUE NOT NULL
+    login VARCHAR(45) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL
     );
 
@@ -241,41 +242,3 @@ CREATE TABLE executor_has_task (
     ON UPDATE CASCADE
 );
 
-
-
-
-CREATE INDEX idx_employee_director ON employee(director_id);
-CREATE INDEX idx_employee_app_user ON employee(app_user_id);
-
-
-CREATE INDEX idx_plan_plan_status ON plan(plan_status_id);
-CREATE INDEX idx_plan_director ON plan(director_id);
-CREATE INDEX idx_plan_document ON plan(document_id);
-
-CREATE INDEX idx_task_task_status ON task(task_status_id);
-CREATE INDEX idx_task_plan ON task(plan_id);
-CREATE INDEX idx_task_document ON task(document_id);
-
-
-CREATE INDEX idx_task_report_report_status ON task_report(report_status_id);
-CREATE INDEX idx_task_report_employee ON task_report(employee_id);
-CREATE INDEX idx_task_report_task ON task_report(task_id);
-CREATE INDEX idx_task_report_document ON task_report(document_id);
-
-
-
-CREATE INDEX idx_executor_has_task_task ON executor_has_task(task_id);
-CREATE INDEX idx_executor_has_task_employee ON executor_has_task(executor_id);
-
-CREATE INDEX idx_plan_report_employee ON plan_report(employee_id);
-CREATE INDEX idx_plan_report_plan ON plan_report(plan_id);
-CREATE INDEX idx_plan_report_document ON plan_report(document_id);
-CREATE INDEX idx_plan_report_report_status ON plan_report(report_status_id);
-
-CREATE INDEX idx_admin_request_sender ON admin_request(sender_id);
-
-CREATE INDEX idx_app_user_has_role_role ON app_user_has_role(role_id);
-CREATE INDEX idx_app_user_has_role_app_user ON app_user_has_role(app_user_id);
-
-
-CREATE INDEX idx_admin_answer_admin_request ON admin_answer(admin_request_id);

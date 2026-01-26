@@ -4,6 +4,7 @@ import api.masterplan.app.authModule.domain.model.value.UserId
 import api.masterplan.app.authModule.domain.model.value.UserLogin
 import api.masterplan.app.authModule.domain.model.value.UserPassword
 import api.masterplan.app.authModule.domain.model.value.UserRole
+import java.util.UUID
 
 @ConsistentCopyVisibility
 data class AppUser private constructor(
@@ -13,9 +14,9 @@ data class AppUser private constructor(
     val roles: Set<UserRole>
 ){
     companion object {
-        fun create(login: String, rawPassword: String, roles: Set<UserRole> = setOf(UserRole.EMPLOYEE)): AppUser{
+        fun create(uid: UUID? = null, login: String, rawPassword: String, roles: Set<UserRole> = setOf(UserRole.EMPLOYEE)): AppUser{
             return AppUser(
-                id = UserId.generate(),
+                id = uid?.let { UserId(uid) }?: UserId.generate(),
                 login = UserLogin.create(login),
                 password = UserPassword.create(rawPassword),
                 roles = roles
