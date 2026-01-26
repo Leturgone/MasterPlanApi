@@ -4,7 +4,7 @@ import api.masterplan.app.authModule.domain.model.value.UserPassword
 
 interface PasswordHasher {
 
-    fun hash(password: UserPassword): UserPassword
+    fun hash(rawPassword: UserPassword): UserPassword
 
-    fun  verify(password: UserPassword, hash: UserPassword): Boolean
+    fun  verify(rawPassword: UserPassword, hash: UserPassword): Boolean
 }
