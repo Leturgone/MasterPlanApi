@@ -1,16 +1,17 @@
 package api.masterplan.app.authModule.infrastructure.database.repository
 
 import api.masterplan.app.authModule.infrastructure.database.entity.AppUserEntity
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import java.util.*
 
+@Repository
+interface JpaUserRepository: CrudRepository<AppUserEntity, Long> {
 
-interface JpaUserRepository: CoroutineCrudRepository<AppUserEntity, Long> {
+    fun findByLogin(login: String): AppUserEntity?
 
-    suspend fun findByLogin(login: String): AppUserEntity?
+    fun findByUid(uid: UUID): AppUserEntity?
 
-    suspend fun findByUid(uid: UUID): AppUserEntity?
-
-    suspend fun existsByLogin(login: String): Boolean
+    fun existsByLogin(login: String): Boolean
 
 }
