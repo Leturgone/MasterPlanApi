@@ -5,7 +5,7 @@ psql \! chcp 1251
 
 CREATE TABLE app_user (
     id SERIAL PRIMARY KEY,
-    uid UUID DEFAULT UNIQUE NOT NULL
+    uid UUID NOT NULL UNIQUE,
     login VARCHAR(45) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL
     );
