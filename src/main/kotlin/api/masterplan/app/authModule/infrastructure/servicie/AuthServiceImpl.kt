@@ -7,8 +7,6 @@ import api.masterplan.app.authModule.domain.`interface`.UserRepository
 import api.masterplan.app.authModule.domain.model.value.UserLogin
 import api.masterplan.app.authModule.domain.model.value.UserPassword
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanAuthException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -20,7 +18,7 @@ class AuthServiceImpl(
 
     private val  logger = LoggerFactory.getLogger(this::class.java)
 
-    override suspend fun authenticate(
+    override fun authenticate(
         login: UserLogin,
         password: UserPassword
     ): Result<UserCredentials> {
@@ -28,7 +26,7 @@ class AuthServiceImpl(
 
             val user = userRepository.findByLogin(login) ?: throw MasterPlanAuthException.UserNotExistsWithLogin(login)
 
-            if (!withContext(Dispatchers.IO) { passwordHasher.verify(password, user.password) }) {
+            if (passwordHasher.verify(password, user.password)) {
                 return Result.failure(MasterPlanAuthException.InvalidCredentials())
             }
 

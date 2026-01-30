@@ -6,5 +6,5 @@ import api.masterplan.app.authModule.domain.model.value.UserPassword
 
 interface AuthService {
 
-    suspend fun authenticate(login: UserLogin, password: UserPassword): Result<UserCredentials>
+    fun authenticate(login: UserLogin, password: UserPassword): Result<UserCredentials>
 }

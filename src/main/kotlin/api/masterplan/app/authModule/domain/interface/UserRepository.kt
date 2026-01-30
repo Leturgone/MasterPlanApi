@@ -6,10 +6,10 @@ import api.masterplan.app.authModule.domain.model.value.UserLogin
 
 interface UserRepository {
 
-    suspend fun findById(id: UserId): AppUser?
+    fun findById(id: UserId): AppUser?
 
-    suspend fun findByLogin(login: UserLogin): AppUser?
+    fun findByLogin(login: UserLogin): AppUser?
 
-    suspend fun isUserExist(login: UserLogin): Boolean
+    fun isUserExist(login: UserLogin): Boolean
 
 }

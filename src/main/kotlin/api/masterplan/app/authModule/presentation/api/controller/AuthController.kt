@@ -47,7 +47,7 @@ class AuthController(
         ]
     )
     @PostMapping("/login")
-    suspend fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
+    fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
 
         val userPassword = RequestToDomainMapper.toDomainPassword(loginRequest.password)
         val userLogin = RequestToDomainMapper.toDomainLogin(loginRequest.login)
