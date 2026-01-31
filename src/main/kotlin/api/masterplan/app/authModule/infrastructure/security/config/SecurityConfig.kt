@@ -26,9 +26,7 @@ class SecurityConfig {
             memoryKb,
             iterations
         )
-
         return encoder
     }
-
 
 }
