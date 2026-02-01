@@ -36,6 +36,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-websocket-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("io.rest-assured:rest-assured:6.0.0")
+	testImplementation("org.hamcrest:hamcrest:3.0")
+	testImplementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
