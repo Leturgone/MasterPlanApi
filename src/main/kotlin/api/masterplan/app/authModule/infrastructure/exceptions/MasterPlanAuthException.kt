@@ -12,4 +12,8 @@ sealed class MasterPlanAuthException(message: String): Exception(message) {
         "User with login ${login.value} is not exists"
     )
 
+    class EmptyLogin: MasterPlanAuthException(
+        "Login must not be empty"
+    )
+
 }
