@@ -7,17 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails
 
 class AppUserPrincipal(private val userEntity: AppUser) : UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
         return userEntity.roles.map {
             SimpleGrantedAuthority(it.name)
         }
     }
 
-    override fun getPassword(): String? {
+    override fun getPassword(): String {
         return userEntity.password.value
     }
 
-    override fun getUsername(): String? {
+    override fun getUsername(): String {
         return userEntity.login.value
     }
 }
