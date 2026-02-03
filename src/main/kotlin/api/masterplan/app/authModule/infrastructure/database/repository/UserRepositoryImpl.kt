@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.infrastructure.database.repository
 
-import api.masterplan.app.authModule.domain.`interface`.UserRepository
+import api.masterplan.app.authModule.domain.interfaces.UserRepository
 import api.masterplan.app.authModule.domain.model.entity.AppUser
 import api.masterplan.app.authModule.domain.model.value.UserId
 import api.masterplan.app.authModule.domain.model.value.UserLogin

@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.infrastructure.security.service
 
-import api.masterplan.app.authModule.domain.`interface`.UserRepository
+import api.masterplan.app.authModule.domain.interfaces.UserRepository
 import api.masterplan.app.authModule.domain.model.value.UserLogin
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanAuthException
 import api.masterplan.app.authModule.infrastructure.security.principal.AppUserPrincipal

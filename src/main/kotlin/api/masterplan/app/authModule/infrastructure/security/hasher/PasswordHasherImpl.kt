@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.infrastructure.security.hasher
 
-import api.masterplan.app.authModule.domain.`interface`.PasswordHasher
+import api.masterplan.app.authModule.domain.interfaces.PasswordHasher
 import api.masterplan.app.authModule.domain.model.value.UserPassword
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanPasswordHashException
 import org.springframework.security.crypto.password.PasswordEncoder

@@ -2,8 +2,8 @@ package api.masterplan.app.authModule.infrastructure.servicie
 
 import api.masterplan.app.authModule.application.dto.UserCredentials
 import api.masterplan.app.authModule.application.service.AuthService
-import api.masterplan.app.authModule.domain.`interface`.PasswordHasher
-import api.masterplan.app.authModule.domain.`interface`.UserRepository
+import api.masterplan.app.authModule.domain.interfaces.PasswordHasher
+import api.masterplan.app.authModule.domain.interfaces.UserRepository
 import api.masterplan.app.authModule.domain.model.value.UserLogin
 import api.masterplan.app.authModule.domain.model.value.UserPassword
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanAuthException
