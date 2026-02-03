@@ -9,7 +9,7 @@ class LoginUseCase(
     private val authService: AuthService,
     private val tokenGeneratorService: TokenGeneratorService
 ) {
-    suspend operator fun invoke(command: LoginCommand): Result<JwtToken>{
+    operator fun invoke(command: LoginCommand): Result<JwtToken>{
         return authService.authenticate(command.login,command.password).fold(
             onSuccess = { userDto ->
                 tokenGeneratorService.generateToken(userDto.userId,userDto.roles).fold(

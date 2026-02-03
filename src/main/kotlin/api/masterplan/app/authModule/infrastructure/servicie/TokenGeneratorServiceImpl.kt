@@ -5,35 +5,24 @@ import api.masterplan.app.authModule.application.service.TokenGeneratorService
 import api.masterplan.app.authModule.domain.model.value.UserId
 import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanTokenException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
+import api.masterplan.app.authModule.infrastructure.security.service.JwtService
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.*
-import javax.crypto.SecretKey
 
 @Service
-class TokenGeneratorServiceImpl(
-    private val jwtSecret: String,
-    private val expirationHours: Long = 12
-): TokenGeneratorService {
+class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGeneratorService {
+
+    private val  logger = LoggerFactory.getLogger(this::class.java)
 
     override fun generateToken(userId: UserId, userRoles: Set<UserRole>): Result<JwtToken> {
-
         return try {
-            val key: SecretKey by lazy {
-                Keys.hmacShaKeyFor(jwtSecret.toByteArray())
-            }
 
-            val expirationTime = calculateExpiration()
-            val token = Jwts.builder()
-                .subject(userId.value.toString())
-                .issuer("MasterPlanApi")
-                .expiration(expirationTime)
-                .id(UUID.randomUUID().toString())
-                .claim("roles",userRoles.map { it.name })
-                .signWith(key)
-                .compact()
+            val token = jwtService.generateToken(
+                userId = userId.value.toString(),
+                roles = userRoles.map { it.name }
+            )
 
+            logger.info("Generated token for user ${userId.value}")
             Result.success(
                 JwtToken(
                     token = token,
@@ -41,13 +30,10 @@ class TokenGeneratorServiceImpl(
                     roles = userRoles)
             )
         }catch (e: Exception){
+            logger.warn("Token generation failed for user ${userId.value} ", e)
             Result.failure(MasterPlanTokenException.TokenGenerationException(userId,e.message))
         }
 
-    }
-
-    private fun calculateExpiration(): Date {
-        return Date(System.currentTimeMillis() + expirationHours * 60 * 60 * 1000)
     }
 
 }
