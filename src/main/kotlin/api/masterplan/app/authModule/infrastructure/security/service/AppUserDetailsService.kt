@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service
 @Service
 class AppUserDetailsService(private val userRepository: UserRepository): UserDetailsService {
 
-    override fun loadUserByUsername(username: String?): UserDetails? {
-        val login = UserLogin.create(username ?: throw MasterPlanAuthException.EmptyLogin())
+    override fun loadUserByUsername(username: String): UserDetails {
+
+        val login = UserLogin.create(username)
+
         val userEntity = userRepository.findByLogin(login) ?: throw MasterPlanAuthException
             .UserNotExistsWithLogin(login)
+
         return AppUserPrincipal(userEntity)
     }
 }
