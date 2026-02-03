@@ -6,10 +6,13 @@ import api.masterplan.app.authModule.domain.model.value.UserId
 import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanTokenException
 import api.masterplan.app.authModule.infrastructure.security.service.JwtService
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGeneratorService {
+
+    private val  logger = LoggerFactory.getLogger(this::class.java)
 
     override fun generateToken(userId: UserId, userRoles: Set<UserRole>): Result<JwtToken> {
         return try {
@@ -19,6 +22,7 @@ class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGenera
                 roles = userRoles.map { it.name }
             )
 
+            logger.info("Generated token for user ${userId.value}")
             Result.success(
                 JwtToken(
                     token = token,
@@ -26,6 +30,7 @@ class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGenera
                     roles = userRoles)
             )
         }catch (e: Exception){
+            logger.warn("Token generation failed for user ${userId.value} ", e)
             Result.failure(MasterPlanTokenException.TokenGenerationException(userId,e.message))
         }
 
