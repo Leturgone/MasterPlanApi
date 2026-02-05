@@ -2,7 +2,7 @@ package api.masterplan.app.authModule.infrastructure.servicie
 
 import api.masterplan.app.authModule.application.dto.JwtToken
 import api.masterplan.app.authModule.application.service.TokenGeneratorService
-import api.masterplan.app.authModule.domain.model.value.UserId
+import api.masterplan.app.authModule.domain.model.value.AuthUserId
 import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanTokenException
 import api.masterplan.app.authModule.infrastructure.security.service.JwtService
@@ -14,24 +14,24 @@ class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGenera
 
     private val  logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun generateToken(userId: UserId, userRoles: Set<UserRole>): Result<JwtToken> {
+    override fun generateToken(authUserId: AuthUserId, userRoles: Set<UserRole>): Result<JwtToken> {
         return try {
 
             val token = jwtService.generateToken(
-                userId = userId.value.toString(),
+                userId = authUserId.value.toString(),
                 roles = userRoles.map { it.name }
             )
 
-            logger.info("Generated token for user ${userId.value}")
+            logger.info("Generated token for user ${authUserId.value}")
             Result.success(
                 JwtToken(
                     token = token,
-                    userId = userId,
+                    authUserId = authUserId,
                     roles = userRoles)
             )
         }catch (e: Exception){
-            logger.warn("Token generation failed for user ${userId.value} ", e)
-            Result.failure(MasterPlanTokenException.TokenGenerationException(userId,e.message))
+            logger.warn("Token generation failed for user ${authUserId.value} ", e)
+            Result.failure(MasterPlanTokenException.TokenGenerationException(authUserId,e.message))
         }
 
     }
