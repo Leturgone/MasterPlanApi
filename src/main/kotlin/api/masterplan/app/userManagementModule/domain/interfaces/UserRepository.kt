@@ -1,8 +1,9 @@
 package api.masterplan.app.userManagementModule.domain.interfaces
 
-import api.masterplan.app.authModule.domain.model.entity.AppUser
-import api.masterplan.app.authModule.domain.model.value.UserId
-import api.masterplan.app.authModule.domain.model.value.UserLogin
+import api.masterplan.app.userManagementModule.domain.models.entity.AppUser
+import api.masterplan.app.userManagementModule.domain.models.value.UserId
+import api.masterplan.app.userManagementModule.domain.models.value.UserLogin
+
 
 interface UserRepository {
 
