@@ -1,0 +1,17 @@
+package api.masterplan.app.userManagementModule.domain.models.value
+
+@JvmInline
+value class UserPassword(val value: String){
+    companion object {
+        fun create(password: String): UserPassword{
+            validateStrength(password)
+            return UserPassword(password)
+        }
+
+        private fun validateStrength(password: String){
+            require(password.isNotBlank()) {"Password cant be blank"}
+            require(password.length >= 8) { "Password too short" }
+            require(password.length <= 255) { "Password too long" }
+        }
+    }
+}
