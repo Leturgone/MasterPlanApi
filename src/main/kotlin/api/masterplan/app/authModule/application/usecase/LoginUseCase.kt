@@ -2,9 +2,11 @@ package api.masterplan.app.authModule.application.usecase
 
 import api.masterplan.app.authModule.application.command.LoginCommand
 import api.masterplan.app.authModule.application.dto.JwtToken
-import api.masterplan.app.authModule.application.service.AuthService
-import api.masterplan.app.authModule.application.service.TokenGeneratorService
+import api.masterplan.app.authModule.domain.interfaces.AuthService
+import api.masterplan.app.authModule.domain.interfaces.TokenGeneratorService
+import org.springframework.stereotype.Service
 
+@Service
 class LoginUseCase(
     private val authService: AuthService,
     private val tokenGeneratorService: TokenGeneratorService
@@ -12,7 +14,7 @@ class LoginUseCase(
     operator fun invoke(command: LoginCommand): Result<JwtToken>{
         return authService.authenticate(command.login,command.password).fold(
             onSuccess = { userDto ->
-                tokenGeneratorService.generateToken(userDto.userId,userDto.roles).fold(
+                tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles).fold(
                     onSuccess = { Result.success(it)},
                     onFailure = { Result.failure(it)}
                 )
