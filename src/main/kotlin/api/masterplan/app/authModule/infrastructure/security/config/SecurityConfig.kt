@@ -21,24 +21,6 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun  passwordEncoder(): PasswordEncoder {
-        val iterations = 2
-        val memoryKb = 32768
-        val parallelism = 1
-        val hashLength = 32
-        val saltLength = 16
-
-        val encoder = Argon2PasswordEncoder(
-            saltLength,
-            hashLength,
-            parallelism,
-            memoryKb,
-            iterations
-        )
-        return encoder
-    }
-
-    @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain{
 
         http.csrf { it.disable() }
