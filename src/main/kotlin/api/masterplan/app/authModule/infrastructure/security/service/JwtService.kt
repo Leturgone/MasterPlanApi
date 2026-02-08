@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.infrastructure.security.service
 
-import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanAuthException
+import api.masterplan.app.authModule.domain.exception.AuthException
 import api.masterplan.app.authModule.infrastructure.security.config.JwtProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -52,7 +52,7 @@ class JwtService(
 
     private fun isTokenExpired(token: String): Boolean{
         val result = extractExpiration(token)?.before(Date())
-            ?: throw MasterPlanAuthException.InvalidToken()
+            ?: throw AuthException.InvalidToken()
         return !result
     }
 

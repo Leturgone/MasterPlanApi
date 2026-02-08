@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.domain.interfaces
 
-import api.masterplan.app.authModule.application.dto.JwtToken
+import api.masterplan.app.authModule.domain.dto.JwtToken
 import api.masterplan.app.authModule.domain.model.value.AuthUserId
 import api.masterplan.app.authModule.domain.model.value.AuthUserRole
 

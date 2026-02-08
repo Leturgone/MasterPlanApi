@@ -3,7 +3,7 @@ package api.masterplan.app.userManagementModule.domain.interfaces
 import api.masterplan.app.userManagementModule.domain.models.value.UserPassword
 
 
-interface PasswordHasher {
+interface PasswordHasherService {
 
     fun hash(rawPassword: UserPassword): UserPassword
 

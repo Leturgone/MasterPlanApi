@@ -1,6 +1,6 @@
 package api.masterplan.app.authModule.application.service
 
-import api.masterplan.app.authModule.application.dto.JwtToken
+import api.masterplan.app.authModule.domain.dto.JwtToken
 import api.masterplan.app.authModule.domain.exception.AuthException
 import api.masterplan.app.authModule.domain.interfaces.TokenGeneratorService
 import api.masterplan.app.authModule.domain.model.value.AuthUserId

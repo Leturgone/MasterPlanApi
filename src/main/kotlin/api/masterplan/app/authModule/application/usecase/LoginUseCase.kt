@@ -1,7 +1,7 @@
 package api.masterplan.app.authModule.application.usecase
 
 import api.masterplan.app.authModule.application.command.LoginCommand
-import api.masterplan.app.authModule.application.dto.JwtToken
+import api.masterplan.app.authModule.domain.dto.JwtToken
 import api.masterplan.app.authModule.domain.interfaces.AuthService
 import api.masterplan.app.authModule.domain.interfaces.TokenGeneratorService
 import org.springframework.stereotype.Service
