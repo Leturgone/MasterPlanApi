@@ -1,9 +1,9 @@
 package api.masterplan.app.userManagementModule.domain.models.entity
 
-import api.masterplan.app.authModule.domain.model.value.UserLogin
-import api.masterplan.app.authModule.domain.model.value.UserRole
 import api.masterplan.app.userManagementModule.domain.models.value.UserId
+import api.masterplan.app.userManagementModule.domain.models.value.UserLogin
 import api.masterplan.app.userManagementModule.domain.models.value.UserPassword
+import api.masterplan.app.userManagementModule.domain.models.value.UserRole
 import java.util.UUID
 
 @ConsistentCopyVisibility
