@@ -10,7 +10,7 @@ interface UserService {
 
     fun getUserByLogin(login: UserLogin): Result<AppUserDetails>
 
-    fun editUser(userId: UserId,newUserData: AppUserDetails): Result<UserId>
+    fun resetPasswordForUser(userId: UserId, newPassword: UserPassword): Result<UserId>
 
     fun createUser(login: UserLogin,password: UserPassword, roles: Set<UserRole>): Result<UserId>
 
