@@ -16,4 +16,16 @@ sealed class UserManagementException(message: String): Exception(message) {
     class UserNotExistsException(val uid: UserId) : UserManagementException(
         "User with uid = ${uid.value} not exists"
     )
+
+    class FailedToCreateUserException(val login: UserLogin) : UserManagementException(
+        "Failed to create user with login = ${login.value} "
+    )
+
+    class FailedToDeleteUserException(val uid: UserId) : UserManagementException(
+        "Failed to delete user with id = ${uid.value} "
+    )
+
+    class FailedToResetPasswordForUser(val uid: UserId) : UserManagementException(
+        "Failed to reset password for user with uid = ${uid.value} "
+    )
 }
