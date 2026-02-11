@@ -2,7 +2,6 @@ package api.masterplan.app.userManagementModule.application.usecase
 
 import api.masterplan.app.userManagementModule.application.command.GetUserByLoginCommand
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
-import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
 import api.masterplan.app.userManagementModule.domain.interfaces.UserService
 import org.springframework.stereotype.Service
 
@@ -11,11 +10,6 @@ class GetUserByLoginUseCase(
     private val userService: UserService
 ) {
     operator fun invoke(command: GetUserByLoginCommand): Result<AppUserDetails>{
-        return userService.getUserByLogin(command.login).fold(
-            onSuccess = { Result.success(it)},
-            onFailure = { Result.failure(
-                UserManagementException.UserNotFoundException(command.login)
-            ) }
-        )
+        return userService.getUserByLogin(command.login)
     }
 }
