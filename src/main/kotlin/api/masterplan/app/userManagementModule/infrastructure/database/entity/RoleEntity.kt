@@ -18,5 +18,5 @@ data class RoleEntity(
         joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")]
     )
-    val usersWithRole: MutableSet<AppUserEntity> = hashSetOf()
+    val usersWithRole: HashSet<AppUserEntity> = hashSetOf()
 )
