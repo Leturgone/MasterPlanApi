@@ -13,7 +13,7 @@ class PasswordHasherImpl(
 
     override fun hash(rawPassword: UserPassword): UserPassword {
         val hashPassword = encoder.encode(rawPassword.value) ?: throw UserManagementException.InvalidUserCredentialsException()
-        return UserPassword.create(hashPassword)
+        return UserPassword.validate(hashPassword)
     }
 
     override fun verify(rawPassword: UserPassword, hash: UserPassword): Boolean {
