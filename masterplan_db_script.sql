@@ -4,8 +4,7 @@ psql \! chcp 1251
 
 
 CREATE TABLE app_user (
-    id SERIAL PRIMARY KEY,
-    uid UUID NOT NULL UNIQUE,
+    id UUID PRIMARY KEY,
     login VARCHAR(45) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL
     );
@@ -18,7 +17,7 @@ CREATE TABLE role (
 
 
 CREATE TABLE app_user_has_role (
-    app_user_id INT NOT NULL,
+    app_user_id UUID NOT NULL,
     role_id INT NOT NULL ,
     PRIMARY KEY (app_user_id, role_id),
     CONSTRAINT fk_app_user_has_role_app_user
@@ -53,19 +52,19 @@ CREATE TABLE task_status (
 
 
 CREATE TABLE document (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     path VARCHAR(255) NOT NULL
 );
 
 
 CREATE TABLE employee (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(45) NOT NULL,
     surname VARCHAR(100) NOT NULL,
     patronymic VARCHAR(45),
-    director_id INT,
-    app_user_id INT NOT NULL,
+    director_id UUID,
+    app_user_id UUID NOT NULL,
     CONSTRAINT fk_employee_director
     FOREIGN KEY (director_id)
     REFERENCES employee(id)
@@ -80,14 +79,14 @@ CREATE TABLE employee (
 
 
 CREATE TABLE plan (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255),
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
     plan_status_id INT NOT NULL,
-    director_id INT,
-    document_id INT,
+    director_id UUID,
+    document_id UUID,
     CONSTRAINT fk_plan_plan_status
     FOREIGN KEY (plan_status_id)
     REFERENCES plan_status(id)
@@ -107,13 +106,13 @@ CREATE TABLE plan (
 
 
 CREATE TABLE task (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(255),
     end_date TIMESTAMP,
     task_status_id INT NOT NULL,
-    plan_id INT NOT NULL,
-    document_id INT,
+    plan_id UUID NOT NULL,
+    document_id UUID,
     CONSTRAINT fk_task_task_status
     FOREIGN KEY (task_status_id)
     REFERENCES task_status(id)
@@ -133,15 +132,15 @@ CREATE TABLE task (
 
 
 CREATE TABLE task_report (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     c_date TIMESTAMP NOT NULL,
     edit_date TIMESTAMP DEFAULT NULL,
     description VARCHAR(255),
     report_status_id INT NOT NULL,
-    employee_id INT NOT NULL,
-    task_id INT NOT NULL,
-    document_id INT NOT NULL,
+    employee_id UUID NOT NULL,
+    task_id UUID NOT NULL,
+    document_id UUID NOT NULL,
     CONSTRAINT fk_task_report_report_status
     FOREIGN KEY (report_status_id)
     REFERENCES report_status(id)
@@ -166,15 +165,15 @@ CREATE TABLE task_report (
 
 
 CREATE TABLE plan_report (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     c_date TIMESTAMP NOT NULL,
     edit_date TIMESTAMP DEFAULT NULL,
     description VARCHAR(255),
     report_status_id INT NOT NULL,
-    employee_id INT NOT NULL,
-    plan_id INT NOT NULL,
-    document_id INT NOT NULL,
+    employee_id UUID NOT NULL,
+    plan_id UUID NOT NULL,
+    document_id UUID NOT NULL,
     CONSTRAINT fk_plan_report_report_status
     FOREIGN KEY (report_status_id)
     REFERENCES report_status(id)
@@ -199,11 +198,11 @@ CREATE TABLE plan_report (
 
 
 CREATE TABLE admin_request (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(255) NOT NULL,
     c_date TIMESTAMP NOT NULL,
-    sender_id INT NOT NULL,
+    sender_id UUID NOT NULL,
     completed BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT fk_admin_request_employee
     FOREIGN KEY (sender_id)
@@ -227,8 +226,8 @@ CREATE TABLE admin_answer (
 
 
 CREATE TABLE executor_has_task (
-    executor_id INT NOT NULL,
-    task_id INT NOT NULL,
+    executor_id UUID NOT NULL,
+    task_id UUID NOT NULL,
     PRIMARY KEY (executor_id, task_id),
     CONSTRAINT fk_executor_has_task_employee
     FOREIGN KEY (executor_id)
