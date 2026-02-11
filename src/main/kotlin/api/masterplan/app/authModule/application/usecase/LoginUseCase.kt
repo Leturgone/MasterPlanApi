@@ -14,10 +14,7 @@ class LoginUseCase(
     operator fun invoke(command: LoginCommand): Result<JwtToken>{
         return authService.authenticate(command.login,command.password).fold(
             onSuccess = { userDto ->
-                tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles).fold(
-                    onSuccess = { Result.success(it)},
-                    onFailure = { Result.failure(it)}
-                )
+                tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles)
                         },
             onFailure = { Result.failure(it)}
         )

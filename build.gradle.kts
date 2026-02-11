@@ -44,6 +44,7 @@ dependencies {
 	testImplementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+	implementation("com.github.f4b6a3:uuid-creator:6.1.0")
 }
 
 kotlin {
