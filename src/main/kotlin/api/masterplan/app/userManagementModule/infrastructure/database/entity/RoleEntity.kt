@@ -1,4 +1,4 @@
-package api.masterplan.app.authModule.infrastructure.database.entity
+package api.masterplan.app.userManagementModule.infrastructure.database.entity
 
 import jakarta.persistence.*
 
