@@ -19,7 +19,7 @@ object UserDatabaseEntityMapper {
         )
     }
 
-    fun toEntity(domainUser: AppUser,databaseRoles: HashSet<RoleEntity>): AppUserEntity{
+    fun toEntity(domainUser: AppUser,databaseRoles: Set<RoleEntity>): AppUserEntity{
         val entityRoles = RoleDatabaseMapper.toEntity(domainUser.roles, databaseRoles)
         return AppUserEntity(
             id = domainUser.id.value,
