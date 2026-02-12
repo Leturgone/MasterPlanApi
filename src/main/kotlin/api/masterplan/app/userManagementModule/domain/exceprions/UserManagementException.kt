@@ -28,4 +28,8 @@ sealed class UserManagementException(message: String): Exception(message) {
     class FailedToResetPasswordForUser(val uid: UserId) : UserManagementException(
         "Failed to reset password for user with uid = ${uid.value} "
     )
+
+    class InvalidRoleTitle(val title: String) : UserManagementException(
+        "Invalid role title = $title"
+    )
 }
