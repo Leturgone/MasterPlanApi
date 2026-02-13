@@ -10,6 +10,11 @@ class GetUserByLoginUseCase(
     private val userService: UserService
 ) {
     operator fun invoke(command: GetUserByLoginCommand): Result<AppUserDetails>{
-        return userService.getUserByLogin(command.login)
+        return try {
+            val user = userService.getUserByLogin(command.login)
+            Result.success(user)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 }
