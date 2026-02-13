@@ -17,6 +17,10 @@ sealed class UserManagementException(message: String): Exception(message) {
         "User with uid = ${uid.value} not exists"
     )
 
+    class UserAlreadyExistsException(val login: UserLogin) : UserManagementException(
+        "User with login = ${login.value} already exists"
+    )
+
     class FailedToCreateUserException(val login: UserLogin) : UserManagementException(
         "Failed to create user with login = ${login.value} "
     )
