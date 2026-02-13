@@ -12,7 +12,15 @@ class ResetPasswordUseCase(
     val userService: UserService
 ) {
     operator fun invoke(command: ResetPasswordCommand): Result<UserId>{
-        val hashedPassword = passwordHasherService.hash(command.newPassword)
-        return userService.resetPasswordForUser(userId = command.userId,hashedPassword)
+        return try {
+            val hashedPassword = passwordHasherService.hash(command.newPassword)
+            val userWithResetPasswordId = userService.resetPasswordForUser(
+                userId = command.userId,
+                newPassword = hashedPassword)
+            return Result.success(userWithResetPasswordId)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+
     }
 }
