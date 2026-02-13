@@ -30,7 +30,7 @@ class LoggingAspect {
     fun logAfterThrowing(joinPoint: JoinPoint,exception: Exception) {
         val methodName = joinPoint.signature.name
         val exceptionMessage = exception.message
-        logger.warn("Method {} thrown an exception: {}: {}".format(methodName, exception, exceptionMessage))
+        logger.warn("Method $methodName thrown an exception: $exception: $exceptionMessage")
     }
 
 }
