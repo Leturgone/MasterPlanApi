@@ -18,17 +18,19 @@ class AuthServiceImpl(
     override fun authenticate(
         login: AuthUserLogin,
         password: AuthUserPassword
-    ): Result<UserAuthCredentials> {
-        return try {
-            val userAuthCredentials = userCredentialsProvider.validateCredentials(login,password)
-            logger.info("Authentication success for login=${login.value}")
-
-            Result.success(userAuthCredentials)
-
-        }catch (e: Exception){
-            logger.warn("Authentication failed for login=${login.value}", e)
-            Result.failure(e)
-        }
+    ): UserAuthCredentials {
+//        return try {
+//            val userAuthCredentials = userCredentialsProvider.validateCredentials(login,password)
+//            logger.info("Authentication success for login=${login.value}")
+//
+//            Result.success(userAuthCredentials)
+//
+//        }catch (e: Exception){
+//            logger.warn("Authentication failed for login=${login.value}", e)
+//            Result.failure(e)
+//        }
+        val userAuthCredentials = userCredentialsProvider.validateCredentials(login,password)
+        return userAuthCredentials
     }
 
 }
