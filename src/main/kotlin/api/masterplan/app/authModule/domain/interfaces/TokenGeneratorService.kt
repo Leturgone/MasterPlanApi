@@ -6,5 +6,5 @@ import api.masterplan.app.authModule.domain.model.value.AuthUserRole
 
 interface TokenGeneratorService {
 
-    fun generateToken(authUserId: AuthUserId, authUserRoles: Set<AuthUserRole>): Result<JwtToken>
+    fun generateToken(authUserId: AuthUserId, authUserRoles: Set<AuthUserRole>): JwtToken
 }
