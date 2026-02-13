@@ -11,6 +11,7 @@ import api.masterplan.app.userManagementModule.domain.models.value.UserPassword
 import api.masterplan.app.userManagementModule.domain.models.value.UserRole
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(
@@ -19,6 +20,7 @@ class UserServiceImpl(
 
     private val  logger = LoggerFactory.getLogger(this::class.java)
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun getUserByLogin(login: UserLogin): AppUserDetails {
 //        return try {
 //            val user = userRepository.findByLogin(login) ?: throw UserManagementException.UserNotFoundException(login)
@@ -44,6 +46,7 @@ class UserServiceImpl(
         return appUserDetails
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun resetPasswordForUser(userId: UserId, newPassword: UserPassword): UserId {
 //        return try {
 //            val editedUserId = userRepository.setPassword(userId,newPassword) ?: throw UserManagementException.FailedToResetPasswordForUser(userId)
@@ -57,6 +60,7 @@ class UserServiceImpl(
         return editedUserId
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun createUser(login: UserLogin, password: UserPassword, roles: Set<UserRole>): UserId {
 //        return try {
 //            if (userRepository.isUserExist(login)) return Result.failure(UserManagementException.UserAlreadyExistsException(login))
@@ -93,6 +97,7 @@ class UserServiceImpl(
         return userDetails
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun deleteUser(userId: UserId): UserId {
 //        return try {
 //
