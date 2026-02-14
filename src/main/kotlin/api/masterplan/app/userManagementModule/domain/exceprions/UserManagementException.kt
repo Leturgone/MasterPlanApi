@@ -9,8 +9,8 @@ sealed class UserManagementException(message: String): Exception(message) {
         "User with login = ${login.value} not found"
     )
 
-    class InvalidUserCredentialsException : UserManagementException(
-        "Invalid credentials"
+    class InvalidUserCredentialsException(val errorMessage: String? = null) : UserManagementException(
+        "Invalid credentials ${errorMessage?.let {": $it"  }}"
     )
 
     class UserNotExistsException(val uid: UserId) : UserManagementException(

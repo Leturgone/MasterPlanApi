@@ -6,7 +6,7 @@ import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementE
 internal object InterModuleUserToDtoErrorMapper {
     fun toDto(exception: Throwable): UserModuleErrorDto{
         return when (exception) {
-            is UserManagementException.InvalidUserCredentialsException -> UserModuleErrorDto.InvalidUserCredentialsException()
+            is UserManagementException.InvalidUserCredentialsException -> UserModuleErrorDto.InvalidUserCredentialsException(exception.errorMessage)
             is UserManagementException.UserNotFoundException -> UserModuleErrorDto.UserNotFoundException(exception.login.value)
             else -> UserModuleErrorDto.InternalServerError()
         }
