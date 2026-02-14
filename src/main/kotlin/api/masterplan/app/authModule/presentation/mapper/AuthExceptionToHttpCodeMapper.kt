@@ -3,7 +3,7 @@ package api.masterplan.app.authModule.presentation.mapper
 import api.masterplan.app.authModule.domain.exception.AuthException
 import org.springframework.http.HttpStatus
 
-object ExceptionToHttpCodeMapper {
+object AuthExceptionToHttpCodeMapper {
     fun exceptionToHttpCode(ex: Throwable): HttpStatus {
         return when (ex) {
             is AuthException.TokenGenerationException -> HttpStatus.BAD_REQUEST
