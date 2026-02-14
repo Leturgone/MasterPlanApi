@@ -9,6 +9,8 @@ import api.masterplan.app.userManagementModule.domain.models.value.UserRole
 
 interface UserService {
 
+    fun getUserById(userId: UserId): AppUserDetails
+
     fun getUserByLogin(login: UserLogin): AppUserDetails
 
     fun resetPasswordForUser(userId: UserId, newPassword: UserPassword): UserId
