@@ -4,7 +4,7 @@ import api.masterplan.app.authModule.application.command.LoginCommand
 import api.masterplan.app.authModule.application.usecase.LoginUseCase
 import api.masterplan.app.authModule.presentation.dto.LoginRequest
 import api.masterplan.app.authModule.presentation.dto.LoginResponse
-import api.masterplan.app.authModule.presentation.mapper.ExceptionToHttpCodeMapper
+import api.masterplan.app.authModule.presentation.mapper.AuthExceptionToHttpCodeMapper
 import api.masterplan.app.authModule.presentation.mapper.RequestToDomainMapper
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -49,12 +49,22 @@ class AuthController(
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
 
-        val userPassword = RequestToDomainMapper.toDomainPassword(loginRequest.password)
-        val userLogin = RequestToDomainMapper.toDomainLogin(loginRequest.login)
-        val loginCommand = LoginCommand(
-            login = userLogin,
-            password = userPassword
-        )
+        val loginCommand = try {
+            val userPassword = RequestToDomainMapper.toDomainPassword(loginRequest.password)
+            val userLogin = RequestToDomainMapper.toDomainLogin(loginRequest.login)
+            LoginCommand(
+                login = userLogin,
+                password = userPassword
+            )
+        }catch (e: Exception){
+            val status = AuthExceptionToHttpCodeMapper.exceptionToHttpCode(e)
+            val body = LoginResponse.Error(
+                status = status.value(),e.message, LocalDateTime.now()
+            )
+            return ResponseEntity.status(status).body(body)
+        }
+
+
         return  loginUseCase(loginCommand).fold(
             onSuccess = { token ->
                 ResponseEntity.ok(LoginResponse.Success(
@@ -62,7 +72,7 @@ class AuthController(
                 ))
             },
             onFailure = {error ->
-                val status = ExceptionToHttpCodeMapper.exceptionToHttpCode(error)
+                val status = AuthExceptionToHttpCodeMapper.exceptionToHttpCode(error)
                 val body = LoginResponse.Error(
                     status = status.value(),error.message, LocalDateTime.now()
                 )
