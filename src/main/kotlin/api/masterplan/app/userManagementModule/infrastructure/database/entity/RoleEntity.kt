@@ -1,4 +1,4 @@
-package api.masterplan.app.authModule.infrastructure.database.entity
+package api.masterplan.app.userManagementModule.infrastructure.database.entity
 
 import jakarta.persistence.*
 
@@ -18,5 +18,5 @@ data class RoleEntity(
         joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")]
     )
-    val usersWithRole: MutableSet<AppUserEntity> = hashSetOf()
+    val usersWithRole: HashSet<AppUserEntity> = hashSetOf()
 )

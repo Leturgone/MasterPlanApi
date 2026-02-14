@@ -8,8 +8,6 @@ import api.masterplan.app.userManagementModule.domain.models.value.UserPassword
 
 interface UserRepository {
 
-    fun findById(id: UserId): AppUser?
-
     fun findByLogin(login: UserLogin): AppUser?
 
     fun isUserExist(login: UserLogin): Boolean

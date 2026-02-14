@@ -1,4 +1,4 @@
-package api.masterplan.app.authModule.infrastructure.database.entity
+package api.masterplan.app.userManagementModule.infrastructure.database.entity
 
 import jakarta.persistence.*
 import java.util.*
@@ -7,12 +7,8 @@ import java.util.*
 @Table(name = "app_user")
 data class AppUserEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    val id: Long,
-
-    @Column(name = "uid", nullable = false, unique = true)
-    val uid: UUID = UUID.randomUUID(),
+    val id: UUID,
 
     @Column(name = "login", nullable = false, unique = true)
     val  login: String,
@@ -25,5 +21,5 @@ data class AppUserEntity(
         joinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
         )
-    val roles: MutableSet<RoleEntity> = hashSetOf()
+    val roles: HashSet<RoleEntity> = hashSetOf()
 )

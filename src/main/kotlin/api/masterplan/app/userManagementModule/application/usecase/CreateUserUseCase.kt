@@ -12,11 +12,16 @@ class CreateUserUseCase(
     private val passwordHasherService: PasswordHasherService
 ) {
     operator fun invoke(command: CreateUserCommand): Result<UserId> {
-        val hashedPassword = passwordHasherService.hash(command.password)
-        return userService.createUser(
-            login = command.login,
-            password = hashedPassword,
-            roles = command.roles
-        )
+        return try {
+            val hashedPassword = passwordHasherService.hash(command.password)
+            val userId = userService.createUser(
+                login = command.login,
+                password = hashedPassword,
+                roles = command.roles
+            )
+            Result.success(userId)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 }

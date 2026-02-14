@@ -13,7 +13,7 @@ class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGenera
 
     private val  logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun generateToken(authUserId: AuthUserId, authUserRoles: Set<AuthUserRole>): Result<JwtToken> {
+    override fun generateToken(authUserId: AuthUserId, authUserRoles: Set<AuthUserRole>): JwtToken {
         return try {
 
             val token = jwtService.generateToken(
@@ -22,16 +22,14 @@ class TokenGeneratorServiceImpl(private val jwtService: JwtService): TokenGenera
             )
 
             logger.info("Generated token for user ${authUserId.value}")
-            Result.success(
-                JwtToken(
-                    token = token,
-                    authUserId = authUserId,
-                    roles = authUserRoles
-                )
+            JwtToken(
+                token = token,
+                authUserId = authUserId,
+                roles = authUserRoles
             )
         }catch (e: Exception){
             logger.warn("Token generation failed for user ${authUserId.value} ", e)
-            Result.failure(AuthException.TokenGenerationException(authUserId,e.message))
+            throw AuthException.TokenGenerationException(authUserId,e.message)
         }
 
     }

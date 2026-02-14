@@ -10,6 +10,11 @@ class DeleteUserUseCase(
     private val userService: UserService
 ) {
     operator fun invoke(command: DeleteUserCommand): Result<UserId> {
-        return userService.deleteUser(userId = command.userId)
+        return try {
+            val deletedUserId = userService.deleteUser(userId = command.userId)
+            Result.success(deletedUserId)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 }

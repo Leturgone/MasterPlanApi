@@ -13,17 +13,17 @@ class ValidateCredentialsUseCase(
     private val passwordHasherService: PasswordHasherService
 ) {
     operator fun invoke(command: ValidateUserCommand): Result<AppUserDetails> {
-        return userService.getUserByLogin(login = command.login).fold(
-            onSuccess = { user ->
-                if (!passwordHasherService.verify(command.password,user.password)){
-                    Result.failure(UserManagementException.InvalidUserCredentialsException())
-                }else{
-                    Result.success(user)
-                }
-            },
-            onFailure = {
-                Result.failure(UserManagementException.UserNotFoundException(command.login))
-            }
-        )
+        return try {
+            val user = userService.getUserByLogin(login = command.login)
+
+            if (!passwordHasherService.verify(
+                rawPassword = command.password,
+                hash = user.password
+            )) throw UserManagementException.InvalidUserCredentialsException()
+
+            return Result.success(user)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 }

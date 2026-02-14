@@ -30,6 +30,7 @@ dependencies {
 	implementation("org.springframework.modulith:spring-modulith-bom:2.0.2")
 	implementation("org.springframework.modulith:spring-modulith-core:2.0.2")
 	implementation("org.springframework.modulith:spring-modulith-api:2.0.2")
+	implementation("org.springframework.boot:spring-boot-starter-aop:3.5.10")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("io.jsonwebtoken:jjwt:0.13.0")
