@@ -22,12 +22,24 @@ class UserServiceImpl(
 ): UserService {
 
     @LoggingMethod(moduleName = "userManagementModule")
+    override fun getUserById(userId: UserId): AppUserDetails {
+        val user = userRepository.getUser(userId) ?: throw UserManagementException.UserNotExistsException(userId)
+        val appUserDetails = AppUserDetails(
+            id = user.id,
+            login = user.login,
+            password = user.password,
+            roles = user.roles
+        )
+        return appUserDetails
+    }
+
+    @LoggingMethod(moduleName = "userManagementModule")
     @Transactional(rollbackFor = [Exception::class])
     override fun getUserByLogin(login: UserLogin): AppUserDetails {
         val user = userRepository.findByLogin(login) ?: throw UserManagementException.UserNotFoundException(login)
         val appUserDetails = AppUserDetails(
             id = user.id,
-            login = login,
+            login = user.login,
             password = user.password,
             roles = user.roles
         )
