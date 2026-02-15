@@ -105,7 +105,7 @@ class UserManageController(
             ApiResponse(
                 responseCode = "404",
                 description = "Удаляемый пользователь не найден",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
             ),
             ApiResponse(
                 responseCode = "500",
@@ -149,7 +149,7 @@ class UserManageController(
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
             )
         ]
     )
@@ -182,7 +182,7 @@ class UserManageController(
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
             )
         ]
     )
