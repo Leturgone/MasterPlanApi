@@ -1,10 +1,6 @@
 package api.masterplan.app.userManagementModule.presentation.api.controller
 
-import api.masterplan.app.userManagementModule.application.command.CreateUserCommand
-import api.masterplan.app.userManagementModule.application.command.DeleteUserCommand
-import api.masterplan.app.userManagementModule.application.command.GetUserByLoginCommand
-import api.masterplan.app.userManagementModule.application.command.ResetPasswordCommand
-import api.masterplan.app.userManagementModule.application.command.ValidateCredentialsCommand
+import api.masterplan.app.userManagementModule.application.command.*
 import api.masterplan.app.userManagementModule.application.dto.EmployeeInfo
 import api.masterplan.app.userManagementModule.application.usecase.*
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
@@ -18,6 +14,10 @@ import api.masterplan.app.userManagementModule.presentation.dto.responce.UserUid
 import api.masterplan.app.userManagementModule.presentation.mapper.UserDomainToResponseMapper
 import api.masterplan.app.userManagementModule.presentation.mapper.UserExceptionToHttpCodeMapper
 import api.masterplan.app.userManagementModule.presentation.mapper.UserRequestToDomainMapper
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,6 +28,7 @@ import java.util.*
 @RequestMapping("/api/v1/admin/users")
 @Tag(name = "Users", description = "Управление пользователями")
 class UserManageController(
+    private val getUserByIdUseCase: GetUserByIdUseCase,
     private val createUserUseCase: CreateUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
     private val getUserByLoginUseCase: GetUserByLoginUseCase,
@@ -35,6 +36,32 @@ class UserManageController(
     private val validateCredentialsUseCase: ValidateCredentialsUseCase
 ) {
 
+    @Operation(
+        summary = "Создание профиля",
+        description = "Создание профиля с передачей учётных данных и данных сотрудника",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Профиль успешно создан",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Success::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: пустой логин/пароль, некорректные роли или неверный формат ID руководителя",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Пользователь с указанным логином уже существует",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при создании пользователя",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            )
+        ]
+    )
     @PostMapping("/createProfile")
     fun createUser(@RequestBody request: CreateProfileRequest): ResponseEntity<UserUidResponse>{
         val employeeInfo = EmployeeInfo(
@@ -61,7 +88,33 @@ class UserManageController(
         return createUserUseCase(command).handleUserIdResult()
     }
 
-    @DeleteMapping("/delete/")
+    @Operation(
+        summary = "Удаление пользователя по ID",
+        description = "Удаляет пользователя из системы по указанному UUID",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Пользователь успешно удалён. Возвращается идентификатор удалённого аккаунта",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Success::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректный формат ID пользователя (не UUID)",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Удаляемый пользователь не найден",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            )
+        ]
+    )
+    @DeleteMapping("/delete/{id}")
     fun deleteUser(@RequestParam(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
 
         val command = try {
@@ -74,8 +127,33 @@ class UserManageController(
 
     }
 
-
-    @GetMapping("/getByLogin/")
+    @Operation(
+        summary = "Получение данных пользователя по логину",
+        description = "Возвращает полную информацию о пользователе на основе указанного логина.",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Пользователь найден. Возвращаются данные профиля",
+                content = [Content(schema = Schema(implementation = UserDataResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректный формат логина",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Пользователь с указанным логином не найден",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            )
+        ]
+    )
+    @GetMapping("/getUserByLogin/{login}")
     fun getUserByLogin(@RequestParam(value = "login") login: String): ResponseEntity<UserDataResponse> {
         val command = try {
             val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
@@ -87,7 +165,65 @@ class UserManageController(
         return getUserByLoginUseCase(command).handleUserResult()
     }
 
+    @Operation(
+        summary = "Получение данных пользователя по id",
+        description = "Возвращает полную информацию о пользователе по id",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Пользователь найден. Возвращаются данные профиля",
+                content = [Content(schema = Schema(implementation = UserDataResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Пользователь с указанным id не найден",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            )
+        ]
+    )
+    @GetMapping("/getById/{id}")
+    fun getUserById(@RequestParam(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
+        val command = try {
+            val idValidated = UserRequestToDomainMapper.idToDomain(id)
+            GetUserByIdCommand(idValidated)
+        }catch (e: UserManagementException.InvalidUserCredentialsException){
+            return handleExceptionUserData(e)
+        }
 
+        return getUserByIdUseCase(command).handleUserResult()
+    }
+
+    @Operation(
+        summary = "Сброс пароля пользователя по id",
+        description = "Заменяет пароль пользователя по id",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Пароль сброшен. Возвращаются id пользователя",
+                content = [Content(schema = Schema(implementation = UserUidResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Пользователь с указанным id не найден",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректный формат пароля",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера",
+                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            )
+        ]
+    )
     @PatchMapping("/resetPassword/")
     fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
         val id = UserId(request.userId)
@@ -102,6 +238,32 @@ class UserManageController(
     }
 
 
+    @Operation(
+        summary = "Валидация учетных данных",
+        description = "Проверяет правильность учетных данных",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Данные валидированы",
+                content = [Content(schema = Schema(implementation = UserDataResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Пользователь с указанным login не найден",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректный формат логина или пароля",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера",
+                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            )
+        ]
+    )
     @PostMapping("/validateCredentials/")
     fun validateCredentials(@RequestBody credentials: ValidateCredentialsRequest):ResponseEntity<UserDataResponse>{
         val command = try {
