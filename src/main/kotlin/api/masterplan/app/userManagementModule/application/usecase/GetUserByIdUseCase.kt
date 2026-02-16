@@ -3,7 +3,9 @@ package api.masterplan.app.userManagementModule.application.usecase
 import api.masterplan.app.userManagementModule.application.command.GetUserByIdCommand
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
 import api.masterplan.app.userManagementModule.domain.interfaces.UserService
+import org.springframework.stereotype.Service
 
+@Service
 class GetUserByIdUseCase(
     private val userService: UserService
 ) {
