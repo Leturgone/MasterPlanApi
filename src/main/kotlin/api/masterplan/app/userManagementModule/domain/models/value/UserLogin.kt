@@ -12,7 +12,7 @@ value class UserLogin(val value: String){
             }catch (e:IllegalArgumentException){
                 throw UserManagementException.InvalidUserCredentialsException(e.message)
             }
-            return UserLogin(login.lowercase())
+            return UserLogin(login.uppercase())
         }
     }
 }
