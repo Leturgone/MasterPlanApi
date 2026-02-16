@@ -59,7 +59,12 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера: сбой при создании пользователя",
                 content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
+
         ]
     )
     @PostMapping("/createProfile")
@@ -111,11 +116,15 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
                 content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
         ]
     )
     @DeleteMapping("/delete/{id}")
-    fun deleteUser(@RequestParam(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
+    fun deleteUser(@PathVariable(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
 
         val command = try {
             DeleteUserCommand(UserRequestToDomainMapper.idToDomain(id))
@@ -150,11 +159,15 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
                 content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
         ]
     )
     @GetMapping("/getUserByLogin/{login}")
-    fun getUserByLogin(@RequestParam(value = "login") login: String): ResponseEntity<UserDataResponse> {
+    fun getUserByLogin(@PathVariable(value = "login") login: String): ResponseEntity<UserDataResponse> {
         val command = try {
             val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
             GetUserByLoginCommand(loginValidated)
@@ -183,11 +196,15 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
                 content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
         ]
     )
-    @GetMapping("/getById/{id}")
-    fun getUserById(@RequestParam(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
+    @GetMapping("/getUserById/{id}")
+    fun getUserById(@PathVariable(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
         val command = try {
             val idValidated = UserRequestToDomainMapper.idToDomain(id)
             GetUserByIdCommand(idValidated)
@@ -221,6 +238,10 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
                 content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
         ]
     )
@@ -261,6 +282,10 @@ class UserManageController(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
                 content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
             )
         ]
     )
