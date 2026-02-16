@@ -26,11 +26,11 @@ class JwtService(
         Keys.hmacShaKeyFor(decodedBytes)
     }
 
-    fun generateToken(userId: String, roles:  List<String>): String  {
+    fun generateToken(userName: String, roles:  List<String>): String  {
 
         val expirationTime = calculateExpiration()
         val token = Jwts.builder()
-            .subject(userId)
+            .subject(userName)
             .issuer("MasterPlanApi")
             .expiration(expirationTime)
             .id(UUID.randomUUID().toString())
@@ -43,17 +43,20 @@ class JwtService(
 
     fun isValidToken(token: String, user: UserDetails): Boolean {
         val username = extractUsername(token)
-        return username == user.username && !isTokenExpired(token)
+        val equalsUsernames = username.equals(user.username)
+        val tokenNotExpired = !isTokenExpired(token)
+        return equalsUsernames && tokenNotExpired
     }
 
     private fun calculateExpiration(): Date {
         return Date(System.currentTimeMillis() + jwtProperties.expiration * 60 * 60 * 1000)
     }
 
-    private fun isTokenExpired(token: String): Boolean{
+
+    fun isTokenExpired(token: String): Boolean{
         val result = extractExpiration(token)?.before(Date())
             ?: throw AuthException.InvalidToken()
-        return !result
+        return result
     }
 
     private fun extractExpiration(token: String): Date? {
