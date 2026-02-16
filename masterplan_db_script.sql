@@ -216,7 +216,7 @@ CREATE TABLE admin_answer (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(45) NOT NULL,
-    admin_request_id INT NOT NULL,
+    admin_request_id UUID NOT NULL,
     CONSTRAINT fk_admin_answer_admin_request
     FOREIGN KEY (admin_request_id)
     REFERENCES admin_request(id)
@@ -241,3 +241,19 @@ CREATE TABLE executor_has_task (
     ON UPDATE CASCADE
 );
 
+
+INSERT INTO app_user (id,login,password_hash)  VALUES
+('019c657e-8b2a-72de-af27-24d1643de4ab','MASTERPLAN_ADMIN',
+'$argon2id$v=19$m=32768,t=2,p=1$4DAKDHFB27kDKDaA0hVHlQ$GCWWdeHfj6kLWA35jtZ11N2R6wB8TDYxvP0Gq7FmFbI');
+
+INSERT INTO role (title) VALUES
+('ADMIN'),
+('EMPLOYEE'),
+('DIRECTOR');
+
+INSERT INTO app_user_has_role VALUES
+('019c657e-8b2a-72de-af27-24d1643de4ab', 1),
+('019c657e-8b2a-72de-af27-24d1643de4ab', 2);
+
+INSERT INTO employee (id, name, surname, patronymic, director_id, app_user_id) VALUES
+('019c658f-a8bb-7fcb-accf-f0c2af73dea6', 'ADMIN', 'MASTERPLAN', NULL, NULL, '019c657e-8b2a-72de-af27-24d1643de4ab');
