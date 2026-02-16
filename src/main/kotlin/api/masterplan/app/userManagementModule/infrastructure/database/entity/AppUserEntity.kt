@@ -21,5 +21,21 @@ data class AppUserEntity(
         joinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
         )
-    val roles: HashSet<RoleEntity> = hashSetOf()
-)
+    val roles: Set<RoleEntity> = hashSetOf()
+
+){
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as AppUserEntity
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "AppUserEntity(id=$id, login='$login')"
+    }
+}
