@@ -19,12 +19,6 @@ class LoginUseCase(
         }catch (e: Exception){
             Result.failure(e)
         }
-//        return authService.authenticate(command.login,command.password).fold(
-//            onSuccess = { userDto ->
-//                tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles)
-//                        },
-//            onFailure = { Result.failure(it)}
-//        )
     }
 
 }
