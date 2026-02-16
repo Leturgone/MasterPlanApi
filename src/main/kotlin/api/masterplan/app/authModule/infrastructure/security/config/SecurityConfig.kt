@@ -36,7 +36,9 @@ class SecurityConfig(
 
         // Вставка фильтра перед первым фильтром
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-
+        http.httpBasic { it.disable() }
+        http.formLogin { it.disable() }
+        http.logout { it.disable() }
 
         return http.build()
     }
