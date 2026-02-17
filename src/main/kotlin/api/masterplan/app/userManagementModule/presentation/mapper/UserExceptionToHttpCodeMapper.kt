@@ -14,6 +14,7 @@ object UserExceptionToHttpCodeMapper {
             is UserManagementException.InvalidRoleTitle -> HttpStatus.BAD_REQUEST
             is UserManagementException.FailedToResetPasswordForUser -> HttpStatus.INTERNAL_SERVER_ERROR
             is UserManagementException.FailedToDeleteUserException -> HttpStatus.INTERNAL_SERVER_ERROR
+            is UserManagementException.UserCantBeDeleted -> HttpStatus.FORBIDDEN
             else -> HttpStatus.INTERNAL_SERVER_ERROR
         }
     }
