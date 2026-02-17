@@ -14,7 +14,7 @@ class AuthServiceImpl(
 ): AuthService {
 
 
-    @LoggingMethod
+    @LoggingMethod(moduleName = "authModule")
     override fun authenticate(
         login: AuthUserLogin,
         password: AuthUserPassword

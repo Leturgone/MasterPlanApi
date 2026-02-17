@@ -3,7 +3,7 @@ package api.masterplan.app.userManagementModule.infrastructure.intermodule
 import api.masterplan.app.userManagementModule.UserCredentialsDto
 import api.masterplan.app.userManagementModule.UserManageModuleService
 import api.masterplan.app.userManagementModule.application.command.GetUserByLoginCommand
-import api.masterplan.app.userManagementModule.application.command.ValidateUserCommand
+import api.masterplan.app.userManagementModule.application.command.ValidateCredentialsCommand
 import api.masterplan.app.userManagementModule.application.usecase.GetUserByLoginUseCase
 import api.masterplan.app.userManagementModule.application.usecase.ValidateCredentialsUseCase
 import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
@@ -30,7 +30,7 @@ class UserManageModuleServiceImpl(
 
     override fun validateCredentials(login: String, password: String): Result<UserCredentialsDto> {
         return try {
-            val command = ValidateUserCommand(UserLogin.validate(login), UserPassword.validate(password))
+            val command = ValidateCredentialsCommand(UserLogin.validate(login), UserPassword.validate(password))
             val result = validateCredentialsUseCase(command).getOrThrow()
             return Result.success(InterModuleUserToDtoSuccessMapper.toDto(result))
         }catch (e: UserManagementException){

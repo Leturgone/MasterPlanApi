@@ -2,7 +2,6 @@ package api.masterplan.app.authModule.infrastructure.adapters
 
 import api.masterplan.app.authModule.application.dto.AuthUserModel
 import api.masterplan.app.authModule.domain.dto.UserAuthCredentials
-import api.masterplan.app.authModule.domain.model.value.AuthUserId
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
 import api.masterplan.app.authModule.domain.model.value.AuthUserRole
@@ -20,7 +19,7 @@ internal object AuthInnerModuleSuccessMapper {
 
     fun toUserAuthCredentials(user: UserCredentialsDto): UserAuthCredentials {
         return UserAuthCredentials(
-            authUserId = AuthUserId(user.userId),
+            authUserName = AuthUserLogin(user.login),
             roles = user.roles.map {AuthUserRole.valueOf(it)}.toSet()
         )
     }

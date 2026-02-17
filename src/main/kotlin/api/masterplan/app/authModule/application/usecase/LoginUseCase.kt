@@ -14,17 +14,11 @@ class LoginUseCase(
     operator fun invoke(command: LoginCommand): Result<JwtToken>{
         return try {
             val userDto = authService.authenticate(command.login,command.password)
-            val token = tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles)
+            val token = tokenGeneratorService.generateToken(userDto.authUserName,userDto.roles)
             Result.success(token)
         }catch (e: Exception){
             Result.failure(e)
         }
-//        return authService.authenticate(command.login,command.password).fold(
-//            onSuccess = { userDto ->
-//                tokenGeneratorService.generateToken(userDto.authUserId,userDto.roles)
-//                        },
-//            onFailure = { Result.failure(it)}
-//        )
     }
 
 }

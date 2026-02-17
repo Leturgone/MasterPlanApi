@@ -17,7 +17,8 @@ class CreateUserUseCase(
             val userId = userService.createUser(
                 login = command.login,
                 password = hashedPassword,
-                roles = command.roles
+                roles = command.roles,
+                employeeInfo = command.employeeInfo
             )
             Result.success(userId)
         }catch (e: Exception){

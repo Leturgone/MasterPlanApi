@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.application.usecase
 
-import api.masterplan.app.userManagementModule.application.command.ValidateUserCommand
+import api.masterplan.app.userManagementModule.application.command.ValidateCredentialsCommand
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
 import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
 import api.masterplan.app.userManagementModule.domain.interfaces.PasswordHasherService
@@ -12,7 +12,7 @@ class ValidateCredentialsUseCase(
     private val userService: UserService,
     private val passwordHasherService: PasswordHasherService
 ) {
-    operator fun invoke(command: ValidateUserCommand): Result<AppUserDetails> {
+    operator fun invoke(command: ValidateCredentialsCommand): Result<AppUserDetails> {
         return try {
             val user = userService.getUserByLogin(login = command.login)
 

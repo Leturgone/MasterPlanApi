@@ -1,6 +1,5 @@
 package api.masterplan.app.authModule.domain.exception
 
-import api.masterplan.app.authModule.domain.model.value.AuthUserId
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 
 sealed class AuthException(message: String): Exception(message) {
@@ -16,8 +15,8 @@ sealed class AuthException(message: String): Exception(message) {
         "User with login ${login.value} is not exists"
     )
 
-    data class TokenGenerationException(val authUserId: AuthUserId, val emessage: String?): AuthException(
-        "Exception while generating token for user ${authUserId.value} : $emessage "
+    data class TokenGenerationException(val authUserName: AuthUserLogin, val emessage: String?): AuthException(
+        "Exception while generating token for user ${authUserName.value} : $emessage "
     )
 
     class InternalServerError : AuthException("Internal user module server error")

@@ -6,7 +6,7 @@ value class AuthUserLogin(val value: String){
         fun validate(login: String): AuthUserLogin {
             require(login.isNotBlank()) {"Login cant be blank"}
             require(login.length <= 255) { "Login too long" }
-            return AuthUserLogin(login.lowercase())
+            return AuthUserLogin(login.uppercase())
         }
     }
 }

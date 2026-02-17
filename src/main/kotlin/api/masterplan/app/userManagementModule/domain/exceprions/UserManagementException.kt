@@ -9,12 +9,16 @@ sealed class UserManagementException(message: String): Exception(message) {
         "User with login = ${login.value} not found"
     )
 
-    class InvalidUserCredentialsException : UserManagementException(
-        "Invalid credentials"
+    class InvalidUserCredentialsException(val errorMessage: String? = null) : UserManagementException(
+        "Invalid credentials ${errorMessage?.let {": $it"  }}"
     )
 
     class UserNotExistsException(val uid: UserId) : UserManagementException(
         "User with uid = ${uid.value} not exists"
+    )
+
+    class UserCantBeDeleted(val userId: UserId) : UserManagementException(
+        "You dont have permission to delete user with id = ${userId.value}"
     )
 
     class UserAlreadyExistsException(val login: UserLogin) : UserManagementException(
