@@ -245,7 +245,7 @@ class UserManageController(
             )
         ]
     )
-    @PatchMapping("/resetPassword/")
+    @PatchMapping("/resetPassword")
     fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
         val id = UserId(request.userId)
         val command = try {
@@ -289,7 +289,7 @@ class UserManageController(
             )
         ]
     )
-    @PostMapping("/validateCredentials/")
+    @PostMapping("/validateCredentials")
     fun validateCredentials(@RequestBody credentials: ValidateCredentialsRequest):ResponseEntity<UserDataResponse>{
         val command = try {
             val loginValidated = UserRequestToDomainMapper.loginToDomain(credentials.login)
