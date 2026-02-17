@@ -80,7 +80,8 @@ class UserServiceImpl(
     @LoggingMethod(moduleName = "userManagementModule")
     @Transactional(rollbackFor = [Exception::class])
     override fun deleteUser(userId: UserId): UserId {
-        userRepository.getUser(userId)?: throw UserManagementException.UserNotExistsException(userId)
+        val user = userRepository.getUser(userId)?: throw UserManagementException.UserNotExistsException(userId)
+        if (user.isAdmin()) throw UserManagementException.UserCantBeDeleted(userId)
         val deletedUserId = userRepository.deleteUser(userId) ?: throw UserManagementException.FailedToDeleteUserException(userId)
         return deletedUserId
     }
