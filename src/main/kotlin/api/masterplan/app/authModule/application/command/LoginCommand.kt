@@ -1,9 +1,9 @@
 package api.masterplan.app.authModule.application.command
 
-import api.masterplan.app.authModule.domain.model.value.UserLogin
-import api.masterplan.app.authModule.domain.model.value.UserPassword
+import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
+import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
 
 data class LoginCommand (
-    val login: UserLogin,
-    val password: UserPassword
+    val login: AuthUserLogin,
+    val password: AuthUserPassword
 )

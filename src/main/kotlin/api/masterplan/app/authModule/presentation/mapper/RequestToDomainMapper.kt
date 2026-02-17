@@ -1,11 +1,11 @@
 package api.masterplan.app.authModule.presentation.mapper
 
-import api.masterplan.app.authModule.domain.model.value.UserLogin
-import api.masterplan.app.authModule.domain.model.value.UserPassword
+import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
+import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
 
 object RequestToDomainMapper {
 
-    fun toDomainLogin(requestLogin: String) = UserLogin.create(requestLogin)
+    fun toDomainLogin(requestLogin: String) = AuthUserLogin.validate(requestLogin)
 
-    fun toDomainPassword(requestPassword: String) = UserPassword.create(requestPassword)
+    fun toDomainPassword(requestPassword: String) = AuthUserPassword.validate(requestPassword)
 }

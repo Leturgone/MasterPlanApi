@@ -27,6 +27,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.security:spring-security-crypto")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+	implementation("org.springframework.modulith:spring-modulith-bom:2.0.2")
+	implementation("org.springframework.modulith:spring-modulith-core:2.0.2")
+	implementation("org.springframework.modulith:spring-modulith-api:2.0.2")
+	implementation("org.springframework.boot:spring-boot-starter-aop:3.5.10")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("io.jsonwebtoken:jjwt:0.13.0")
@@ -41,6 +45,8 @@ dependencies {
 	testImplementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+	implementation("com.github.f4b6a3:uuid-creator:6.1.0")
+	implementation("org.bouncycastle:bcprov-jdk18on:1.83")
 }
 
 kotlin {

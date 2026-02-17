@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
@@ -19,24 +17,6 @@ class SecurityConfig(
     private val appUserDetailsService: AppUserDetailsService,
     private val jwtFilter: JwtFilter,
 ) {
-
-    @Bean
-    fun  passwordEncoder(): PasswordEncoder {
-        val iterations = 2
-        val memoryKb = 32768
-        val parallelism = 1
-        val hashLength = 32
-        val saltLength = 16
-
-        val encoder = Argon2PasswordEncoder(
-            saltLength,
-            hashLength,
-            parallelism,
-            memoryKb,
-            iterations
-        )
-        return encoder
-    }
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain{
@@ -56,7 +36,9 @@ class SecurityConfig(
 
         // Вставка фильтра перед первым фильтром
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-
+        http.httpBasic { it.disable() }
+        http.formLogin { it.disable() }
+        http.logout { it.disable() }
 
         return http.build()
     }

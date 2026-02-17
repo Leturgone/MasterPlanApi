@@ -1,22 +1,20 @@
 package api.masterplan.app.authModule.infrastructure.security.service
 
-import api.masterplan.app.authModule.domain.`interface`.UserRepository
-import api.masterplan.app.authModule.domain.model.value.UserLogin
-import api.masterplan.app.authModule.infrastructure.exceptions.MasterPlanAuthException
+import api.masterplan.app.authModule.application.ports.UserCredentialsProvider
+import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 import api.masterplan.app.authModule.infrastructure.security.principal.AppUserPrincipal
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
-class AppUserDetailsService(private val userRepository: UserRepository): UserDetailsService {
+class AppUserDetailsService(private val userCredentialsProvider: UserCredentialsProvider): UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
 
-        val login = UserLogin.create(username)
+        val login = AuthUserLogin.validate(username)
 
-        val userEntity = userRepository.findByLogin(login) ?: throw MasterPlanAuthException
-            .UserNotExistsWithLogin(login)
+        val userEntity = userCredentialsProvider.getUserDetailsByUsername(login)
 
         return AppUserPrincipal(userEntity)
     }
