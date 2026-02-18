@@ -5,12 +5,15 @@ import api.masterplan.app.employeeModule.application.ports.TaskInfProvider
 import api.masterplan.app.employeeModule.domain.interfaces.EmployeeMetricsService
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeMetrics
+import api.masterplan.app.logging.LoggingMethod
 import org.springframework.stereotype.Service
 
 @Service
 class EmployeeMetricsServiceImpl(
     private val taskInfProvider: TaskInfProvider
 ) : EmployeeMetricsService {
+
+    @LoggingMethod("employeeModule")
     override fun calculateMetrics(employeeId: EmployeeId): EmployeeMetrics {
         val tasks = taskInfProvider.getTasksByEmployeeId(employeeId)
 
