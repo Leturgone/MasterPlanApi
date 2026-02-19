@@ -2,6 +2,7 @@ package api.masterplan.app.employeeModule.domain.interfaces
 
 import api.masterplan.app.employeeModule.domain.model.entity.Employee
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
+import api.masterplan.app.employeeModule.domain.model.value.EmployeeUserId
 
 interface EmployeeRepository {
 
@@ -13,7 +14,11 @@ interface EmployeeRepository {
 
     fun searchByNameOrSurname(query: String): List<Employee>
 
+    fun searchByNameOrSurnameAndDirId(query: String,directorId: EmployeeId): List<Employee>
+
     fun findByDirectorId(directorId: EmployeeId): List<Employee>
+
+    fun isEmployeeExist(userId: EmployeeUserId): Boolean
 
     fun updateEmployee(id: EmployeeId, newEmployee: Employee): Employee?
 
