@@ -6,4 +6,6 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 interface TaskInfProvider {
 
     fun getTasksByEmployeeId(employeeId: EmployeeId): List<EmpTaskModel>
+
+    fun getTasksByEmployeeIds(employeeIds: Set<EmployeeId>): List<EmpTaskModel>
 }
