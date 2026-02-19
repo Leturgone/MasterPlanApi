@@ -5,6 +5,8 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeMetrics
 
 interface EmployeeMetricsService {
 
-    fun calculateMetrics(employeeId: EmployeeId): EmployeeMetrics
+    fun calculateMetricsForEmployee(employeeId: EmployeeId): EmployeeMetrics
+
+    fun calculateMetricsForEmployees(employees: Set<EmployeeId>): Map<EmployeeId,EmployeeMetrics>
 
 }
