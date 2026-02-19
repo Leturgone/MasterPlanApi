@@ -1,5 +1,6 @@
 package api.masterplan.app.employeeModule.application.service
 
+import api.masterplan.app.employeeModule.application.dto.EmpTaskModel
 import api.masterplan.app.employeeModule.application.dto.EmpTaskStatus
 import api.masterplan.app.employeeModule.application.ports.TaskInfProvider
 import api.masterplan.app.employeeModule.domain.interfaces.EmployeeMetricsService
@@ -14,9 +15,27 @@ class EmployeeMetricsServiceImpl(
 ) : EmployeeMetricsService {
 
     @LoggingMethod("employeeModule")
-    override fun calculateMetrics(employeeId: EmployeeId): EmployeeMetrics {
+    override fun calculateMetricsForEmployee(employeeId: EmployeeId): EmployeeMetrics {
         val tasks = taskInfProvider.getTasksByEmployeeId(employeeId)
+        return calculateMetricsForTasks(tasks)
+    }
 
+    @LoggingMethod("employeeModule")
+    override fun calculateMetricsForEmployees(employees: Set<EmployeeId>): Map<EmployeeId, EmployeeMetrics> {
+        val tasks = taskInfProvider.getTasksByEmployeeIds(employees)
+        val tasksByEmployee = tasks.groupBy { it.employeeId }
+
+        val defResult = employees.associateWith { employeeId ->
+            val empTasks = tasksByEmployee[employeeId] ?: emptyList()
+            calculateMetricsForTasks(empTasks)
+        }
+
+        return defResult
+    }
+
+
+
+    private fun calculateMetricsForTasks(tasks: List<EmpTaskModel>):EmployeeMetrics {
         if (tasks.isEmpty()) {
             return EmployeeMetrics(0.0,0.0,0)
         }
@@ -41,4 +60,7 @@ class EmployeeMetricsServiceImpl(
 
         return EmployeeMetrics(rating, workload, assignedTasksCount)
     }
+
+
+
 }
