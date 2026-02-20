@@ -27,6 +27,7 @@ class EmployeeServiceImpl(
     @LoggingMethod("employeeModule")
     override fun getAllEmployees(): List<EmployeeDetails> {
         val employees = employeeRepository.getAllEmployees()
+
         return employees.map {
             EmpEntityToDtoMapper.toEmployeeDetails(it)
         }
@@ -36,6 +37,7 @@ class EmployeeServiceImpl(
     @LoggingMethod("employeeModule")
     override fun getEmployeeById(id: EmployeeId): EmployeeDetails {
         val employee = employeeRepository.getEmployeeById(id) ?: throw EmployeeException.EmployeeNotExist(id)
+
         return EmpEntityToDtoMapper.toEmployeeDetails(employee)
     }
 
@@ -43,11 +45,13 @@ class EmployeeServiceImpl(
     @LoggingMethod("employeeModule")
     override fun searchEmployee(query: String): List<EmployeeDetails> {
         val searchResult = employeeRepository.searchByNameOrSurname(query)
+
         return searchResult.map { EmpEntityToDtoMapper.toEmployeeDetails(it) }
     }
 
     override fun searchDirEmployee(query: String, directorId: EmployeeId): List<EmployeeDetails> {
         val searchResult = employeeRepository.searchByNameOrSurnameAndDirId(query, directorId)
+
         return searchResult.map { EmpEntityToDtoMapper.toEmployeeDetails(it) }
     }
 
@@ -55,6 +59,7 @@ class EmployeeServiceImpl(
     @LoggingMethod("employeeModule")
     override fun getAllDirectorsEmployee(directorId: EmployeeId): List<EmployeeDetails> {
         val employees = employeeRepository.findByDirectorId(directorId)
+
         return employees.map { EmpEntityToDtoMapper.toEmployeeDetails(it) }
     }
 
@@ -63,7 +68,9 @@ class EmployeeServiceImpl(
     @Transactional
     override suspend fun getAllDirectorsEmployeeSortByRating(directorId: EmployeeId): List<EmployeeDetails> {
         val employees = employeeRepository.findByDirectorId(directorId)
+
         val metricsMap = employeeMetricsService.calculateMetricsForEmployees(employees)
+
         return employees.sortedByDescending { empl ->
             metricsMap[empl]?.rating ?: 0.0
         }.map {
@@ -76,7 +83,9 @@ class EmployeeServiceImpl(
     @Transactional
     override suspend fun getAllDirectorsEmployeeSortByWorkLoad(directorId: EmployeeId): List<EmployeeDetails> {
         val employees = employeeRepository.findByDirectorId(directorId)
+
         val metricsMap = employeeMetricsService.calculateMetricsForEmployees(employees)
+
         return employees.sortedByDescending { empl ->
             metricsMap[empl]?.workload ?: 0.0
         }.map {
@@ -95,6 +104,7 @@ class EmployeeServiceImpl(
         if (employeeRepository.isEmployeeExist(userId)) throw EmployeeException.EmployeeAlreadyExists(
             name,surname,patronymic
         )
+
         val employeeEntity = Employee.create(
             id = id,
             name = name,
@@ -103,6 +113,7 @@ class EmployeeServiceImpl(
             directorId = directorId,
             userId = userId,
         )
+
         val employeeId = employeeRepository.saveEmployee(employeeEntity)?: throw EmployeeException.FailedToCreateEmployee(
             name,surname,patronymic
         )
@@ -112,10 +123,14 @@ class EmployeeServiceImpl(
 
     @LoggingMethod("employeeModule")
     override fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeDetails {
+
         employeeRepository.getEmployeeById(id) ?: throw EmployeeException.EmployeeNotExist(id)
+
         val updatedEmployee = employeeRepository.updateEmployee(id, newEmployee)
             ?: throw EmployeeException.FailedToUpdateEmployee(id)
+
         val updateEmployeeDetails = EmpEntityToDtoMapper.toEmployeeDetails(updatedEmployee)
+
         return updateEmployeeDetails
     }
 
@@ -125,12 +140,12 @@ class EmployeeServiceImpl(
     override fun getEmployeeWithMetrics(employeeId: EmployeeId): EmployeeWithMetricsDetails {
         val employeeEntity = employeeRepository.getEmployeeById(employeeId) ?: throw EmployeeException
             .EmployeeNotExist(employeeId)
+
         val directorProfile = employeeEntity.directorId?.let {
             employeeRepository.getEmployeeById(it)
-        }
-        val directorDetails = directorProfile?.let {
-            DirectorDetails(directorProfile.name, directorProfile.surname, directorProfile.patronymic)
-        }
+        } ?: throw EmployeeException.FailedToGetDirectorDetailsForEmployee(employeeId)
+
+        val directorDetails = DirectorDetails(directorProfile.name, directorProfile.surname, directorProfile.patronymic)
 
         val metrics = employeeMetricsService.calculateMetricsForEmployee(employeeId)
 
