@@ -7,6 +7,7 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
 import api.masterplan.app.employeeModule.domain.model.value.EmployeePatronymic
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeSurname
+import api.masterplan.app.employeeModule.domain.model.value.EmployeeUserId
 
 interface EmployeeService {
 
@@ -16,18 +17,20 @@ interface EmployeeService {
 
     fun searchEmployee(query: String): List<EmployeeDetails>
 
+    fun searchDirEmployee(query: String,directorId: EmployeeId): List<EmployeeDetails>
+
     fun getAllDirectorsEmployee(directorId: EmployeeId): List<EmployeeDetails>
 
-    fun getAllDirectorsEmployeeSortByRating(directorId: EmployeeId): List<EmployeeDetails>
+    suspend fun getAllDirectorsEmployeeSortByRating(directorId: EmployeeId): List<EmployeeDetails>
 
-    fun getAllDirectorsEmployeeSortByTaskCount(directorId: EmployeeId): List<EmployeeDetails>
+    suspend fun getAllDirectorsEmployeeSortByWorkLoad(directorId: EmployeeId): List<EmployeeDetails>
 
     fun createEmployee(id: EmployeeId? = null, name: EmployeeName, surname: EmployeeSurname,
-                       patronymic: EmployeePatronymic? = null, directorId: EmployeeId? = null): EmployeeId
+                       patronymic: EmployeePatronymic? = null, directorId: EmployeeId? = null,
+                       userId: EmployeeUserId): EmployeeId
 
     fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeDetails
 
-    fun getMyProfile(currentEmployeeId: EmployeeId): EmployeeWithMetricsDetails
 
     fun getEmployeeWithMetrics(employeeId: EmployeeId): EmployeeWithMetricsDetails
 
