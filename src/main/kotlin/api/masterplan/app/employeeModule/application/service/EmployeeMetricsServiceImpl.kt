@@ -4,9 +4,13 @@ import api.masterplan.app.employeeModule.application.dto.EmpTaskModel
 import api.masterplan.app.employeeModule.application.dto.EmpTaskStatus
 import api.masterplan.app.employeeModule.application.ports.TaskInfProvider
 import api.masterplan.app.employeeModule.domain.interfaces.EmployeeMetricsService
+import api.masterplan.app.employeeModule.domain.model.entity.Employee
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeMetrics
 import api.masterplan.app.logging.LoggingMethod
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,16 +25,19 @@ class EmployeeMetricsServiceImpl(
     }
 
     @LoggingMethod("employeeModule")
-    override fun calculateMetricsForEmployees(employees: Set<EmployeeId>): Map<EmployeeId, EmployeeMetrics> {
-        val tasks = taskInfProvider.getTasksByEmployeeIds(employees)
+    override suspend fun calculateMetricsForEmployees(employees: List<Employee>): Map<Employee, EmployeeMetrics>  = coroutineScope {
+        val employeesIds = employees.map { it.id }.toSet()
+        val tasks = taskInfProvider.getTasksByEmployeeIds(employeesIds)
         val tasksByEmployee = tasks.groupBy { it.employeeId }
 
-        val defResult = employees.associateWith { employeeId ->
-            val empTasks = tasksByEmployee[employeeId] ?: emptyList()
-            calculateMetricsForTasks(empTasks)
+        val defResult = employees.map{ employee ->
+            async{
+                val empTasks = tasksByEmployee[employee.id] ?: emptyList()
+                employee to calculateMetricsForTasks(empTasks)
+            }
         }
 
-        return defResult
+        defResult.awaitAll().toMap()
     }
 
 
