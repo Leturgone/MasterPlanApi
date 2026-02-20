@@ -25,6 +25,8 @@ interface EmployeeService {
 
     suspend fun getAllDirectorsEmployeeSortByWorkLoad(directorId: EmployeeId): List<EmployeeDetails>
 
+    suspend fun getAllDirectorsEmployeesWithoutTasks(directorId: EmployeeId): List<EmployeeDetails>
+
     fun createEmployee(id: EmployeeId? = null, name: EmployeeName, surname: EmployeeSurname,
                        patronymic: EmployeePatronymic? = null, directorId: EmployeeId? = null,
                        userId: EmployeeUserId): EmployeeId
