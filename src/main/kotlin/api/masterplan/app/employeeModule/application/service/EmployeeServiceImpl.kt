@@ -93,6 +93,20 @@ class EmployeeServiceImpl(
         }
     }
 
+    @LoggingMethod("employeeModule")
+    @Transactional
+    override suspend fun getAllDirectorsEmployeesWithoutTasks(directorId: EmployeeId): List<EmployeeDetails> {
+        val employees = employeeRepository.findByDirectorId(directorId)
+
+        val metricsMap = employeeMetricsService.calculateMetricsForEmployees(employees)
+
+        return employees.filter { empl ->
+            metricsMap[empl]?.assignedTasksCount == 0  || metricsMap[empl] == null
+        }.map {
+            EmpEntityToDtoMapper.toEmployeeDetails(it)
+        }
+    }
+
 
     @LoggingMethod("employeeModule")
     @Transactional
