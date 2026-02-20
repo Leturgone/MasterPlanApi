@@ -37,7 +37,7 @@ sealed class EmployeeException(message: String): Exception(message) {
         "Failed to update employee with id = $id"
     )
 
-    class FailedToGetDirectorDeitalsForEmployee(val id: EmployeeId): EmployeeException(
+    class FailedToGetDirectorDetailsForEmployee(val id: EmployeeId): EmployeeException(
         "Failed to get director details for employee with id = $id"
     )
 
