@@ -65,17 +65,6 @@ class UserServiceImpl(
         return userId
     }
 
-    @LoggingMethod(moduleName = "userManagementModule")
-    override fun getUser(userId: UserId): AppUserDetails {
-        val user = userRepository.getUser(userId) ?: throw UserManagementException.UserNotExistsException(userId)
-        val userDetails = AppUserDetails(
-            id = user.id,
-            login = user.login,
-            password = user.password,
-            roles = user.roles
-        )
-        return userDetails
-    }
 
     @LoggingMethod(moduleName = "userManagementModule")
     @Transactional(rollbackFor = [Exception::class])
