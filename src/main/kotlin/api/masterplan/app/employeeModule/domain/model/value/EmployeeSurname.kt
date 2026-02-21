@@ -5,14 +5,14 @@ import api.masterplan.app.employeeModule.domain.exceptions.EmployeeException
 @JvmInline
 value class EmployeeSurname(val value: String) {
     companion object {
-        fun validate(patronymic: String): EmployeeName {
+        fun validate(surname: String): EmployeeSurname {
             try {
-                require(patronymic.isNotBlank()) { "Surname cant be blank" }
-                require(patronymic.length <= 100) { "Surname too long" }
+                require(surname.isNotBlank()) { "Surname cant be blank" }
+                require(surname.length <= 100) { "Surname too long" }
             } catch (e: IllegalArgumentException) {
                 throw EmployeeException.InvalidEmployeeSurname(e.message)
             }
-            return EmployeeName(patronymic)
+            return EmployeeSurname(surname)
         }
     }
 }
