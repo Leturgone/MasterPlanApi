@@ -10,7 +10,7 @@ interface EmployeeRepository {
 
     fun getEmployeeById(employeeId: EmployeeId): Employee?
 
-    fun saveEmployee(employee: Employee): EmployeeId?
+    fun saveEmployee(employee: Employee): EmployeeId
 
     fun searchByNameOrSurname(query: String): List<Employee>
 
@@ -20,6 +20,6 @@ interface EmployeeRepository {
 
     fun isEmployeeExist(userId: EmployeeUserId): Boolean
 
-    fun updateEmployee(id: EmployeeId, newEmployee: Employee): Employee?
+    fun updateEmployee(id: EmployeeId, newEmployee: Employee): Employee
 
 }
