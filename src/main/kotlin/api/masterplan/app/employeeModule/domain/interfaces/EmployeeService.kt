@@ -21,6 +21,8 @@ interface EmployeeService {
 
     fun getAllDirectorsEmployee(directorId: EmployeeId): List<EmployeeDetails>
 
+    suspend fun getAllDirectorsEmployeesWithMetrics(directorId: EmployeeId): List<EmployeeWithMetricsDetails>
+
     suspend fun getAllDirectorsEmployeeSortByRating(directorId: EmployeeId): List<EmployeeDetails>
 
     suspend fun getAllDirectorsEmployeeSortByWorkLoad(directorId: EmployeeId): List<EmployeeDetails>
