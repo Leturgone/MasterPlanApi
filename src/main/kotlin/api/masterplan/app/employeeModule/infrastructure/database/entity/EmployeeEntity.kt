@@ -2,13 +2,9 @@ package api.masterplan.app.employeeModule.infrastructure.database.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.ForeignKey
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import java.util.UUID
+import java.util.*
 
 
 @Entity
@@ -27,13 +23,8 @@ data class EmployeeEntity(
     @Column(name = "patronymic", length = 45)
     val patronymic: String? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-        name = "director_id",
-        referencedColumnName = "id",
-        foreignKey = ForeignKey(name = "fk_employee_director")
-    )
-    var director: EmployeeEntity? = null,
+    @Column(name = "director_id")
+    val directorId: UUID? = null,
 
     @Column(name = "app_user_id",nullable = false, unique = true)
     val appUserId: UUID,
