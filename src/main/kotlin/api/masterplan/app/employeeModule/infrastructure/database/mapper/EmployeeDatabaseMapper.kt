@@ -16,8 +16,19 @@ object EmployeeDatabaseMapper {
             name = EmployeeName.validate(employeeEntity.name),
             surname = EmployeeSurname.validate(employeeEntity.surname),
             patronymic = employeeEntity.patronymic?.let { EmployeePatronymic.validate(it) },
-            directorId = employeeEntity.director?.let { EmployeeId(it.id) },
+            directorId = employeeEntity.directorId?.let { EmployeeId(it) },
             userId = EmployeeUserId(employeeEntity.appUserId),
+        )
+    }
+
+    fun toEntity(employee: Employee): EmployeeEntity {
+        return EmployeeEntity(
+            id = employee.id.value,
+            name = employee.name.value,
+            surname = employee.surname.value,
+            patronymic = employee.patronymic?.value,
+            directorId = employee.directorId?.value,
+            appUserId = employee.userId.value
         )
     }
 }
