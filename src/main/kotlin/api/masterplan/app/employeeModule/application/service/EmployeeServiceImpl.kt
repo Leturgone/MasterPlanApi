@@ -10,6 +10,7 @@ import api.masterplan.app.employeeModule.domain.interfaces.EmployeeRepository
 import api.masterplan.app.employeeModule.domain.interfaces.EmployeeService
 import api.masterplan.app.employeeModule.domain.model.entity.Employee
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
+import api.masterplan.app.employeeModule.domain.model.value.EmployeeMetrics
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
 import api.masterplan.app.employeeModule.domain.model.value.EmployeePatronymic
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeSurname
@@ -61,6 +62,21 @@ class EmployeeServiceImpl(
         val employees = employeeRepository.findByDirectorId(directorId)
 
         return employees.map { EmpEntityToDtoMapper.toEmployeeDetails(it) }
+    }
+
+    @LoggingMethod("employeeModule")
+    @Transactional
+    override suspend fun getAllDirectorsEmployeesWithMetrics(directorId: EmployeeId): List<EmployeeWithMetricsDetails> {
+        val employees = employeeRepository.findByDirectorId(directorId)
+
+        val metricsMap = employeeMetricsService.calculateMetricsForEmployees(employees)
+        return employees.map { employee ->
+            val metrics = metricsMap[employee]?: EmployeeMetrics(0.0,0.0,0)
+            EmpEntityToDtoMapper.toEmployeeWithMetricsDetails(
+                entity = employee,
+                metrics = metrics
+            )
+        }
     }
 
 
