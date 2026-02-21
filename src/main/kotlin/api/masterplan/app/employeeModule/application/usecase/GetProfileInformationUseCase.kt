@@ -5,6 +5,8 @@ import api.masterplan.app.employeeModule.domain.dtos.EmployeeWithMetricsDetails
 import api.masterplan.app.employeeModule.domain.interfaces.EmployeeService
 import org.springframework.stereotype.Service
 
+// Get employee with metrics
+
 @Service
 class GetProfileInformationUseCase(
     private val employeeService: EmployeeService
