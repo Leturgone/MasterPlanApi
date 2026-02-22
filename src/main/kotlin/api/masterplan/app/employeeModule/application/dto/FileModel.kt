@@ -1,7 +1,8 @@
 package api.masterplan.app.employeeModule.application.dto
 
 data class FileModel(
-    val fileData: ByteArray
+    val fileData: ByteArray,
+    val fileName: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -9,10 +10,16 @@ data class FileModel(
 
         other as FileModel
 
-        return fileData.contentEquals(other.fileData)
+        if (!fileData.contentEquals(other.fileData)) return false
+        if (fileName != other.fileName) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return fileData.contentHashCode()
+        var result = fileData.contentHashCode()
+        result = 31 * result + fileName.hashCode()
+        return result
     }
+
 }
