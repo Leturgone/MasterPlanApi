@@ -144,9 +144,13 @@ class EmployeeServiceImpl(
             userId = userId,
         )
 
-        val employeeId = employeeRepository.saveEmployee(employeeEntity)?: throw EmployeeException.FailedToCreateEmployee(
-            name,surname,patronymic
-        )
+        val employeeId = try {
+            employeeRepository.saveEmployee(employeeEntity)
+        }catch (e: Exception){
+            e.printStackTrace()
+            throw EmployeeException.FailedToCreateEmployee(name,surname,patronymic)
+        }
+
         return employeeId
     }
 
@@ -156,8 +160,12 @@ class EmployeeServiceImpl(
 
         employeeRepository.getEmployeeById(id) ?: throw EmployeeException.EmployeeNotExist(id)
 
-        val updatedEmployee = employeeRepository.updateEmployee(id, newEmployee)
-            ?: throw EmployeeException.FailedToUpdateEmployee(id)
+        val updatedEmployee = try {
+            employeeRepository.updateEmployee(id, newEmployee)
+        }catch (e: Exception){
+            e.printStackTrace()
+            throw EmployeeException.FailedToUpdateEmployee(id)
+        }
 
         val updateEmployeeDetails = EmpEntityToDtoMapper.toEmployeeDetails(updatedEmployee)
 
