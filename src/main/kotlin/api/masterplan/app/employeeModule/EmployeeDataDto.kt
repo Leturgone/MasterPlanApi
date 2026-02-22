@@ -7,5 +7,5 @@ data class EmployeeDataDto (
     val surname: String,
     val patronymic: String? = null,
     val directorId: UUID? =  null,
-    val userId: UUID? = null,
+    val userId: UUID,
 )
