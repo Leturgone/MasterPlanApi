@@ -40,4 +40,6 @@ sealed class UserManagementException(message: String): Exception(message) {
     class InvalidRoleTitle(val title: String) : UserManagementException(
         "Invalid role title = $title"
     )
+
+    class InternalServerError : UserManagementException("Internal user module server error")
 }

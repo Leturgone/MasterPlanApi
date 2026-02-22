@@ -9,7 +9,7 @@ internal object AuthInnerModuleErrorMapper {
         return when (ex) {
             is UserModuleErrorDto.UserNotFoundException -> AuthException.UserNotExistsWithLogin(AuthUserLogin.validate(ex.login))
             is UserModuleErrorDto.InvalidUserCredentialsException -> AuthException.InvalidCredentials()
-            else -> AuthException.InternalServerError()
+            else -> AuthException.InternalServerError("Internal user module server error")
         }
     }
 }
