@@ -4,6 +4,6 @@ import java.util.*
 
 interface EmployeeModuleService {
 
-    fun createEmployee(employee: EmployeeDataDto): UUID
+    fun createEmployee(employee: EmployeeDataDto): Result<UUID>
 
 }
