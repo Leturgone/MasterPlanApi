@@ -221,6 +221,33 @@ class EmployeeController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Получение данных сотрудника по id",
+        description = "Получение данных сотрудника по id",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Сотрудник успешно получен",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Сотрудник не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении данных сотрудника",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/getEmployee/{id}")
     fun getEmployeeById(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeDetailsResponse> {
         val employeeId = EmployeeId(empId)
