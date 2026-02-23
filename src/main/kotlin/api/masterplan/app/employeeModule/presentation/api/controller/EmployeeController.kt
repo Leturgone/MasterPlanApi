@@ -7,14 +7,8 @@ import api.masterplan.app.employeeModule.domain.model.value.*
 import api.masterplan.app.employeeModule.presentation.api.exceptionHandler.EmployeeControllerExceptionHandler
 import api.masterplan.app.employeeModule.presentation.dto.request.CreateEmployeeRequest
 import api.masterplan.app.employeeModule.presentation.dto.request.UpdateEmployeeRequest
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeDetailsResponse
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeErrorResponse
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeFileResponse
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeIdResponse
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeWithMetricsDetailsResponse
+import api.masterplan.app.employeeModule.presentation.dto.responce.*
 import api.masterplan.app.employeeModule.presentation.mapper.EmployeeDomainToResponseMapper
-import api.masterplan.app.userManagementModule.presentation.dto.responce.UserErrorResponse
-import api.masterplan.app.userManagementModule.presentation.dto.responce.UserUidResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -96,6 +90,27 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Экспорт списка сотрудников",
+        description = "Экспорт списка сотрудников с метриками в виде Эксель таблицы",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно экспортирован",
+                content = [Content(schema = Schema(implementation = EmployeeFileResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при экспорте сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли директора"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/exportMyEmployees/")
     suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<EmployeeFileResponse> {
         val domainId = EmployeeId(directorId)
