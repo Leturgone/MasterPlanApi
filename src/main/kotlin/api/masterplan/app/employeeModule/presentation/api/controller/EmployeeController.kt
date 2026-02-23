@@ -381,7 +381,7 @@ class EmployeeController(
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Нет роли админа"
+                description = "Нет роли руководителя"
             )
 
         ]
@@ -397,7 +397,29 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Сортировка подчиненных сотрудников по загруженности",
+        description = "Получение списка подчиненных сотрудников отсортированных по загруженности",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
 
+        ]
+    )
     @GetMapping("/dir/{directorId}/getSortedEmpByWorkload/")
     suspend fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
         val directorId = EmployeeId(directorId)
