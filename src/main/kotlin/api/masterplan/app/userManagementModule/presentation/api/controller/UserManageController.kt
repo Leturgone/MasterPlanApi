@@ -3,16 +3,15 @@ package api.masterplan.app.userManagementModule.presentation.api.controller
 import api.masterplan.app.userManagementModule.application.command.*
 import api.masterplan.app.userManagementModule.application.dto.EmployeeInfo
 import api.masterplan.app.userManagementModule.application.usecase.*
-import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
-import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
 import api.masterplan.app.userManagementModule.domain.models.value.UserId
+import api.masterplan.app.userManagementModule.presentation.api.exceptionHandler.UserControllerExceptionHandler
 import api.masterplan.app.userManagementModule.presentation.dto.request.CreateProfileRequest
 import api.masterplan.app.userManagementModule.presentation.dto.request.ResetPasswordRequest
 import api.masterplan.app.userManagementModule.presentation.dto.request.ValidateCredentialsRequest
 import api.masterplan.app.userManagementModule.presentation.dto.responce.UserDataResponse
+import api.masterplan.app.userManagementModule.presentation.dto.responce.UserErrorResponse
 import api.masterplan.app.userManagementModule.presentation.dto.responce.UserUidResponse
 import api.masterplan.app.userManagementModule.presentation.mapper.UserDomainToResponseMapper
-import api.masterplan.app.userManagementModule.presentation.mapper.UserExceptionToHttpCodeMapper
 import api.masterplan.app.userManagementModule.presentation.mapper.UserRequestToDomainMapper
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -21,10 +20,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 import java.util.*
 
 @RestController
+@UserControllerExceptionHandler
 @RequestMapping("/api/v1/admin/users")
 @Tag(name = "Users", description = "Управление пользователями")
 class UserManageController(
@@ -43,22 +42,22 @@ class UserManageController(
             ApiResponse(
                 responseCode = "200",
                 description = "Профиль успешно создан",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Success::class))]
+                content = [Content(schema = Schema(implementation = UserUidResponse::class))]
             ),
             ApiResponse(
                 responseCode = "400",
                 description = "Некорректные данные: пустой логин/пароль, некорректные роли или неверный формат ID руководителя",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "409",
                 description = "Пользователь с указанным логином уже существует",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера: сбой при создании пользователя",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -75,22 +74,21 @@ class UserManageController(
             patronymic = request.patronymic,
             directorId = request.directorId,
         )
+        val loginValidated = UserRequestToDomainMapper.loginToDomain(request.login)
+        val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
+        val rolesValidated = UserRequestToDomainMapper.rolesToDomain(request.roles)
 
-        val command = try {
-            val loginValidated = UserRequestToDomainMapper.loginToDomain(request.login)
-            val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
-            val rolesValidated = UserRequestToDomainMapper.rolesToDomain(request.roles)
-            CreateUserCommand(
-                login = loginValidated,
-                password = passwordValidated,
-                roles = rolesValidated,
-                employeeInfo = employeeInfo,
-            )
-        }catch (e: UserManagementException){
-            return handleExceptionUserId(e)
-        }
+        val command = CreateUserCommand(
+            login = loginValidated,
+            password = passwordValidated,
+            roles = rolesValidated,
+            employeeInfo = employeeInfo,
+        )
 
-        return createUserUseCase(command).handleUserIdResult()
+        val result = createUserUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.idToResponse(result)
+
+        return ResponseEntity.ok(resp)
     }
 
     @Operation(
@@ -100,22 +98,22 @@ class UserManageController(
             ApiResponse(
                 responseCode = "200",
                 description = "Пользователь успешно удалён. Возвращается идентификатор удалённого аккаунта",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Success::class))]
+                content = [Content(schema = Schema(implementation = UserUidResponse::class))]
             ),
             ApiResponse(
                 responseCode = "400",
                 description = "Некорректный формат ID пользователя (не UUID)",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "404",
                 description = "Удаляемый пользователь не найден",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -126,13 +124,13 @@ class UserManageController(
     @DeleteMapping("/delete/{id}")
     fun deleteUser(@PathVariable(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
 
-        val command = try {
-            DeleteUserCommand(UserRequestToDomainMapper.idToDomain(id))
-        }catch (e: UserManagementException.InvalidUserCredentialsException){
-            return handleExceptionUserId(e)
-        }
+        val userId = UserRequestToDomainMapper.idToDomain(id)
+        val command = DeleteUserCommand(userId)
 
-        return deleteUserUseCase(command).handleUserIdResult()
+        val result = deleteUserUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.idToResponse(result)
+
+        return ResponseEntity.ok(resp)
 
     }
 
@@ -148,17 +146,17 @@ class UserManageController(
             ApiResponse(
                 responseCode = "400",
                 description = "Некорректный формат логина",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "404",
                 description = "Пользователь с указанным логином не найден",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -168,14 +166,13 @@ class UserManageController(
     )
     @GetMapping("/getUserByLogin/{login}")
     fun getUserByLogin(@PathVariable(value = "login") login: String): ResponseEntity<UserDataResponse> {
-        val command = try {
-            val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
-            GetUserByLoginCommand(loginValidated)
-        }catch (e: UserManagementException.InvalidUserCredentialsException){
-            return handleExceptionUserData(e)
-        }
+        val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
+        val command = GetUserByLoginCommand(loginValidated)
 
-        return getUserByLoginUseCase(command).handleUserResult()
+        val result = getUserByLoginUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.userToResponse(result)
+
+        return ResponseEntity.ok(resp)
     }
 
     @Operation(
@@ -190,12 +187,12 @@ class UserManageController(
             ApiResponse(
                 responseCode = "404",
                 description = "Пользователь с указанным id не найден",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -205,14 +202,13 @@ class UserManageController(
     )
     @GetMapping("/getUserById/{id}")
     fun getUserById(@PathVariable(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
-        val command = try {
-            val idValidated = UserRequestToDomainMapper.idToDomain(id)
-            GetUserByIdCommand(idValidated)
-        }catch (e: UserManagementException.InvalidUserCredentialsException){
-            return handleExceptionUserData(e)
-        }
+        val idValidated = UserRequestToDomainMapper.idToDomain(id)
+        val command = GetUserByIdCommand(idValidated)
 
-        return getUserByIdUseCase(command).handleUserResult()
+        val result = getUserByIdUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.userToResponse(result)
+
+        return ResponseEntity.ok(resp)
     }
 
     @Operation(
@@ -227,17 +223,17 @@ class UserManageController(
             ApiResponse(
                 responseCode = "404",
                 description = "Пользователь с указанным id не найден",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "400",
                 description = "Некорректный формат пароля",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserUidResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -248,14 +244,13 @@ class UserManageController(
     @PatchMapping("/resetPassword")
     fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
         val id = UserId(request.userId)
-        val command = try {
-            val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
-            ResetPasswordCommand(id,passwordValidated)
-        }catch (e: UserManagementException.InvalidUserCredentialsException){
-            return handleExceptionUserId(e)
-        }
+        val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
+        val command = ResetPasswordCommand(id,passwordValidated)
 
-        return resetPasswordUseCase(command).handleUserIdResult()
+        val result = resetPasswordUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.idToResponse(result)
+
+        return ResponseEntity.ok(resp)
     }
 
 
@@ -271,17 +266,17 @@ class UserManageController(
             ApiResponse(
                 responseCode = "404",
                 description = "Пользователь с указанным login не найден",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "400",
                 description = "Некорректный формат логина или пароля",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
                 description = "Внутренняя ошибка сервера",
-                content = [Content(schema = Schema(implementation = UserDataResponse.Error::class))]
+                content = [Content(schema = Schema(implementation = UserErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -291,74 +286,15 @@ class UserManageController(
     )
     @PostMapping("/validateCredentials")
     fun validateCredentials(@RequestBody credentials: ValidateCredentialsRequest):ResponseEntity<UserDataResponse>{
-        val command = try {
-            val loginValidated = UserRequestToDomainMapper.loginToDomain(credentials.login)
-            val passwordValidated = UserRequestToDomainMapper.passwordToDomain(credentials.password)
-            ValidateCredentialsCommand(loginValidated,passwordValidated)
-        }catch (e: UserManagementException.InvalidUserCredentialsException){
-            return handleExceptionUserData(e)
-        }
+        val loginValidated = UserRequestToDomainMapper.loginToDomain(credentials.login)
+        val passwordValidated = UserRequestToDomainMapper.passwordToDomain(credentials.password)
+        val command = ValidateCredentialsCommand(loginValidated,passwordValidated)
 
-        return validateCredentialsUseCase(command).handleUserResult()
+        val result = validateCredentialsUseCase(command).getOrThrow()
+        val resp = UserDomainToResponseMapper.userToResponse(result)
+
+        return ResponseEntity.ok(resp)
     }
-
-
-
-    private fun Result<AppUserDetails>.handleUserResult(): ResponseEntity<UserDataResponse> = this.fold(
-            onSuccess = { user ->
-                val resp = UserDomainToResponseMapper.userToResponse(user)
-                ResponseEntity.ok(resp)
-            },
-            onFailure = { error ->
-                val status = UserExceptionToHttpCodeMapper.exceptionToHttpCode(error)
-                val body = UserDataResponse.Error(
-                    status = status.value(),
-                    message = error.message,
-                    timestamp = LocalDateTime.now()
-                )
-                ResponseEntity.status(status).body(body)
-            }
-        )
-
-
-    private fun Result<UserId>.handleUserIdResult(): ResponseEntity<UserUidResponse> = this.fold(
-        onSuccess = {uid ->
-            ResponseEntity.ok(UserUidResponse.Success(
-                uid.value
-            ))
-        },
-        onFailure = {error ->
-            val status = UserExceptionToHttpCodeMapper.exceptionToHttpCode(error)
-            val body = UserUidResponse.Error(
-                status = status.value(),error.message, LocalDateTime.now()
-            )
-            ResponseEntity.status(status).body(body)
-        }
-    )
-
-
-    private fun handleExceptionUserId(e: UserManagementException): ResponseEntity<UserUidResponse> {
-        val status = UserExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = UserUidResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        )
-        return ResponseEntity.status(status).body(body)
-    }
-
-
-    private fun handleExceptionUserData(e: UserManagementException): ResponseEntity<UserDataResponse> {
-        val status = UserExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = UserDataResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        )
-        return ResponseEntity.status(status).body(body)
-    }
-
-
 
 
 }
