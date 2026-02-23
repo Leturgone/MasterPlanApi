@@ -259,6 +259,32 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Получение данных профиля по id",
+        description = "Получение данных профиля включающего метрики и данные о руководителе по id",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "ПРолфиль успешно получен",
+                content = [Content(schema = Schema(implementation = EmployeeWithMetricsDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Сотрудник не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении данных профиля",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/emp/getProfile/{id}")
     fun getProfileInformation(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeWithMetricsDetailsResponse>{
         val profileId = EmployeeId(empId)
@@ -270,7 +296,29 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Поиск сотрудника по имени или фамилии",
+        description = "Получение списка сотрудников по имени или фамилии",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
 
+        ]
+    )
     @GetMapping("/dir/{directorId}/searchEmployee/")
     fun searchDirEmployeeByName(
         @PathVariable(value = "directorId") directorId: UUID,
