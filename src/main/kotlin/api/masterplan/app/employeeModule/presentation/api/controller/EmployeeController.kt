@@ -363,6 +363,29 @@ class EmployeeController(
     }
 
 
+    @Operation(
+        summary = "Сортировка подчиненных сотрудников по рейтингу",
+        description = "Получение списка подчиненных сотрудников отсортированных по рейтингу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/getSortedEmpByRating/")
     suspend fun sortDirEmployeesByRating(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
         val directorId = EmployeeId(directorId)
@@ -371,6 +394,8 @@ class EmployeeController(
         val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
         return ResponseEntity.ok(resp)
     }
+
+
 
 
     @GetMapping("/dir/{directorId}/getSortedEmpByWorkload/")
