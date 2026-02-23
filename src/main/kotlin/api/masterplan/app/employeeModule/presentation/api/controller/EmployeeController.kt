@@ -280,7 +280,7 @@ class EmployeeController(
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Нет роли руководителя"
+                description = "Нет роли сотрудника"
             )
 
         ]
@@ -297,8 +297,8 @@ class EmployeeController(
 
 
     @Operation(
-        summary = "Поиск сотрудника по имени или фамилии",
-        description = "Получение списка сотрудников по имени или фамилии",
+        summary = "Поиск подчиненного сотрудника по имени или фамилии",
+        description = "Получение списка подчиненных сотрудников по имени или фамилии",
         responses = [
             ApiResponse(
                 responseCode = "200",
@@ -331,6 +331,29 @@ class EmployeeController(
     }
 
 
+    @Operation(
+        summary = "Поиск сотрудника по имени или фамилии",
+        description = "Получение списка сотрудников по имени или фамилии",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
+            )
+
+        ]
+    )
     @GetMapping("/admin/searchEmployee/")
     fun searchEmployeeByName(@RequestParam query: String): ResponseEntity<List<EmployeeDetailsResponse>>{
         val command = SearchEmployeeByNameCommand(query)
