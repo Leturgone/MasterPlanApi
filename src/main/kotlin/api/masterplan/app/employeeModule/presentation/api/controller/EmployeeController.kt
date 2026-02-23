@@ -8,10 +8,17 @@ import api.masterplan.app.employeeModule.presentation.api.exceptionHandler.Emplo
 import api.masterplan.app.employeeModule.presentation.dto.request.CreateEmployeeRequest
 import api.masterplan.app.employeeModule.presentation.dto.request.UpdateEmployeeRequest
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeDetailsResponse
+import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeErrorResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeFileResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeIdResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeWithMetricsDetailsResponse
 import api.masterplan.app.employeeModule.presentation.mapper.EmployeeDomainToResponseMapper
+import api.masterplan.app.userManagementModule.presentation.dto.responce.UserErrorResponse
+import api.masterplan.app.userManagementModule.presentation.dto.responce.UserUidResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -37,6 +44,37 @@ class EmployeeController(
     private val updateEmployeeUseCase: UpdateEmployeeUseCase
 ) {
 
+    @Operation(
+        summary = "Создание сотрудника",
+        description = "Создание сотрудника с передачей данных сотрудника",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Сотрудник успешно создан",
+                content = [Content(schema = Schema(implementation = EmployeeIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: пустое имя фамилия и тд",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Сотрудник с указанными данными уже существует",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при создании сотрудника",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
+            )
+
+        ]
+    )
     @PostMapping("/admin/createEmployee")
     fun createEmployee(@RequestBody request: CreateEmployeeRequest): ResponseEntity<EmployeeIdResponse> {
         val name = EmployeeName.validate(request.name)
