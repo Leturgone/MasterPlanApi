@@ -1,28 +1,25 @@
 package api.masterplan.app.employeeModule.presentation.api.controller
 
 import api.masterplan.app.employeeModule.application.command.*
-import api.masterplan.app.employeeModule.application.dto.FileModel
 import api.masterplan.app.employeeModule.application.usecase.*
-import api.masterplan.app.employeeModule.domain.dtos.EmployeeDetails
-import api.masterplan.app.employeeModule.domain.dtos.EmployeeWithMetricsDetails
-import api.masterplan.app.employeeModule.domain.exceptions.EmployeeException
 import api.masterplan.app.employeeModule.domain.model.entity.Employee
 import api.masterplan.app.employeeModule.domain.model.value.*
+import api.masterplan.app.employeeModule.presentation.api.exceptionHandler.EmployeeControllerExceptionHandler
 import api.masterplan.app.employeeModule.presentation.dto.request.CreateEmployeeRequest
 import api.masterplan.app.employeeModule.presentation.dto.request.UpdateEmployeeRequest
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeDetailsResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeFileResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeIdResponse
 import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeWithMetricsDetailsResponse
-import api.masterplan.app.employeeModule.presentation.mapper.EmployeeExceptionToHttpCodeMapper
+import api.masterplan.app.employeeModule.presentation.mapper.EmployeeDomainToResponseMapper
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 import java.util.*
 
 
 @RestController
+@EmployeeControllerExceptionHandler
 @RequestMapping("/api/v1/employees")
 @Tag(name = "Employees", description = "Управление сотрудниками")
 class EmployeeController(
@@ -42,98 +39,82 @@ class EmployeeController(
 
     @PostMapping("/admin/createEmployee")
     fun createEmployee(@RequestBody request: CreateEmployeeRequest): ResponseEntity<EmployeeIdResponse> {
-        val command = try {
-            val name = EmployeeName.validate(request.name)
-            val surname = EmployeeSurname.validate(request.surname)
-            val patronymic = request.patronymic?.let { EmployeePatronymic.validate(it) }
-            val directorId = request.directorId?.let { EmployeeId(it) }
-            val userId = EmployeeUserId(request.userId)
-            CreateEmployeeCommand(
-                name = name,
-                surname = surname,
-                patronymic = patronymic,
-                directorId = directorId,
-                userId = userId,
-            )
-        }catch (e: EmployeeException){
-            return handleEmployeeIdException(e)
-        }
-        return createEmployeeUseCase(command).handleEmployeeIdResult()
+        val name = EmployeeName.validate(request.name)
+        val surname = EmployeeSurname.validate(request.surname)
+        val patronymic = request.patronymic?.let { EmployeePatronymic.validate(it) }
+        val directorId = request.directorId?.let { EmployeeId(it) }
+        val userId = EmployeeUserId(request.userId)
+        val command = CreateEmployeeCommand(
+            name = name,
+            surname = surname,
+            patronymic = patronymic,
+            directorId = directorId,
+            userId = userId,
+        )
+        val result = createEmployeeUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empIdToResponse(result)
+        return ResponseEntity.ok(resp)
     }
-
 
 
 
     @GetMapping("/dir/{directorId}/exportMyEmployees/")
     suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<EmployeeFileResponse> {
-        val command = try {
-            val domainId = EmployeeId(directorId)
-            ExportDirEmployeesCommand(
-                directorId = domainId
-            )
-        }catch (e: EmployeeException){
-            return handleEmployeeFileException(e)
-        }
-        return exportDirEmployeesUseCase(command).handleEmployeeFileResult()
+        val domainId = EmployeeId(directorId)
+        val command = ExportDirEmployeesCommand(directorId = domainId)
+        val result = exportDirEmployeesUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empFileToResponse(result)
+        return ResponseEntity.ok(resp)
     }
-
 
 
 
     @GetMapping("/dir/{directorId}/myEmployees/")
     fun getDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
-        val command = try {
-            val domainId = EmployeeId(directorId)
-            GetAllDirectorEmployeesCommand(
-                directorId = domainId
-            )
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return getAllDirEmployeesUseCase(command).handleEmployeeDetailsListResult()
-    }
 
+        val domainId = EmployeeId(directorId)
+        val command = GetAllDirectorEmployeesCommand(directorId = domainId)
+        val result =  getAllDirEmployeesUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
 
 
     @GetMapping("/admin/allEmployees")
     fun getAllEmployees(): ResponseEntity<List<EmployeeDetailsResponse>> {
-        return getAllEmployeesUseCase().handleEmployeeDetailsListResult()
+        val result = getAllEmployeesUseCase().getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
     @GetMapping("/dir/{directorId}/myEmployeesWithoutTasks/")
     suspend fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
-        val command = try {
-            val domainId = EmployeeId(directorId)
-            GetDirEmployeesWithoutTasksCommand(domainId)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return getDirEmployeesWithoutTasksUseCase(command).handleEmployeeDetailsListResult()
+        val domainId = EmployeeId(directorId)
+        val command = GetDirEmployeesWithoutTasksCommand(domainId)
+        val result = getDirEmployeesWithoutTasksUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
     @GetMapping("/dir/getEmployee/{id}")
     fun getEmployeeById(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeDetailsResponse> {
-        val command = try {
-            val employeeId = EmployeeId(empId)
-            GetEmployeeByIdCommand(employeeId)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsException(e)
-        }
-        return getEmployeeByIdUseCase(command).handleEmployeeDetailsResult()
+        val employeeId = EmployeeId(empId)
+        val command = GetEmployeeByIdCommand(employeeId)
+        val result = getEmployeeByIdUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
 
     @GetMapping("/emp/getProfile/{id}")
     fun getProfileInformation(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeWithMetricsDetailsResponse>{
-        val command = try {
-            val profileId = EmployeeId(empId)
-            GetProfileInformationCommand(profileId)
-        }catch (e: EmployeeException){
-            return handleEmployeeMetricsDetailsException(e)
-        }
-        return getProfileInformationUseCase(command).handleEmployeeMetricsDetailsResult()
+        val profileId = EmployeeId(empId)
+        val command = GetProfileInformationCommand(profileId)
+        val result = getProfileInformationUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empMetricsDetailsToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
@@ -143,144 +124,63 @@ class EmployeeController(
     fun searchDirEmployeeByName(
         @PathVariable(value = "directorId") directorId: UUID,
         @RequestParam query: String): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val command = try {
-            val domainDirectorId = EmployeeId(directorId)
-            SearchDirEmployeeByNameCommand(query, domainDirectorId)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return searchDirEmployeeByNameUseCase(command).handleEmployeeDetailsListResult()
+        val domainDirectorId = EmployeeId(directorId)
+        val command = SearchDirEmployeeByNameCommand(query, domainDirectorId)
+        val result = searchDirEmployeeByNameUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
     @GetMapping("/admin/searchEmployee/")
     fun searchEmployeeByName(@RequestParam query: String): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val command = try {
-            SearchEmployeeByNameCommand(query)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return searchEmployeeByNameUseCase(command).handleEmployeeDetailsListResult()
+        val command = SearchEmployeeByNameCommand(query)
+        val result = searchEmployeeByNameUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
     @GetMapping("/dir/{directorId}/getSortedEmpByRating/")
     suspend fun sortDirEmployeesByRating(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val command = try {
-            val directorId = EmployeeId(directorId)
-            SortDirEmployeesByRatingCommand(directorId)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return sortDirEmployeesByRatingUseCase(command).handleEmployeeDetailsListResult()
+        val directorId = EmployeeId(directorId)
+        val command = SortDirEmployeesByRatingCommand(directorId)
+        val result = sortDirEmployeesByRatingUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
     @GetMapping("/dir/{directorId}/getSortedEmpByWorkload/")
     suspend fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val command = try {
-            val directorId = EmployeeId(directorId)
-            SortDirEmployeesByWorkloadCommand(directorId)
-        }catch (e: EmployeeException){
-            return handleEmployeeDetailsListException(e)
-        }
-        return sortDirEmployeesByWorkloadUseCase(command).handleEmployeeDetailsListResult()
+        val directorId = EmployeeId(directorId)
+        val command = SortDirEmployeesByWorkloadCommand(directorId)
+        val result = sortDirEmployeesByWorkloadUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
     @PatchMapping("/admin/updateEmployee/")
     fun updateEmployee(@RequestBody request: UpdateEmployeeRequest): ResponseEntity<EmployeeIdResponse>{
-        val command = try {
-            val employeeId = EmployeeId(request.id)
-            val newName = EmployeeName.validate(request.newName)
-            val newSurname = EmployeeSurname.validate(request.newSurname)
-            val newPatronymic = request.newPatronymic?.let { EmployeePatronymic.validate(it) }
-            val newDirectorId = request.newDirectorId?.let { EmployeeId(it) }
-            val userId = EmployeeUserId(request.userId)
-            val newEmployee = Employee.create(
-                id = employeeId,
-                name = newName,
-                surname = newSurname,
-                patronymic = newPatronymic,
-                directorId = newDirectorId,
-                userId = userId,
-            )
-            UpdateEmployeeCommand(employeeId,newEmployee)
-        }catch (e: EmployeeException){
-            return handleEmployeeIdException(e)
-        }
-        return updateEmployeeUseCase(command).handleEmployeeIdResult()
-    }
-
-
-    private fun handleEmployeeIdException(e: EmployeeException): ResponseEntity<EmployeeIdResponse> {
-        val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = EmployeeIdResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
+        val employeeId = EmployeeId(request.id)
+        val newName = EmployeeName.validate(request.newName)
+        val newSurname = EmployeeSurname.validate(request.newSurname)
+        val newPatronymic = request.newPatronymic?.let { EmployeePatronymic.validate(it) }
+        val newDirectorId = request.newDirectorId?.let { EmployeeId(it) }
+        val userId = EmployeeUserId(request.userId)
+        val newEmployee = Employee.create(
+            id = employeeId,
+            name = newName,
+            surname = newSurname,
+            patronymic = newPatronymic,
+            directorId = newDirectorId,
+            userId = userId,
         )
-        return ResponseEntity.status(status).body(body)
-    }
-
-    private fun handleEmployeeFileException(e: EmployeeException): ResponseEntity<EmployeeFileResponse> {
-        val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = EmployeeFileResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        )
-        return ResponseEntity.status(status).body(body)
-
-    }
-
-    private fun handleEmployeeDetailsListException(e: EmployeeException): ResponseEntity<List<EmployeeDetailsResponse>> {
-        val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = listOf(EmployeeDetailsResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        ))
-        return ResponseEntity.status(status).body(body)
-    }
-
-    private fun handleEmployeeMetricsDetailsException(e: EmployeeException): ResponseEntity<EmployeeWithMetricsDetailsResponse> {
-        val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = EmployeeWithMetricsDetailsResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        )
-        return ResponseEntity.status(status).body(body)
-    }
-
-    private fun handleEmployeeDetailsException(e: EmployeeException): ResponseEntity<EmployeeDetailsResponse> {
-        val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
-        val body = EmployeeDetailsResponse.Error(
-            status = status.value(),
-            message = e.message,
-            timestamp = LocalDateTime.now()
-        )
-        return ResponseEntity.status(status).body(body)
-    }
-
-
-
-    private fun Result<EmployeeId>.handleEmployeeIdResult(): ResponseEntity<EmployeeIdResponse> {}
-
-    private fun Result<FileModel>.handleEmployeeFileResult(): ResponseEntity<EmployeeFileResponse> {}
-
-    private fun Result<EmployeeWithMetricsDetails>.handleEmployeeMetricsDetailsResult(): ResponseEntity<EmployeeWithMetricsDetailsResponse> {
-        TODO("Not yet implemented")
-    }
-
-    private fun Result<EmployeeDetails>.handleEmployeeDetailsResult(): ResponseEntity<EmployeeDetailsResponse> {
-        TODO("Not yet implemented")
-    }
-
-
-    private fun Result<List<EmployeeDetails>>.handleEmployeeDetailsListResult(): ResponseEntity<List<EmployeeDetailsResponse>> {
-
+        val command = UpdateEmployeeCommand(employeeId,newEmployee)
+        val result = updateEmployeeUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empIdToResponse(result)
+        return ResponseEntity.ok(resp)
     }
 }
 
