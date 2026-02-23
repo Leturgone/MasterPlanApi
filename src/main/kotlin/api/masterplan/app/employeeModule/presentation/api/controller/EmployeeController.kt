@@ -430,6 +430,34 @@ class EmployeeController(
     }
 
 
+    @Operation(
+        summary = "Обновление сотрудника по id",
+        description = "Обновление сотрудника по id путем загрузки новых данных",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Сотрудник обновлен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeIdResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Сотрудник не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении сотрудника",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PatchMapping("/admin/updateEmployee/")
     fun updateEmployee(@RequestBody request: UpdateEmployeeRequest): ResponseEntity<EmployeeIdResponse>{
         val employeeId = EmployeeId(request.id)
