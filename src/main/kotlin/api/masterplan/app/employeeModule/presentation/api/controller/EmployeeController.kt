@@ -157,13 +157,37 @@ class EmployeeController(
     }
 
 
+    @Operation(
+        summary = "Получение списка всех сотрудников",
+        description = "Получение списка всех сотрудников",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли админа"
+            )
 
+        ]
+    )
     @GetMapping("/admin/allEmployees")
     fun getAllEmployees(): ResponseEntity<List<EmployeeDetailsResponse>> {
         val result = getAllEmployeesUseCase().getOrThrow()
         val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
         return ResponseEntity.ok(resp)
     }
+
+
 
     @GetMapping("/dir/{directorId}/myEmployeesWithoutTasks/")
     suspend fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
