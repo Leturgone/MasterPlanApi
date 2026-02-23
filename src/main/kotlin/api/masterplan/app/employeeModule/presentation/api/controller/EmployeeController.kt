@@ -107,7 +107,7 @@ class EmployeeController(
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Нет роли директора"
+                description = "Нет роли руководителя"
             )
 
         ]
@@ -141,7 +141,7 @@ class EmployeeController(
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Нет роли директора"
+                description = "Нет роли руководителя"
             )
 
         ]
@@ -189,6 +189,29 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Получение списка подчиненных сотрудников без задач",
+        description = "Получение списка подчиненных сотрудников без задач по id руководителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/myEmployeesWithoutTasks/")
     suspend fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
         val domainId = EmployeeId(directorId)
