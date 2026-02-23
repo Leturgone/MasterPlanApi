@@ -1,5 +1,7 @@
 package api.masterplan.app.employeeModule.presentation.dto.responce
 
+import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 import java.util.*
 
 @Schema(description = "Ответ Данные Сотрудника")
