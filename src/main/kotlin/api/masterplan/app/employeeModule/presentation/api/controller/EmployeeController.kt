@@ -10,6 +10,7 @@ import api.masterplan.app.employeeModule.presentation.dto.request.UpdateEmployee
 import api.masterplan.app.employeeModule.presentation.dto.responce.*
 import api.masterplan.app.employeeModule.presentation.mapper.EmployeeDomainToResponseMapper
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -122,6 +123,29 @@ class EmployeeController(
 
 
 
+    @Operation(
+        summary = "Получение списка подчиненных сотрудников",
+        description = "Получение списка подчиненных сотрудников по id руоводителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список сотрудников успешно получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = EmployeeDetailsResponse::class))
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка сотрудников",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли директора"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/myEmployees/")
     fun getDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
 
