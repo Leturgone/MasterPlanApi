@@ -156,7 +156,7 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
-    override fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeDetails {
+    override fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeId {
 
         employeeRepository.getEmployeeById(id) ?: throw EmployeeException.EmployeeNotExist(id)
 
@@ -169,7 +169,7 @@ class EmployeeServiceImpl(
 
         val updateEmployeeDetails = EmpEntityToDtoMapper.toEmployeeDetails(updatedEmployee)
 
-        return updateEmployeeDetails
+        return updateEmployeeDetails.id
     }
 
 
