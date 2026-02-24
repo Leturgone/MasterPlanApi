@@ -8,7 +8,7 @@ import java.util.*
 
 
 @Entity
-@Table(name = "app_user")
+@Table(name = "employee")
 data class EmployeeEntity(
     @Id
     @Column(name = "id")

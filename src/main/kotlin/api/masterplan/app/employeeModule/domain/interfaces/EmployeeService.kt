@@ -33,7 +33,7 @@ interface EmployeeService {
                        patronymic: EmployeePatronymic? = null, directorId: EmployeeId? = null,
                        userId: EmployeeUserId): EmployeeId
 
-    fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeDetails
+    fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeId
 
 
     fun getEmployeeWithMetrics(employeeId: EmployeeId): EmployeeWithMetricsDetails

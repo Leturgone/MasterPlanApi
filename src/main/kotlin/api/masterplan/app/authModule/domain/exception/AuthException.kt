@@ -7,6 +7,9 @@ sealed class AuthException(message: String): Exception(message) {
     class InvalidCredentials: AuthException(
         "Passwords don't match"
     )
+
+    class InvalidLoginOrPassword(errMassage: String): AuthException(errMassage)
+
     class InvalidToken: AuthException(
         "Invalid token"
     )

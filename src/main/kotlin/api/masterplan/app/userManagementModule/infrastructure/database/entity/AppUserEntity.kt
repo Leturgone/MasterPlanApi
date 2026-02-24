@@ -16,7 +16,7 @@ data class AppUserEntity(
     @Column(name = "password_hash", nullable = false)
     val passwordHash: String,
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(name = "app_user_has_role",
         joinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
