@@ -51,5 +51,5 @@ data class Task private constructor(
     fun isNotInProgress() = status == TaskStatus.NOT_STARTED
 
 
-    fun isDone() = status == TaskStatus.DONE
+    fun isCompleted() = status == TaskStatus.COMPLETED
 }
