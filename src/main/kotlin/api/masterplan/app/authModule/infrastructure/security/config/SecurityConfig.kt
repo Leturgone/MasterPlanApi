@@ -26,9 +26,13 @@ class SecurityConfig(
         http.authorizeHttpRequests { auth ->
             auth.requestMatchers("/swagger-ui/**", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
             auth.requestMatchers("/api/v1/auth/login").permitAll()
-            auth.requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
+            auth.requestMatchers("/api/v1/users/admin/**").hasAuthority("ADMIN")
+            auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")
+            auth.requestMatchers("/api/v1/employees/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/employees/emp/**").hasAuthority("EMPLOYEE")
             auth.anyRequest().authenticated()
         }
+        // СДЕЛАТЬ ФИЛЬТР ДЛЯ АДМИНА  И ДИРЕКТОРА В ЕМПЛОЙ
         // Загрузка пользователя при аутентификации
         http.userDetailsService(appUserDetailsService)
 
