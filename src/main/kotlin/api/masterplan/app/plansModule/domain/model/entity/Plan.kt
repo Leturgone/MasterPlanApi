@@ -16,7 +16,7 @@ data class Plan private constructor(
 ){
     companion object{
         fun create(id: PlanId? = null, title: PlanTitle, description: PlanDescription, startDate: PlanDate,
-                   endDate: PlanDate, status: PlanStatus, directorId: PlanDirectorId,
+                   endDate: PlanDate, directorId: PlanDirectorId,
                    documentId: PlanDocumentId? = null): Plan{
             return Plan(
                 id = id ?: PlanId.generate(),
