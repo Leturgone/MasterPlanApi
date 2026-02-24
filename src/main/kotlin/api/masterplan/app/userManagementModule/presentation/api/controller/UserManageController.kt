@@ -24,7 +24,7 @@ import java.util.*
 
 @RestController
 @UserControllerExceptionHandler
-@RequestMapping("/api/v1/admin/users")
+@RequestMapping("/api/v1/users/admin/")
 @Tag(name = "Users", description = "Управление пользователями")
 class UserManageController(
     private val getUserByIdUseCase: GetUserByIdUseCase,
