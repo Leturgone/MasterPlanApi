@@ -23,5 +23,5 @@ interface PlanService {
 
     fun filterDirPlansByDate(directorId: PlanDirectorId): List<PlanDetails>
 
-    fun filterDirPlansByStatus(directorId: PlanDirectorId, status: TaskStatus): List<PlanDetails>
+    fun filterDirPlansByStatus(directorId: PlanDirectorId, status: PlanStatus): List<PlanDetails>
 }
