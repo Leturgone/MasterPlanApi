@@ -44,7 +44,7 @@ data class Plan private constructor(
     fun isNotInProgress() = status == PlanStatus.NOT_STARTED
 
 
-    fun isDone() = status == PlanStatus.DONE
+    fun isCompleted() = status == PlanStatus.COMPLETED
 
 
 }
