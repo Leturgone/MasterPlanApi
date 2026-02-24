@@ -181,9 +181,11 @@ class EmployeeServiceImpl(
 
         val directorProfile = employeeEntity.directorId?.let {
             employeeRepository.getEmployeeById(it)
-        } ?: throw EmployeeException.FailedToGetDirectorDetailsForEmployee(employeeId)
-
-        val directorDetails = DirectorDetails(directorProfile.name, directorProfile.surname, directorProfile.patronymic)
+        }
+        if (directorProfile == null && employeeEntity.directorId != null) {
+            throw EmployeeException.FailedToGetDirectorDetailsForEmployee(employeeId)
+        }
+        val directorDetails = directorProfile?.let { DirectorDetails(directorProfile.name, directorProfile.surname, directorProfile.patronymic)}
 
         val metrics = employeeMetricsService.calculateMetricsForEmployee(employeeId)
 
