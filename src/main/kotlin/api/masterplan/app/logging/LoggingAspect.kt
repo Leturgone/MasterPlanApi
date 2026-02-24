@@ -26,7 +26,7 @@ class LoggingAspect {
         val methodSignature = joinPoint.signature as MethodSignature
         val moduleName = getModule(methodSignature)
         val methodName = methodSignature.name
-        val methodArgs = joinPoint.args.joinToString(", ") { it.toString() }
+        val methodArgs = joinPoint.args.joinToString(", ") { it?.toString()?:"null" }
         logger.info("Module {} : Method {} is called with args: {}", moduleName,methodName, methodArgs)
     }
 

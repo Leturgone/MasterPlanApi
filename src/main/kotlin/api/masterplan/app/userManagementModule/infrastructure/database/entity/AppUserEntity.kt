@@ -16,7 +16,7 @@ data class AppUserEntity(
     @Column(name = "password_hash", nullable = false)
     val passwordHash: String,
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(name = "app_user_has_role",
         joinColumns = [JoinColumn(name = "app_user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
@@ -32,7 +32,7 @@ data class AppUserEntity(
     }
 
     override fun hashCode(): Int {
-        return id.hashCode() ?: 0
+        return id.hashCode()
     }
 
     override fun toString(): String {

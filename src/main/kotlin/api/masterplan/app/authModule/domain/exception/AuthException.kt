@@ -7,6 +7,9 @@ sealed class AuthException(message: String): Exception(message) {
     class InvalidCredentials: AuthException(
         "Passwords don't match"
     )
+
+    class InvalidLoginOrPassword(errMassage: String): AuthException(errMassage)
+
     class InvalidToken: AuthException(
         "Invalid token"
     )
@@ -19,6 +22,6 @@ sealed class AuthException(message: String): Exception(message) {
         "Exception while generating token for user ${authUserName.value} : $emessage "
     )
 
-    class InternalServerError : AuthException("Internal user module server error")
+    class InternalServerError(message: String) : AuthException(message)
 
 }

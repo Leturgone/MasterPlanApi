@@ -7,7 +7,7 @@ object UserExceptionToHttpCodeMapper {
     fun exceptionToHttpCode(ex: Throwable): HttpStatus {
         return when (ex) {
             is UserManagementException.UserNotFoundException -> HttpStatus.NOT_FOUND
-            is UserManagementException.UserNotExistsException -> HttpStatus.BAD_REQUEST
+            is UserManagementException.UserNotExistsException -> HttpStatus.NOT_FOUND
             is UserManagementException.UserAlreadyExistsException -> HttpStatus.CONFLICT
             is UserManagementException.FailedToCreateUserException -> HttpStatus.INTERNAL_SERVER_ERROR
             is UserManagementException.InvalidUserCredentialsException -> HttpStatus.BAD_REQUEST

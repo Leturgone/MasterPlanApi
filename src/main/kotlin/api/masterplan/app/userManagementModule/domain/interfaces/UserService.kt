@@ -17,7 +17,5 @@ interface UserService {
 
     fun createUser(login: UserLogin,password: UserPassword, roles: Set<UserRole>, employeeInfo: EmployeeInfo): UserId
 
-    fun getUser(userId: UserId): AppUserDetails
-
     fun deleteUser(userId: UserId): UserId
 }

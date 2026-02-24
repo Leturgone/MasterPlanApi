@@ -9,6 +9,9 @@ object AuthExceptionToHttpCodeMapper {
             is AuthException.TokenGenerationException -> HttpStatus.BAD_REQUEST
             is AuthException.UserNotExistsWithLogin -> HttpStatus.UNAUTHORIZED
             is AuthException.InvalidCredentials -> HttpStatus.UNAUTHORIZED
+            is AuthException.InvalidLoginOrPassword -> HttpStatus.BAD_REQUEST
+            is AuthException.InternalServerError -> HttpStatus.INTERNAL_SERVER_ERROR
+            is AuthException.InvalidToken -> HttpStatus.UNAUTHORIZED
             else -> HttpStatus.INTERNAL_SERVER_ERROR
         }
     }
