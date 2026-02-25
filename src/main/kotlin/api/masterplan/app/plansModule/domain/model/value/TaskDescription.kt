@@ -10,7 +10,7 @@ value class TaskDescription(val value: String) {
                 require(desc.isNotEmpty()) { "Description cant be blank" }
                 require(desc.length <=255){ "Description too long" }
             }catch(e:IllegalStateException){
-                throw PlanException.InvalidPlanDesc(e.message)
+                throw PlanException.InvalidTaskDesc(e.message)
             }
             return TaskDescription(desc)
         }
