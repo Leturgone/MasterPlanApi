@@ -9,11 +9,13 @@ interface PlanService {
 
     fun getPlanById(planId: PlanId): PlanDetails
 
-    fun createPlan(id: PlanId? = null, title: PlanTitle, description: PlanDescription, startDate: PlanDate,
+    fun createPlan(id: PlanId? = null, title: PlanTitle, description: PlanDescription, startDate: PlanDate? = null,
                    endDate: PlanDate, directorId: PlanDirectorId,
                    documentId: PlanDocumentId? = null): PlanId
 
-    fun addTaskToPlan(planId: PlanId, taskId: Task): PlanId
+    fun addTaskToPlan(planId: PlanId, task: Task): PlanId
+
+    fun removeTaskFromPlan(planId: PlanId, task: Task): PlanId
 
     fun getAllDirPlans(directorId: PlanDirectorId): List<PlanDetails>
 
@@ -21,7 +23,7 @@ interface PlanService {
 
     fun deletePlan(planId: PlanId): PlanId
 
-    fun filterDirPlansByDate(directorId: PlanDirectorId): List<PlanDetails>
+    fun sortDirPlansByDate(directorId: PlanDirectorId): List<PlanDetails>
 
     fun filterDirPlansByStatus(directorId: PlanDirectorId, status: PlanStatus): List<PlanDetails>
 }
