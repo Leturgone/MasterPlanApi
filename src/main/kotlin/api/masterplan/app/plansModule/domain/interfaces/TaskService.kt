@@ -27,7 +27,7 @@ interface TaskService {
 
     fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails>
 
-    fun filterPlansTasksByDate(planId: PlanId): List<TaskDetails>
+    fun sortPlansTasksByDate(planId: PlanId): List<TaskDetails>
 
     fun filterAssignedTasksByStatus(executorId: ExecutorId,taskStatus: TaskStatus): List<TaskDetails>
 
