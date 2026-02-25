@@ -13,7 +13,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 
 interface TaskService {
 
-    fun getTaskById(id: TaskId): TaskDetails
+    fun getTaskById(taskId: TaskId): TaskDetails
 
     fun getTasksByPlanId(planId: PlanId): List<TaskDetails>
 
