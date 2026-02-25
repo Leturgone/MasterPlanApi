@@ -1,6 +1,7 @@
 package api.masterplan.app.plansModule.domain.model.entity
 
 import api.masterplan.app.plansModule.domain.model.value.*
+import java.time.LocalDate
 
 @ConsistentCopyVisibility
 data class Plan private constructor(
@@ -15,7 +16,7 @@ data class Plan private constructor(
     val documentId: PlanDocumentId? = null
 ){
     companion object{
-        fun create(id: PlanId? = null, title: PlanTitle, description: PlanDescription, startDate: PlanDate,
+        fun create(id: PlanId? = null, title: PlanTitle, description: PlanDescription, startDate: PlanDate? = null,
                    endDate: PlanDate, directorId: PlanDirectorId,
                    documentId: PlanDocumentId? = null): Plan{
             return Plan(
@@ -23,7 +24,7 @@ data class Plan private constructor(
                 title = title,
                 description = description,
                 tasks = emptyList<Task>() as MutableList<Task>,
-                startDate = startDate,
+                startDate = startDate?: PlanDate(LocalDate.now()),
                 endDate = endDate,
                 status = PlanStatus.NOT_STARTED,
                 directorId = directorId,
@@ -32,19 +33,10 @@ data class Plan private constructor(
         }
     }
 
+
     fun addTask(task: Task) = tasks.add(task)
 
     fun removeTask(task: Task) = tasks.remove(task)
-
-    fun changePlanStatus(planStatus: PlanStatus) = planStatus
-
-    fun isInProgress() = status == PlanStatus.IN_PROGRESS
-
-
-    fun isNotInProgress() = status == PlanStatus.NOT_STARTED
-
-
-    fun isCompleted() = status == PlanStatus.COMPLETED
 
 
 }
