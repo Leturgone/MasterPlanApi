@@ -4,6 +4,7 @@ import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId
 import api.masterplan.app.plansModule.domain.model.value.PlanId
 import api.masterplan.app.plansModule.domain.model.value.PlanTitle
 import api.masterplan.app.plansModule.domain.model.value.TaskId
+import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 
 sealed class PlanException(message: String): Exception(message){
 
@@ -49,6 +50,26 @@ sealed class PlanException(message: String): Exception(message){
 
     class FailedToRemoveTask(planId: PlanId,taskId: TaskId) : PlanException(
         "Failed to remove task with id = ${taskId.value} from plan with id = ${taskId.value}"
+    )
+
+    class TaskNotExist(taskId: TaskId) : PlanException(
+        "Task with id = ${taskId.value} not found"
+    )
+
+    class TaskAlreadyExists(taskTitle: TaskTitle) : PlanException(
+        "Task with title = ${taskTitle.value} already exists"
+    )
+
+    class FailedToSaveTask(taskTitle: TaskTitle,planId: PlanId) : PlanException(
+        "Failed to save task with title = ${taskTitle.value} to plan with id = ${planId.value}"
+    )
+
+    class FailedToDeleteTask(taskId: TaskId) : PlanException(
+        "Failed to delete task with id = ${taskId.value}"
+    )
+
+    class FailedToUpdateTask(taskId: TaskId) : PlanException(
+        "Failed to update task with id = ${taskId.value}"
     )
 
 
