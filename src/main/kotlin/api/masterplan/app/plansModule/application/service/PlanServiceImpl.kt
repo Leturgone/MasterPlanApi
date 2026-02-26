@@ -46,17 +46,6 @@ class PlanServiceImpl(
     }
 
 
-    @LoggingMethod("planModule")
-    override fun addTaskToPlan(planId: PlanId, task: Task): PlanId {
-        val plan = planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
-
-
-        plan.addTask(task)
-
-        val savedId = planRepository.updatePlan(planId, plan)?: throw PlanException.FailedToAddTask(planId,task.id)
-
-        return savedId
-    }
 
     @LoggingMethod("planModule")
     override fun removeTaskFromPlan(planId: PlanId, task: Task): PlanId {
@@ -90,7 +79,6 @@ class PlanServiceImpl(
 
     @LoggingMethod("planModule")
     override fun deletePlan(planId: PlanId): PlanId {
-        planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
 
         val deletedPlanId = planRepository.deletePlan(planId)?: throw PlanException.FailedToDeletePlan(planId)
 
