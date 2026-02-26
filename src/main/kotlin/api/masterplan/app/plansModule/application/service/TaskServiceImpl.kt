@@ -62,8 +62,6 @@ class TaskServiceImpl(
 
     @LoggingMethod("planModule")
     override fun deleteTask(taskId: TaskId): TaskId {
-        taskRepository.getTask(taskId)?: PlanException.TaskNotExist(taskId)
-
         val deleteTaskId = taskRepository.deleteTask(taskId)?: throw PlanException.FailedToDeleteTask(taskId)
 
         return deleteTaskId
@@ -98,12 +96,40 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    override fun sortAssignedTasksByDate(executorId: ExecutorId): List<TaskDetails> {
+        val tasks = taskRepository.getTasksByExecutorId(executorId)
+
+        return tasks.sortedBy { task ->
+            task.endDate.value
+        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+    }
+
+
+    @LoggingMethod("planModule")
     override fun filterAssignedTasksByStatus(executorId: ExecutorId, taskStatus: TaskStatus): List<TaskDetails> {
         val tasks = taskRepository.getTasksByExecutorId(executorId)
 
         return tasks.filter { task ->
             task.status == taskStatus
         }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+    }
+
+
+    @LoggingMethod("planModule")
+    override fun filterPlanTasksByStatus(planId: PlanId, taskStatus: TaskStatus): List<TaskDetails> {
+        val tasks = taskRepository.getTasksByPlanId(planId)
+
+        return tasks.filter { task ->
+            task.status == taskStatus
+        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+    }
+
+
+    @LoggingMethod("planModule")
+    override fun searchAssignedTasksByTitle(executorId: ExecutorId, query: String): List<TaskDetails> {
+        val searchResult = taskRepository.searchExecutorTasksByTitle(executorId, query)
+
+        return searchResult.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
     }
 
 }
