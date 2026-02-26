@@ -13,8 +13,6 @@ interface PlanService {
                    endDate: PlanDate, directorId: PlanDirectorId,
                    documentId: PlanDocumentId? = null): PlanId
 
-    fun addTaskToPlan(planId: PlanId, task: Task): PlanId
-
     fun removeTaskFromPlan(planId: PlanId, task: Task): PlanId
 
     fun getAllDirPlans(directorId: PlanDirectorId): List<PlanDetails>
