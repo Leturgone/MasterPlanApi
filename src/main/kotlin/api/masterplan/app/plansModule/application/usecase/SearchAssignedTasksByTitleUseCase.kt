@@ -1,6 +1,5 @@
 package api.masterplan.app.plansModule.application.usecase
 
-import api.masterplan.app.plansModule.application.command.CreatePlanCommand
 import api.masterplan.app.plansModule.application.command.SearchAssignedTasksByTitleCommand
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.interfaces.TaskService
