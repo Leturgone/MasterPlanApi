@@ -12,7 +12,6 @@ object TasksPlanToEntityMapper {
             id = entity.id,
             title = entity.title,
             description = entity.description,
-            tasks = entity.tasks.map { toTaskDetails(it) } as MutableList<TaskDetails>,
             startDate = entity.startDate,
             endDate = entity.endDate,
             status = entity.status,
