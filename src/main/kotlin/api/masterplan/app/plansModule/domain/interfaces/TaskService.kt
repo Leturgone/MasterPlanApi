@@ -29,6 +29,11 @@ interface TaskService {
 
     fun sortPlansTasksByDate(planId: PlanId): List<TaskDetails>
 
+    fun sortAssignedTasksByDate(executorId: ExecutorId): List<TaskDetails>
+
     fun filterAssignedTasksByStatus(executorId: ExecutorId,taskStatus: TaskStatus): List<TaskDetails>
 
+    fun filterPlanTasksByStatus(planId: PlanId,taskStatus: TaskStatus): List<TaskDetails>
+
+    fun searchAssignedTasksByTitle(executorId: ExecutorId,query: String): List<TaskDetails>
 }
