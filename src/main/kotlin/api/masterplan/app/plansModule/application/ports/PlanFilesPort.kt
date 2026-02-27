@@ -19,4 +19,8 @@ interface PlanFilesPort {
 
     fun removeTaskFile(taskFileId: TaskDocumentId): TaskDocumentId
 
+    fun uploadOrUpdatePlanFile(planFileId: PlanDocumentId?, planFile: PlanFile): PlanDocumentId
+
+    fun uploadOrUpdateTaskFile(taskFileId: TaskDocumentId?,taskFile: TaskFile): TaskDocumentId
+
 }
