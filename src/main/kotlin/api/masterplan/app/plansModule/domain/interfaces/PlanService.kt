@@ -2,7 +2,6 @@ package api.masterplan.app.plansModule.domain.interfaces
 
 import api.masterplan.app.plansModule.domain.dtos.PlanDetails
 import api.masterplan.app.plansModule.domain.model.entity.Plan
-import api.masterplan.app.plansModule.domain.model.entity.Task
 import api.masterplan.app.plansModule.domain.model.value.*
 
 interface PlanService {
@@ -13,7 +12,6 @@ interface PlanService {
                    endDate: PlanDate, directorId: PlanDirectorId,
                    documentId: PlanDocumentId? = null): PlanId
 
-    fun removeTaskFromPlan(planId: PlanId, task: Task): PlanId
 
     fun getAllDirPlans(directorId: PlanDirectorId): List<PlanDetails>
 
