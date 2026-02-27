@@ -8,7 +8,6 @@ data class Plan private constructor(
     val id: PlanId,
     val title: PlanTitle,
     val description: PlanDescription,
-    val tasks: MutableList<Task>,
     val startDate: PlanDate,
     val endDate: PlanDate,
     val status: PlanStatus,
@@ -23,7 +22,6 @@ data class Plan private constructor(
                 id = id ?: PlanId.generate(),
                 title = title,
                 description = description,
-                tasks = emptyList<Task>() as MutableList<Task>,
                 startDate = startDate?: PlanDate(LocalDate.now()),
                 endDate = endDate,
                 status = PlanStatus.NOT_STARTED,
@@ -33,10 +31,8 @@ data class Plan private constructor(
         }
     }
 
-
-    fun addTask(task: Task) = tasks.add(task)
-
-    fun removeTask(task: Task) = tasks.remove(task)
-
+    fun addDocument(documentId: PlanDocumentId): Plan{
+        return this.copy(documentId = documentId)
+    }
 
 }
