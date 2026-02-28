@@ -1,9 +1,13 @@
 package api.masterplan.app.plansModule.domain.exceptions
 
 import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId
+import api.masterplan.app.plansModule.domain.model.value.PlanDocumentId
 import api.masterplan.app.plansModule.domain.model.value.PlanId
+import api.masterplan.app.plansModule.domain.model.value.PlanStatus
 import api.masterplan.app.plansModule.domain.model.value.PlanTitle
+import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
 import api.masterplan.app.plansModule.domain.model.value.TaskId
+import api.masterplan.app.plansModule.domain.model.value.TaskStatus
 import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 
 sealed class PlanException(message: String): Exception(message){
@@ -44,14 +48,6 @@ sealed class PlanException(message: String): Exception(message){
         "Failed to delete plan with id = ${planId.value} "
     )
 
-    class FailedToAddTask(planId: PlanId,taskId: TaskId) : PlanException(
-        "Failed to add task with id = ${taskId.value} to plan with id = ${planId.value}"
-    )
-
-    class FailedToRemoveTask(planId: PlanId,taskId: TaskId) : PlanException(
-        "Failed to remove task with id = ${taskId.value} from plan with id = ${taskId.value}"
-    )
-
     class TaskNotExist(taskId: TaskId) : PlanException(
         "Task with id = ${taskId.value} not found"
     )
@@ -70,6 +66,22 @@ sealed class PlanException(message: String): Exception(message){
 
     class FailedToUpdateTask(taskId: TaskId) : PlanException(
         "Failed to update task with id = ${taskId.value}"
+    )
+
+    class FailedToAssignDocumentToTask(taskId: TaskId,documentId: TaskDocumentId) : PlanException(
+        "Failed to assign document with id = ${documentId.value} to task with id = ${taskId.value}"
+    )
+
+    class FailedToAssignDocumentToPlan(planId: PlanId,documentId: PlanDocumentId) : PlanException(
+        "Failed to assign document with id = ${documentId.value} to plan with id = ${planId.value}"
+    )
+
+    class FailedToUpdateTaskStatus(taskId: TaskId, taskStatus: TaskStatus) : PlanException(
+        "Failed to assign status ${taskStatus.name} to task with id = ${taskId.value}"
+    )
+
+    class FailedToUpdatePlanStatus(planId: PlanId, planStatus: PlanStatus) : PlanException(
+        "Failed to assign status ${planStatus.name} to plan with id = ${planId.value}"
     )
 
 
