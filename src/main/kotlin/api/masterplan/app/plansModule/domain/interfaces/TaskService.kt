@@ -2,18 +2,11 @@ package api.masterplan.app.plansModule.domain.interfaces
 
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.model.entity.Task
-import api.masterplan.app.plansModule.domain.model.value.ExecutorId
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.TaskDate
-import api.masterplan.app.plansModule.domain.model.value.TaskDescription
-import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
-import api.masterplan.app.plansModule.domain.model.value.TaskId
-import api.masterplan.app.plansModule.domain.model.value.TaskStatus
-import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import api.masterplan.app.plansModule.domain.model.value.*
 
 interface TaskService {
 
-    fun getTaskById(id: TaskId): TaskDetails
+    fun getTaskById(taskId: TaskId): TaskDetails
 
     fun getTasksByPlanId(planId: PlanId): List<TaskDetails>
 
@@ -27,8 +20,17 @@ interface TaskService {
 
     fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails>
 
-    fun filterPlansTasksByDate(planId: PlanId): List<TaskDetails>
+    fun sortPlansTasksByDate(planId: PlanId): List<TaskDetails>
+
+    fun sortAssignedTasksByDate(executorId: ExecutorId): List<TaskDetails>
 
     fun filterAssignedTasksByStatus(executorId: ExecutorId,taskStatus: TaskStatus): List<TaskDetails>
 
+    fun filterPlanTasksByStatus(planId: PlanId,taskStatus: TaskStatus): List<TaskDetails>
+
+    fun searchAssignedTasksByTitle(executorId: ExecutorId,query: String): List<TaskDetails>
+
+    fun assignTaskDocumentToTask(taskId: TaskId, documentId: TaskDocumentId ): TaskId
+
+    fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskId
 }

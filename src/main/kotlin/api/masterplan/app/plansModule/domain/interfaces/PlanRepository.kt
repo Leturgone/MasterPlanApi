@@ -3,6 +3,7 @@ package api.masterplan.app.plansModule.domain.interfaces
 import api.masterplan.app.plansModule.domain.model.entity.Plan
 import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId
 import api.masterplan.app.plansModule.domain.model.value.PlanId
+import api.masterplan.app.plansModule.domain.model.value.PlanTitle
 
 interface PlanRepository {
 
@@ -14,7 +15,7 @@ interface PlanRepository {
 
     fun getDirPlans(directorId: PlanDirectorId): List<Plan>
 
-    fun isPlanExist(planId: PlanId): Boolean
+    fun isPlanExist(planTitle: PlanTitle, directorId: PlanDirectorId): Boolean
 
     fun updatePlan(planId: PlanId, plan: Plan): PlanId?
 }
