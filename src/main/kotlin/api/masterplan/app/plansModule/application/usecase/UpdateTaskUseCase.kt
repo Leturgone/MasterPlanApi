@@ -14,16 +14,14 @@ class UpdateTaskUseCase(
 ) {
     operator fun invoke(command: UpdateTaskCommand):Result<TaskId> {
         return try {
-            val taskDocId = taskService.getTaskById(command.taskId).documentId
-
-            val docId = command.document?.let {planFilesPort.uploadOrUpdateTaskFile(taskDocId,it)}
-
-            val updatedTask  = docId?.let { command.updatedTask.addDocument(it) }?: command.updatedTask
-
-            val updatedTaskId = taskService.updateTask(command.taskId,updatedTask)
-
+            val updatedTaskId = taskService.updateTask(command.taskId,command.updatedTask)
+            command.document?.let {
+                val docId = planFilesPort.uploadOrUpdateTaskFile(command.updatedTask.documentId,it)
+                taskService.assignTaskDocumentToTask(updatedTaskId,docId)
+            }
             Result.success(updatedTaskId)
-        }catch (e: Exception){
+        }
+        catch (e: Exception){
             Result.failure(e)
         }
     }
