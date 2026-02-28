@@ -35,4 +35,8 @@ data class Plan private constructor(
         return this.copy(documentId = documentId)
     }
 
+    fun changePlanStatus(planStatus: PlanStatus): Plan{
+        return this.copy(status=planStatus)
+    }
+
 }
