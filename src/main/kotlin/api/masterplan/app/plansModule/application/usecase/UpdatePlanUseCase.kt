@@ -13,14 +13,11 @@ class UpdatePlanUseCase(
 ) {
     operator fun invoke(command: UpdatePlanCommand): Result<PlanId> {
         return try {
-            val planDocId = planService.getPlanById(command.planId).documentId
-
-            val docId = command.document?.let { planFilesPort.uploadOrUpdatePlanFile(planDocId,it) }
-
-            val updatedPlan = docId?.let { command.updatedPlan.addDocument(it)}?: command.updatedPlan
-
-            val updatedPlanId = planService.updatePlan(command.planId, updatedPlan)
-
+            val updatedPlanId = planService.updatePlan(command.planId, command.updatedPlan)
+            command.document?.let {
+                val docId = planFilesPort.uploadOrUpdatePlanFile(command.updatedPlan.documentId,it)
+                planService.assignPlanDocumentToPlan(updatedPlanId, docId)
+            }
             Result.success(updatedPlanId)
         }catch (e: Exception){
             Result.failure(e)
