@@ -132,4 +132,29 @@ class TaskServiceImpl(
         return searchResult.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
     }
 
+
+    @LoggingMethod("planModule")
+    override fun assignTaskDocumentToTask(taskId: TaskId, documentId: TaskDocumentId): TaskId {
+        val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
+        val taskWithPlan = task.addDocument(documentId)
+
+        val updatedTaskId = taskRepository.updateTask(taskId, taskWithPlan)?: throw PlanException.FailedToAssignDocumentToTask(
+            taskId,documentId
+        )
+
+        return updatedTaskId
+    }
+
+
+    @LoggingMethod("planModule")
+    override fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskId {
+        val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
+        val taskWithNewStatus = task.changeTaskStatus(taskStatus)
+        val updatedTaskId = taskRepository.updateTask(taskId, taskWithNewStatus)?: throw PlanException.FailedToUpdateTaskStatus(
+            taskId,taskStatus
+        )
+
+        return updatedTaskId
+    }
+
 }
