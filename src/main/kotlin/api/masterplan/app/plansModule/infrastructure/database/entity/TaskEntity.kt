@@ -23,15 +23,14 @@ data class TaskEntity(
     @Column(name = "description", length = 255, nullable = false)
     val description : String,
 
-    @Column(name = "end_date", nullable = true)
-    val endDate: LocalDateTime? = null,
+    @Column(name = "end_date", nullable = false)
+    val endDate: LocalDateTime,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name = "task_status_id",
         referencedColumnName = "id",
         nullable = false,
-        updatable = false
     )
     val taskStatus: TaskStatusEntity,
 
