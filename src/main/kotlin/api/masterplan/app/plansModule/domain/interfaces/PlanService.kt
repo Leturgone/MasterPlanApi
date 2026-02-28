@@ -22,4 +22,8 @@ interface PlanService {
     fun sortDirPlansByDate(directorId: PlanDirectorId): List<PlanDetails>
 
     fun filterDirPlansByStatus(directorId: PlanDirectorId, status: PlanStatus): List<PlanDetails>
+
+    fun assignPlanDocumentToPlan(planId: PlanId, documentId: PlanDocumentId): PlanId
+
+    fun updatePlanStatus(planId: PlanId, status: PlanStatus): PlanId
 }
