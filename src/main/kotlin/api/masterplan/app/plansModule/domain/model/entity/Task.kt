@@ -1,13 +1,6 @@
 package api.masterplan.app.plansModule.domain.model.entity
 
-import api.masterplan.app.plansModule.domain.model.value.ExecutorId
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.TaskDate
-import api.masterplan.app.plansModule.domain.model.value.TaskDescription
-import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
-import api.masterplan.app.plansModule.domain.model.value.TaskId
-import api.masterplan.app.plansModule.domain.model.value.TaskStatus
-import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import api.masterplan.app.plansModule.domain.model.value.*
 
 @ConsistentCopyVisibility
 data class Task private constructor(
@@ -37,19 +30,12 @@ data class Task private constructor(
         }
     }
 
+    fun addDocument(documentId: TaskDocumentId): Task{
+        return this.copy(documentId = documentId)
+    }
 
-    fun addExecutor(executorId: ExecutorId) = executorsIds.add(executorId)
+    fun changeTaskStatus(taskStatus: TaskStatus): Task{
+        return this.copy(status=taskStatus)
+    }
 
-
-    fun removeExecutor(executorId: ExecutorId) = executorsIds.remove(executorId)
-
-    fun changeTaskStatus(taskStatus: TaskStatus) = taskStatus
-
-    fun isInProgress() = status == TaskStatus.IN_PROGRESS
-
-
-    fun isNotInProgress() = status == TaskStatus.NOT_STARTED
-
-
-    fun isCompleted() = status == TaskStatus.COMPLETED
 }
