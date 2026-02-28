@@ -2,14 +2,7 @@ package api.masterplan.app.plansModule.domain.interfaces
 
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.model.entity.Task
-import api.masterplan.app.plansModule.domain.model.value.ExecutorId
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.TaskDate
-import api.masterplan.app.plansModule.domain.model.value.TaskDescription
-import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
-import api.masterplan.app.plansModule.domain.model.value.TaskId
-import api.masterplan.app.plansModule.domain.model.value.TaskStatus
-import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import api.masterplan.app.plansModule.domain.model.value.*
 
 interface TaskService {
 
@@ -36,4 +29,8 @@ interface TaskService {
     fun filterPlanTasksByStatus(planId: PlanId,taskStatus: TaskStatus): List<TaskDetails>
 
     fun searchAssignedTasksByTitle(executorId: ExecutorId,query: String): List<TaskDetails>
+
+    fun assignTaskDocumentToTask(taskId: TaskId, documentId: TaskDocumentId ): TaskId
+
+    fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskId
 }
