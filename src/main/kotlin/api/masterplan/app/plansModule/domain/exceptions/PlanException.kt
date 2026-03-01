@@ -84,6 +84,14 @@ sealed class PlanException(message: String): Exception(message){
         "Failed to assign status ${planStatus.name} to plan with id = ${planId.value}"
     )
 
+    class InvalidPlanStatusTitle(status: String) : PlanException(
+        "Invalid plan status title: $status"
+    )
+
+    class InvalidTaskStatusTitle(status: String) : PlanException(
+        "Invalid task status title: $status"
+    )
+
 
 
 }
