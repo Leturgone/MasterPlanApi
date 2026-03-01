@@ -32,8 +32,8 @@ class PlanRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun savePlan(plan: Plan): PlanId? {
-        val status = jpaPlanStatusRepository.findAll().toSet()
-        val planEntity = PlanDatabaseMapper.toEntity(plan,status)
+        val statusSet = jpaPlanStatusRepository.findAll().toSet()
+        val planEntity = PlanDatabaseMapper.toEntity(plan,statusSet)
         val planId = jpaPlanRepository.save(planEntity).id
         return PlanId(planId)
     }
@@ -55,8 +55,8 @@ class PlanRepositoryImpl(
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun updatePlan(planId: PlanId, plan: Plan): PlanId? {
         jpaPlanRepository.findById(planId.value).getOrElse { return null }
-        val status = jpaPlanStatusRepository.findAll().toSet()
-        val updatedPlanEntity = PlanDatabaseMapper.toEntity(plan,status)
+        val statusSet = jpaPlanStatusRepository.findAll().toSet()
+        val updatedPlanEntity = PlanDatabaseMapper.toEntity(plan,statusSet)
         val userId = jpaPlanRepository.save(updatedPlanEntity).id
         return PlanId(userId)
     }
