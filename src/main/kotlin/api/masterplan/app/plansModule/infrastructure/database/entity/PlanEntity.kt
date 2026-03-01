@@ -23,7 +23,7 @@ data class PlanEntity(
     @Column(name = "end_date", nullable = true)
     val endDate: LocalDate,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.PERSIST])
     @JoinColumn(
         name = "plan_status_id",
         referencedColumnName = "id",
