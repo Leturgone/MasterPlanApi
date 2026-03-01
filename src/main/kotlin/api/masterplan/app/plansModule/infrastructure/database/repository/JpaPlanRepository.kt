@@ -6,5 +6,9 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface PlanJpaRepository: CrudRepository<PlanEntity, UUID> {
+interface JpaPlanRepository: CrudRepository<PlanEntity, UUID> {
+
+    fun findByDirectorId(directorId: UUID): List<PlanEntity>
+
+    fun existsByTitleAndDirectorId(title: String, directorId: UUID): Boolean
 }
