@@ -1,14 +1,8 @@
 package api.masterplan.app.plansModule.infrastructure.database.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
-import java.time.LocalDateTime
-import java.util.UUID
+import jakarta.persistence.*
+import java.time.LocalDate
+import java.util.*
 
 @Entity
 @Table(name = "plan")
@@ -24,10 +18,10 @@ data class PlanEntity(
     val description : String,
 
     @Column(name = "start_date", nullable = false)
-    val startDate: LocalDateTime,
+    val startDate: LocalDate,
 
     @Column(name = "end_date", nullable = true)
-    val endDate: LocalDateTime,
+    val endDate: LocalDate,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
