@@ -20,7 +20,7 @@ data class TaskEntity(
     @Column(name = "end_date", nullable = false)
     val endDate: LocalDate,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.PERSIST])
     @JoinColumn(
         name = "task_status_id",
         referencedColumnName = "id",
@@ -33,7 +33,10 @@ data class TaskEntity(
 
     @Column(name = "document_id")
     val documentId: UUID? = null,
-    ){
+
+    @OneToMany(mappedBy = "id.taskId", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val executorLinks: MutableSet<TaskHasExecutorEntity> = mutableSetOf()
+){
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
