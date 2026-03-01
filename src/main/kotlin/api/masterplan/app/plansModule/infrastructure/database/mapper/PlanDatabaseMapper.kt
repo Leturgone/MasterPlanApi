@@ -23,8 +23,8 @@ object PlanDatabaseMapper {
         return planList.map { toDomain(it) }
     }
 
-    fun toEntity(plan: Plan,statusList: Set<PlanStatusEntity>): PlanEntity {
-        val statusEntity = PlanStatusDatabaseMapper.toEntity(statusList, plan.status)
+    fun toEntity(plan: Plan,statusSet: Set<PlanStatusEntity>): PlanEntity {
+        val statusEntity = PlanStatusDatabaseMapper.toEntity(statusSet, plan.status)
         return PlanEntity(
             id = plan.id.value,
             title = plan.title.value,
