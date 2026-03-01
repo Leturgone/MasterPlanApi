@@ -28,7 +28,16 @@ class EmployeeMetricsServiceImpl(
     override suspend fun calculateMetricsForEmployees(employees: List<Employee>): Map<Employee, EmployeeMetrics>  = coroutineScope {
         val employeesIds = employees.map { it.id }.toSet()
         val tasks = taskInfProvider.getTasksByEmployeeIds(employeesIds)
-        val tasksByEmployee = tasks.groupBy { it.employeeId }
+        val tasksByEmployee = tasks.flatMap {task ->
+            // flatMap для добавления в общий список
+            // делаем список для каждой задачи empId -> задача
+            task.employeeIds.map{ employeeId ->
+                employeeId to task
+            }
+        }.groupBy(
+            keySelector = { it.first },
+            valueTransform = { it.second }
+        )
 
         val defResult = employees.map{ employee ->
             async{
