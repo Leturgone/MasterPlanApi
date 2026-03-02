@@ -19,6 +19,7 @@ object TaskDatabaseMapper {
             endDate = TaskDate(task.endDate),
             planId = PlanId(task.planId),
             documentId = task.documentId?.let { TaskDocumentId(it) },
+            urgency = TaskUrgency.validate(task.urgency),
             executorsId = executors,
         ).changeTaskStatus(domainStatus)
     }
@@ -46,6 +47,7 @@ object TaskDatabaseMapper {
             taskStatus = statusEntity,
             planId = task.planId.value,
             documentId = task.documentId?.value,
+            urgency = task.urgency.value,
             executorLinks = executorLinks
         )
     }
