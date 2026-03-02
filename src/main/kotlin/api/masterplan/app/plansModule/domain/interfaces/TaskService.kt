@@ -20,6 +20,8 @@ interface TaskService {
 
     fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails>
 
+    fun getAssignedTasksForMultipleExecutors(executorIds: Set<ExecutorId>): List<TaskDetails>
+
     fun sortPlansTasksByDate(planId: PlanId): List<TaskDetails>
 
     fun sortAssignedTasksByDate(executorId: ExecutorId): List<TaskDetails>

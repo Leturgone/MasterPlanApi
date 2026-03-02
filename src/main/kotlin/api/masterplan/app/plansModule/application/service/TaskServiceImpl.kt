@@ -51,6 +51,7 @@ class TaskServiceImpl(
             endDate = endDate,
             planId = planId,
             documentId = documentId,
+            urgency = null,
             executorsId = executorsId,
         )
 
@@ -70,9 +71,13 @@ class TaskServiceImpl(
 
     @LoggingMethod("planModule")
     override fun updateTask(taskId: TaskId, updatedTask: Task): TaskId {
-        taskRepository.getTask(taskId)?: PlanException.TaskNotExist(taskId)
-
-        val updatedTaskId = taskRepository.updateTask(taskId, updatedTask)?: throw PlanException.FailedToUpdateTask(taskId)
+        val oldTask = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
+        val updatedTaskWithUrgency = if (oldTask.endDate != updatedTask.endDate) {
+            updatedTask.recalculateUrgency()
+        } else {
+            updatedTask
+        }
+        val updatedTaskId = taskRepository.updateTask(taskId, updatedTaskWithUrgency)?: throw PlanException.FailedToUpdateTask(taskId)
         return updatedTaskId
     }
 
@@ -80,6 +85,12 @@ class TaskServiceImpl(
     @LoggingMethod("planModule")
     override fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails> {
         val tasks = taskRepository.getTasksByExecutorId(executorId)
+
+        return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+    }
+
+    override fun getAssignedTasksForMultipleExecutors(executorIds: Set<ExecutorId>): List<TaskDetails> {
+        val tasks = taskRepository.getTasksByExecutorIds(executorIds)
 
         return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
     }

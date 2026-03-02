@@ -28,6 +28,10 @@ sealed class PlanException(message: String): Exception(message){
         "Invalid plan description: ${message?.let {": $it"  }}"
     )
 
+    class InvalidTaskUrgency(message: String?) : PlanException(
+        "Invalid task urgency: ${message?.let {": $it"  }}"
+    )
+
     class PlanNotExist(planId: PlanId) : PlanException(
         "Plan with id = ${planId.value} not found"
     )
@@ -82,6 +86,14 @@ sealed class PlanException(message: String): Exception(message){
 
     class FailedToUpdatePlanStatus(planId: PlanId, planStatus: PlanStatus) : PlanException(
         "Failed to assign status ${planStatus.name} to plan with id = ${planId.value}"
+    )
+
+    class InvalidPlanStatusTitle(status: String) : PlanException(
+        "Invalid plan status title: $status"
+    )
+
+    class InvalidTaskStatusTitle(status: String) : PlanException(
+        "Invalid task status title: $status"
     )
 
 

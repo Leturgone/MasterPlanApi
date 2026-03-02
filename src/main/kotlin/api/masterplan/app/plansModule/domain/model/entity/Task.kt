@@ -7,6 +7,7 @@ data class Task private constructor(
     val id: TaskId,
     val title: TaskTitle,
     val description: TaskDescription,
+    val urgency: TaskUrgency,
     val endDate: TaskDate,
     val status: TaskStatus,
     val planId: PlanId,
@@ -15,6 +16,7 @@ data class Task private constructor(
 ){
     companion object{
         fun create(id: TaskId? = null, title: TaskTitle, description: TaskDescription, endDate: TaskDate,
+                   urgency: TaskUrgency?,
                    planId: PlanId, documentId: TaskDocumentId? = null,
                    executorsId: MutableList<ExecutorId>): Task {
             return Task(
@@ -22,6 +24,7 @@ data class Task private constructor(
                 title = title,
                 description = description,
                 endDate = endDate,
+                urgency = urgency?: TaskUrgency.calculate(endDate.value),
                 status = TaskStatus.NOT_STARTED,
                 planId = planId,
                 documentId = documentId,
@@ -36,6 +39,10 @@ data class Task private constructor(
 
     fun changeTaskStatus(taskStatus: TaskStatus): Task{
         return this.copy(status=taskStatus)
+    }
+
+    fun recalculateUrgency(): Task{
+        return this.copy(urgency = TaskUrgency.calculate(endDate.value))
     }
 
 }

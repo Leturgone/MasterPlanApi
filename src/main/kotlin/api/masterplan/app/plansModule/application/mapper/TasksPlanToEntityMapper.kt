@@ -29,6 +29,7 @@ object TasksPlanToEntityMapper {
             status = entity.status,
             planId = entity.planId,
             documentId = entity.documentId,
+            urgency = entity.urgency,
             executorsIds = entity.executorsIds,
         )
     }

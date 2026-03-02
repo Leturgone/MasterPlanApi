@@ -8,6 +8,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
 import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.domain.model.value.TaskStatus
 import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import api.masterplan.app.plansModule.domain.model.value.TaskUrgency
 
 data class TaskDetails(
     val id: TaskId,
@@ -17,5 +18,6 @@ data class TaskDetails(
     val status: TaskStatus,
     val planId: PlanId,
     val documentId: TaskDocumentId? = null,
+    val urgency: TaskUrgency,
     val executorsIds: MutableList<ExecutorId>
 )
