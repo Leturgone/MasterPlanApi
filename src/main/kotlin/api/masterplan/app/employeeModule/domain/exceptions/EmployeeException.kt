@@ -41,4 +41,6 @@ sealed class EmployeeException(message: String): Exception(message) {
         "Failed to get director details for employee with id = $id"
     )
 
+    class InternalServerError(message: String) : EmployeeException(message)
+
 }
