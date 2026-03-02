@@ -18,6 +18,8 @@ interface TaskRepository {
 
     fun getTasksByExecutorId(executorId: ExecutorId): List<Task>
 
+    fun getTasksByExecutorIds(executorIds: Set<ExecutorId>): List<Task>
+
     fun isTaskExist(taskTitle: TaskTitle,planId: PlanId): Boolean
 
     fun updateTask(taskId: TaskId, task: Task): TaskId?
