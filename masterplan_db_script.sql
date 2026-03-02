@@ -258,3 +258,13 @@ INSERT INTO app_user_has_role VALUES
 
 INSERT INTO employee (id, name, surname, patronymic, director_id, app_user_id) VALUES
 ('019c658f-a8bb-7fcb-accf-f0c2af73dea6', 'ADMIN', 'MASTERPLAN', NULL, NULL, '019c657e-8b2a-72de-af27-24d1643de4ab');
+
+INSERT INTO task_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');
+
+INSERT INTO plan_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');
