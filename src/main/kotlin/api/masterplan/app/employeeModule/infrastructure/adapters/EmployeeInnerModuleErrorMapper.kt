@@ -7,7 +7,7 @@ internal object EmployeeInnerModuleErrorMapper {
     fun exceptionToModuleException(ex: Throwable): EmployeeException{
         return when(ex){
             is PlanModuleErrorDto.InternalServerError -> EmployeeException.InternalServerError("Internal plan module error")
-            else -> EmployeeException.InternalServerError("Internal plan module error")
+            else -> EmployeeException.InternalServerError("Internal error")
         }
     }
 }
