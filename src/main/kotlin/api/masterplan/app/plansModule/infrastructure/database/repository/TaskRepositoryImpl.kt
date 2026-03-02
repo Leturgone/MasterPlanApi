@@ -52,6 +52,12 @@ class TaskRepositoryImpl(
         return TaskDatabaseMapper.toDomain(tasks)
     }
 
+    override fun getTasksByExecutorIds(executorIds: Set<ExecutorId>): List<Task> {
+        val executorIdsFields = executorIds.map { it.value }.toSet()
+        val tasks = jpaTaskRepository.findByExecutorIds(executorIdsFields)
+        return TaskDatabaseMapper.toDomain(tasks)
+    }
+
 
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun isTaskExist(taskTitle: TaskTitle, planId: PlanId): Boolean {
