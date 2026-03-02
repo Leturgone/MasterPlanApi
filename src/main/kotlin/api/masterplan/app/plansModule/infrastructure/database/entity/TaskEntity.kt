@@ -34,6 +34,9 @@ data class TaskEntity(
     @Column(name = "document_id")
     val documentId: UUID? = null,
 
+    @Column(name = "urgency", nullable = false)
+    val urgency: Double,
+
     @OneToMany(mappedBy = "id.taskId", cascade = [CascadeType.ALL], orphanRemoval = true)
     val executorLinks: MutableSet<TaskHasExecutorEntity> = mutableSetOf()
 ){

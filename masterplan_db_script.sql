@@ -113,6 +113,7 @@ CREATE TABLE task (
     task_status_id INT NOT NULL,
     plan_id UUID NOT NULL,
     document_id UUID,
+    urgency REAL NOT NULL,
     CONSTRAINT fk_task_task_status
     FOREIGN KEY (task_status_id)
     REFERENCES task_status(id)
