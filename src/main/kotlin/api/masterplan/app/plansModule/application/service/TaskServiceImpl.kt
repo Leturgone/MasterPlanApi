@@ -89,6 +89,12 @@ class TaskServiceImpl(
         return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
     }
 
+    override fun getAssignedTasksForMultipleExecutors(executorIds: Set<ExecutorId>): List<TaskDetails> {
+        val tasks = taskRepository.getTasksByExecutorIds(executorIds)
+
+        return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+    }
+
 
     @LoggingMethod("planModule")
     override fun sortPlansTasksByDate(planId: PlanId): List<TaskDetails> {
