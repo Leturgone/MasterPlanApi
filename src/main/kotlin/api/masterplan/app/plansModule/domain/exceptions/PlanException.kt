@@ -28,6 +28,10 @@ sealed class PlanException(message: String): Exception(message){
         "Invalid plan description: ${message?.let {": $it"  }}"
     )
 
+    class InvalidTaskUrgency(message: String?) : PlanException(
+        "Invalid task urgency: ${message?.let {": $it"  }}"
+    )
+
     class PlanNotExist(planId: PlanId) : PlanException(
         "Plan with id = ${planId.value} not found"
     )
