@@ -14,7 +14,6 @@ import java.util.UUID
 class PlanModuleServiceImpl(
     private val getAssignedTasksUseCase: GetAssignedTasksUseCase,
     private val getAllDirEmpTasksUseCase: GetAssignedTasksForMultipleEmpUseCase
-
 ): PlanModuleService {
     override fun getTasksByEmployeeId(employeeId: UUID): Result<List<TaskModelDto>> {
         return try {
