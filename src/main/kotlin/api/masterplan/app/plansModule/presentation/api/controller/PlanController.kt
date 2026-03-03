@@ -1,10 +1,13 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.plansModule.application.command.FilterAssignedTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.GetAssignedTasksCommand
 import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
 import api.masterplan.app.plansModule.application.command.GetTaskInfCommand
 import api.masterplan.app.plansModule.application.command.GetTasksFromPlanCommand
+import api.masterplan.app.plansModule.application.command.SearchAssignedTasksByTitleCommand
+import api.masterplan.app.plansModule.application.command.SortAssignedTasksByEndDateCommand
 import api.masterplan.app.plansModule.application.command.SortPlanTasksByEndDateCommand
 import api.masterplan.app.plansModule.application.usecase.AddTaskToPlanUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangePlanStatusUseCase
@@ -110,7 +113,7 @@ class PlanController(
     }
 
     // Фильтр задач по статусу
-    @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{planId}")
+    @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{status}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
         @PathVariable(value = "status") status: String): ResponseEntity<List<TaskInformationResponse>>{
@@ -149,15 +152,46 @@ class PlanController(
 
     // Поиск задач по названию
 
-    fun searchAssignedTasksByTitle(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/emp/{executorId}/assignedTasks/search/{query}")
+    fun searchAssignedTasksByTitle(
+        @PathVariable(value = "executorId") executorId: UUID,
+        @PathVariable(value = "query") query: String): ResponseEntity<List<TaskInformationResponse>>{
+        val command = SearchAssignedTasksByTitleCommand(
+            query = query,
+            executorId = RequestToDomainMapper.toExecutorId(executorId)
+        )
+        val result = searchAssignedTasksByTitleUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр порученных задач по статусу
 
-    fun getAssignedTasksFilterByStatus(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/emp/{executorId}/assignedTasks/filterStatus/{status}")
+    fun getAssignedTasksFilterByStatus(
+        @PathVariable(value = "executorId") executorId: UUID,
+        @PathVariable(value = "status") status: String
+    ): ResponseEntity<List<TaskInformationResponse>>{
+        val command = FilterAssignedTasksByStatusCommand(
+            executorId = RequestToDomainMapper.toExecutorId(executorId),
+            taskStatus = RequestToDomainMapper.toTaskStatus(status)
+        )
+        val result = filterAssignedTasksByStatusUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр порученных задач по времени
 
-    fun getAssignedTasksSortByTime(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/emp/{executorId}/assignedTasks/sortTime")
+    fun getAssignedTasksSortByTime(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
+        val command = SortAssignedTasksByEndDateCommand(
+            executorId = RequestToDomainMapper.toExecutorId(executorId)
+        )
+        val result = sortAssignedTasksByEndDateUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Экспортировать план мероприятий
 
