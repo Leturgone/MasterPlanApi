@@ -2,6 +2,7 @@ package api.masterplan.app.plansModule.presentation.api.controller
 
 import api.masterplan.app.plansModule.application.command.GetDirPlansCommand
 import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
+import api.masterplan.app.plansModule.application.command.GetTaskInfCommand
 import api.masterplan.app.plansModule.application.usecase.AddTaskToPlanUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangePlanStatusUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangeTaskStatusUseCase
@@ -24,6 +25,7 @@ import api.masterplan.app.plansModule.application.usecase.SortPlanTasksByEndDate
 import api.masterplan.app.plansModule.application.usecase.UpdatePlanUseCase
 import api.masterplan.app.plansModule.application.usecase.UpdateTaskUseCase
 import api.masterplan.app.plansModule.domain.model.value.PlanId
+import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
 import api.masterplan.app.plansModule.presentation.dto.response.ExportPlanResponse
 import api.masterplan.app.plansModule.presentation.dto.response.PlanIdResponse
@@ -83,7 +85,14 @@ class PlanController(
     // Получить информацию о задаче
 
     @GetMapping("/emp/tasks/getTask{taskId}")
-    fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {}
+    fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {
+        val command = GetTaskInfCommand(
+            taskId = TaskId(taskId)
+        )
+        val result = getTaskInfUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
 
     //Просматривать список задач из плана
