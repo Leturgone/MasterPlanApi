@@ -1,5 +1,6 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.authModule.presentation.mapper.RequestToDomainMapper
 import api.masterplan.app.plansModule.application.command.*
 import api.masterplan.app.plansModule.application.usecase.*
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
@@ -173,7 +174,7 @@ class PlanController(
     }
 
     // Создать планы мероприятий
-    @GetMapping("/dir/plans/createPlan")
+    @PostMapping("/dir/plans/createPlan")
     fun createPLan(@RequestBody request: CreatePlanRequest): ResponseEntity<PlanIdResponse>{
         val file = PlanRequestToDomainMapper.toPlanFile(
             fileName = request.documentName,
@@ -196,7 +197,7 @@ class PlanController(
 
     // Добавить задачу в план мероприятий
 
-    @GetMapping("/dir/tasks/createTask")
+    @PostMapping("/dir/tasks/createTask")
     fun addTaskToPlan(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskIdResponse>{
         val file = PlanRequestToDomainMapper.toTaskFile(
             fileName = request.documentName,
@@ -217,8 +218,13 @@ class PlanController(
     }
 
     // Просматривать список планов мероприятий
-
-    fun getDirPlans(): ResponseEntity<List<PlanInformationResponse>>{}
+    @GetMapping("/dir/{directorId}/plans/myPlans")
+    fun getDirPlans(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
+        val command = GetDirPlansCommand(PlanRequestToDomainMapper.toDirectorId(directorId))
+        val result = getDirPlansUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр планов по статусу
 
