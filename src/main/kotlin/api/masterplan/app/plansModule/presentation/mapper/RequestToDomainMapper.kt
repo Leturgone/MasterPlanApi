@@ -1,6 +1,7 @@
 package api.masterplan.app.plansModule.presentation.mapper
 
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
+import api.masterplan.app.plansModule.domain.model.value.ExecutorId
 import api.masterplan.app.plansModule.domain.model.value.PlanId
 import api.masterplan.app.plansModule.domain.model.value.PlanStatus
 import api.masterplan.app.plansModule.domain.model.value.TaskId
@@ -27,4 +28,6 @@ object RequestToDomainMapper {
     fun toPlanId(planId: UUID) = PlanId(planId)
 
     fun toTaskId(taskId: UUID) = TaskId(taskId)
+
+    fun toExecutorId(executorId: UUID) = ExecutorId(executorId)
 }
