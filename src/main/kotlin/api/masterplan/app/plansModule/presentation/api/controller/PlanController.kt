@@ -242,7 +242,15 @@ class PlanController(
 
     // Фильтр планов по времени
 
-    fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{}
+    @GetMapping("/dir/{directorId}/plans/sortTime")
+    fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
+        val command = SortDirPlansByEndDateCommand(
+            directorId = PlanRequestToDomainMapper.toDirectorId(directorId)
+        )
+        val result = sortDirPlansByEndDateUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Изменение задачи
 
