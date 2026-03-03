@@ -1,6 +1,5 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
-import api.masterplan.app.authModule.presentation.mapper.RequestToDomainMapper
 import api.masterplan.app.plansModule.application.command.*
 import api.masterplan.app.plansModule.application.usecase.*
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
@@ -228,11 +227,22 @@ class PlanController(
 
     // Фильтр планов по статусу
 
-    fun getDirPlansFilterByStatus(): ResponseEntity<List<PlanInformationResponse>>{}
+    @GetMapping("/dir/{directorId}/plans/filterStatus/{status}")
+    fun getDirPlansFilterByStatus(
+        @PathVariable(value = "directorId") directorId: UUID,
+        @PathVariable(value = "status") status: String): ResponseEntity<List<PlanInformationResponse>>{
+        val command = FilterDirPlansByStatusCommand(
+            directorId = PlanRequestToDomainMapper.toDirectorId(directorId),
+            status = PlanRequestToDomainMapper.toPlanStatus(status)
+        )
+        val result = filterDirPlansByStatusUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр планов по времени
 
-    fun getDirPlansSortByTime(): ResponseEntity<List<PlanInformationResponse>>{}
+    fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{}
 
     // Изменение задачи
 
