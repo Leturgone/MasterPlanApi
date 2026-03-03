@@ -1,8 +1,10 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.GetDirPlansCommand
 import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
 import api.masterplan.app.plansModule.application.command.GetTaskInfCommand
+import api.masterplan.app.plansModule.application.command.GetTasksFromPlanCommand
 import api.masterplan.app.plansModule.application.usecase.AddTaskToPlanUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangePlanStatusUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangeTaskStatusUseCase
@@ -33,11 +35,13 @@ import api.masterplan.app.plansModule.presentation.dto.response.PlanInformationR
 import api.masterplan.app.plansModule.presentation.dto.response.TaskIdResponse
 import api.masterplan.app.plansModule.presentation.dto.response.TaskInformationResponse
 import api.masterplan.app.plansModule.presentation.mapper.PlanDomainToResponseMapper
+import api.masterplan.app.plansModule.presentation.mapper.ResponseToDomainMapper
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -71,10 +75,10 @@ class PlanController(
 
 
     // Получить информацию о плане мероприятий
-    @GetMapping("/emp/plans/getPlan{planId}")
+    @GetMapping("/emp/plans/{planId}/")
     fun getPlanInformation(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanInformationResponse> {
         val command = GetPlanInfCommand(
-            planId = PlanId(planId)
+            planId = ResponseToDomainMapper.toPlanId(planId)
         )
         val result = getPlanInfUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -84,10 +88,10 @@ class PlanController(
 
     // Получить информацию о задаче
 
-    @GetMapping("/emp/tasks/getTask{taskId}")
+    @GetMapping("/emp/tasks/getTask/{taskId}/")
     fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {
         val command = GetTaskInfCommand(
-            taskId = TaskId(taskId)
+            taskId = ResponseToDomainMapper.toTaskId(taskId)
         )
         val result = getTaskInfUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -97,10 +101,29 @@ class PlanController(
 
     //Просматривать список задач из плана
 
-    fun getPlanTasks(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/dir/plans/getPlan/{planId}/tasks}")
+    fun getPlanTasks(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
+        val command = GetTasksFromPlanCommand(
+            planId = ResponseToDomainMapper.toPlanId(planId)
+        )
+        val result = getTasksFromPlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр задач по статусу
-    fun getPlanTasksFilterByStatus(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{planId}")
+    fun getPlanTasksFilterByStatus(
+        @PathVariable(value = "planId") planId: UUID,
+        @PathVariable(value = "status") status: String, ): ResponseEntity<List<TaskInformationResponse>>{
+        val command = FilterPlanTasksByStatusCommand(
+            planId = ResponseToDomainMapper.toPlanId(planId),
+            taskStatus = ResponseToDomainMapper.toTaskStatus(status)
+        )
+        val result = filterPlanTasksByStatusUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Фильтр задач по времени
 
