@@ -1,5 +1,6 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.plansModule.application.command.ExportPlanCommand
 import api.masterplan.app.plansModule.application.command.FilterAssignedTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.GetAssignedTasksCommand
@@ -195,7 +196,15 @@ class PlanController(
 
     // Экспортировать план мероприятий
 
-    fun exportPlan(): ResponseEntity<ExportPlanResponse>{}
+    @GetMapping("/dir/plans/{planId}/export")
+    fun exportPlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<ExportPlanResponse>{
+        val command = ExportPlanCommand(
+            planId = RequestToDomainMapper.toPlanId(planId)
+        )
+        val result = exportPlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Создать планы мероприятий
 
