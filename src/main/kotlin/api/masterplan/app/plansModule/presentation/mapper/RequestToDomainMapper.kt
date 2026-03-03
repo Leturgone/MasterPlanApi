@@ -7,7 +7,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.domain.model.value.TaskStatus
 import java.util.UUID
 
-object ResponseToDomainMapper {
+object RequestToDomainMapper {
     fun toTaskStatus(status: String): TaskStatus{
         return try {
             TaskStatus.valueOf(status.uppercase())
