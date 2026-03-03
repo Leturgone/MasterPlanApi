@@ -1,10 +1,10 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
 import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
-import api.masterplan.app.plansModule.application.command.GetDirPlansCommand
 import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
 import api.masterplan.app.plansModule.application.command.GetTaskInfCommand
 import api.masterplan.app.plansModule.application.command.GetTasksFromPlanCommand
+import api.masterplan.app.plansModule.application.command.SortPlanTasksByEndDateCommand
 import api.masterplan.app.plansModule.application.usecase.AddTaskToPlanUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangePlanStatusUseCase
 import api.masterplan.app.plansModule.application.usecase.ChangeTaskStatusUseCase
@@ -26,8 +26,6 @@ import api.masterplan.app.plansModule.application.usecase.SortDirPlansByEndDateU
 import api.masterplan.app.plansModule.application.usecase.SortPlanTasksByEndDateUseCase
 import api.masterplan.app.plansModule.application.usecase.UpdatePlanUseCase
 import api.masterplan.app.plansModule.application.usecase.UpdateTaskUseCase
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
 import api.masterplan.app.plansModule.presentation.dto.response.ExportPlanResponse
 import api.masterplan.app.plansModule.presentation.dto.response.PlanIdResponse
@@ -35,13 +33,12 @@ import api.masterplan.app.plansModule.presentation.dto.response.PlanInformationR
 import api.masterplan.app.plansModule.presentation.dto.response.TaskIdResponse
 import api.masterplan.app.plansModule.presentation.dto.response.TaskInformationResponse
 import api.masterplan.app.plansModule.presentation.mapper.PlanDomainToResponseMapper
-import api.masterplan.app.plansModule.presentation.mapper.ResponseToDomainMapper
+import api.masterplan.app.plansModule.presentation.mapper.RequestToDomainMapper
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -78,7 +75,7 @@ class PlanController(
     @GetMapping("/emp/plans/{planId}/")
     fun getPlanInformation(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanInformationResponse> {
         val command = GetPlanInfCommand(
-            planId = ResponseToDomainMapper.toPlanId(planId)
+            planId = RequestToDomainMapper.toPlanId(planId)
         )
         val result = getPlanInfUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -91,7 +88,7 @@ class PlanController(
     @GetMapping("/emp/tasks/getTask/{taskId}/")
     fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {
         val command = GetTaskInfCommand(
-            taskId = ResponseToDomainMapper.toTaskId(taskId)
+            taskId = RequestToDomainMapper.toTaskId(taskId)
         )
         val result = getTaskInfUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -104,7 +101,7 @@ class PlanController(
     @GetMapping("/dir/plans/getPlan/{planId}/tasks}")
     fun getPlanTasks(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetTasksFromPlanCommand(
-            planId = ResponseToDomainMapper.toPlanId(planId)
+            planId = RequestToDomainMapper.toPlanId(planId)
         )
         val result = getTasksFromPlanUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -115,10 +112,10 @@ class PlanController(
     @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{planId}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
-        @PathVariable(value = "status") status: String, ): ResponseEntity<List<TaskInformationResponse>>{
+        @PathVariable(value = "status") status: String): ResponseEntity<List<TaskInformationResponse>>{
         val command = FilterPlanTasksByStatusCommand(
-            planId = ResponseToDomainMapper.toPlanId(planId),
-            taskStatus = ResponseToDomainMapper.toTaskStatus(status)
+            planId = RequestToDomainMapper.toPlanId(planId),
+            taskStatus = RequestToDomainMapper.toTaskStatus(status)
         )
         val result = filterPlanTasksByStatusUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
@@ -127,7 +124,15 @@ class PlanController(
 
     // Фильтр задач по времени
 
-    fun getPlanTasksSortByTime(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/dir/plans/{planId}/tasks/sortTime")
+    fun getPlanTasksSortByTime(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
+        val command = SortPlanTasksByEndDateCommand(
+            planId = RequestToDomainMapper.toPlanId(planId)
+        )
+        val result = sortPlanTasksByEndDateUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Просматривать порученные задачи
 
