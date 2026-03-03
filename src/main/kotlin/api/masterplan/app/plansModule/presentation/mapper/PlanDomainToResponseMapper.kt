@@ -44,9 +44,9 @@ object PlanDomainToResponseMapper {
         return taskList.map { toResponse(it) }
     }
 
-    fun toResponse(taskId: TaskId) = taskId.value
+    fun toResponse(taskId: TaskId) = TaskIdResponse(taskId.value)
 
-    fun toResponse(planId: PlanId) = planId.value
+    fun toResponse(planId: PlanId) = PlanIdResponse(planId.value)
 
     fun toResponse(exportFile: PlanExportFile): ExportPlanResponse {
         return ExportPlanResponse(
