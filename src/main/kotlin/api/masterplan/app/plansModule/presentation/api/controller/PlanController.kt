@@ -1,5 +1,7 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.employeeModule.presentation.dto.request.UpdateEmployeeRequest
+import api.masterplan.app.plansModule.application.command.CreatePlanCommand
 import api.masterplan.app.plansModule.application.command.ExportPlanCommand
 import api.masterplan.app.plansModule.application.command.FilterAssignedTasksByStatusCommand
 import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
@@ -32,6 +34,7 @@ import api.masterplan.app.plansModule.application.usecase.SortPlanTasksByEndDate
 import api.masterplan.app.plansModule.application.usecase.UpdatePlanUseCase
 import api.masterplan.app.plansModule.application.usecase.UpdateTaskUseCase
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
+import api.masterplan.app.plansModule.presentation.dto.request.CreatePlanRequest
 import api.masterplan.app.plansModule.presentation.dto.response.ExportPlanResponse
 import api.masterplan.app.plansModule.presentation.dto.response.PlanIdResponse
 import api.masterplan.app.plansModule.presentation.dto.response.PlanInformationResponse
@@ -43,6 +46,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -77,7 +81,7 @@ class PlanController(
 
 
     // Получить информацию о плане мероприятий
-    @GetMapping("/emp/plans/{planId}/")
+    @GetMapping("/emp/plans/getPlan/{planId}/")
     fun getPlanInformation(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanInformationResponse> {
         val command = GetPlanInfCommand(
             planId = RequestToDomainMapper.toPlanId(planId)
@@ -207,8 +211,26 @@ class PlanController(
     }
 
     // Создать планы мероприятий
+    @GetMapping("/dir/plans/createPlan")
+    fun createPLan(@RequestBody request: CreatePlanRequest): ResponseEntity<PlanIdResponse>{
+        val file = RequestToDomainMapper.toPlanFile(
+            fileName = request.documentName,
+            fileData = request.document
+        )
+        val command = CreatePlanCommand(
+            id = request.id?.let { RequestToDomainMapper.toPlanId(it)},
+            title = RequestToDomainMapper.toPlanTitle(request.title),
+            description = RequestToDomainMapper.toPlanDescription(request.description),
+            startDate = request.startDate?.let { RequestToDomainMapper.toPlanDate(it) },
+            endDate = RequestToDomainMapper.toPlanDate(request.endDate),
+            directorId = RequestToDomainMapper.toDirectorId(request.directorId),
+            document = file
+        )
+        val result = createPlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
 
-    fun createPLan(): ResponseEntity<PlanIdResponse>{}
+    }
 
     // Добавить задачу в план мероприятий
 
