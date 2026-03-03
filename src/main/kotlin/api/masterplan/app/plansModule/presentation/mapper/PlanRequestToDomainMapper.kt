@@ -19,7 +19,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 import java.time.LocalDate
 import java.util.UUID
 
-object RequestToDomainMapper {
+object PlanRequestToDomainMapper {
     fun toTaskStatus(status: String): TaskStatus{
         return try {
             TaskStatus.valueOf(status.uppercase())
@@ -70,6 +70,10 @@ object RequestToDomainMapper {
         }else{
             TaskFile(fileData, fileName)
         }
+    }
+
+    fun toExecutorList(executors: List<UUID>): MutableList<ExecutorId>{
+        return executors.map { toExecutorId(it) }.toMutableList()
     }
 
     fun toPlanDate(date: LocalDate) = PlanDate(date)
