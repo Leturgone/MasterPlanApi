@@ -1,6 +1,7 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
 import api.masterplan.app.plansModule.application.command.FilterPlanTasksByStatusCommand
+import api.masterplan.app.plansModule.application.command.GetAssignedTasksCommand
 import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
 import api.masterplan.app.plansModule.application.command.GetTaskInfCommand
 import api.masterplan.app.plansModule.application.command.GetTasksFromPlanCommand
@@ -136,7 +137,15 @@ class PlanController(
 
     // Просматривать порученные задачи
 
-    fun getAssignedTasks(): ResponseEntity<List<TaskInformationResponse>>{}
+    @GetMapping("/emp/{executorId}/assignedTasks")
+    fun getAssignedTasks(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
+        val command = GetAssignedTasksCommand(
+            executorId = RequestToDomainMapper.toExecutorId(executorId)
+        )
+        val result = getAssignedTasksUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Поиск задач по названию
 
