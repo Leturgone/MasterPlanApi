@@ -3,6 +3,7 @@ package api.masterplan.app.plansModule.presentation.mapper
 import api.masterplan.app.plansModule.application.dto.PlanFile
 import api.masterplan.app.plansModule.application.dto.TaskFile
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
+import api.masterplan.app.plansModule.domain.model.entity.Plan
 import api.masterplan.app.plansModule.domain.model.value.ExecutorId
 import api.masterplan.app.plansModule.domain.model.value.PlanDate
 import api.masterplan.app.plansModule.domain.model.value.PlanDescription
@@ -16,6 +17,8 @@ import api.masterplan.app.plansModule.domain.model.value.TaskDescription
 import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.domain.model.value.TaskStatus
 import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
 import java.time.LocalDate
 import java.util.UUID
 
@@ -34,6 +37,23 @@ object PlanRequestToDomainMapper {
         }catch (_: IllegalArgumentException){
             throw PlanException.InvalidPlanStatusTitle(status.uppercase())
         }
+    }
+
+    fun toPlan(id: UUID, title: String, description: String,
+               startDate: LocalDate? = null, endDate: LocalDate,
+               status: String, directorId: UUID, documentId: UUID? = null,
+    ): Plan{
+        return Plan.create(
+            id = PlanId(id),
+            title = PlanTitle.validate(title),
+            description = PlanDescription.validate(description),
+            startDate = startDate?.let { PlanDate(startDate)},
+            endDate = PlanDate(endDate),
+            directorId = PlanDirectorId(directorId),
+            documentId = documentId?.let { PlanDocumentId(it) },
+        ).changePlanStatus(
+            toPlanStatus(status)
+        )
     }
 
     fun toPlanId(planId: UUID) = PlanId(planId)
