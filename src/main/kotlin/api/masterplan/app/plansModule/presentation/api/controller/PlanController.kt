@@ -1,17 +1,18 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
+import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeErrorResponse
 import api.masterplan.app.plansModule.application.command.*
 import api.masterplan.app.plansModule.application.usecase.*
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
-import api.masterplan.app.plansModule.presentation.dto.request.CreatePlanRequest
-import api.masterplan.app.plansModule.presentation.dto.request.CreateTaskRequest
-import api.masterplan.app.plansModule.presentation.dto.request.UpdatePlanRequest
-import api.masterplan.app.plansModule.presentation.dto.request.UpdatePlanStatusRequest
-import api.masterplan.app.plansModule.presentation.dto.request.UpdateTaskRequest
-import api.masterplan.app.plansModule.presentation.dto.request.UpdateTaskStatusRequest
+import api.masterplan.app.plansModule.presentation.dto.request.*
 import api.masterplan.app.plansModule.presentation.dto.response.*
 import api.masterplan.app.plansModule.presentation.mapper.PlanDomainToResponseMapper
 import api.masterplan.app.plansModule.presentation.mapper.PlanRequestToDomainMapper
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -46,7 +47,32 @@ class PlanController(
 ) {
 
 
-    // Получить информацию о плане мероприятий
+    @Operation(
+        summary = "Получение информации о плане мероприятий",
+        description = "Получение информации о плане мероприятий по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Информация о плане получена",
+                content = [Content(schema = Schema(implementation = PlanInformationResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План с указанным id не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/plans/getPlan/{planId}/")
     fun getPlanInformation(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanInformationResponse> {
         val command = GetPlanInfCommand(
@@ -58,8 +84,32 @@ class PlanController(
     }
 
 
-    // Получить информацию о задаче
+    @Operation(
+        summary = "Получение информации о задаче",
+        description = "Получение информации о задаче из плана мероприятий по id задачи",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Информация о задаче получена",
+                content = [Content(schema = Schema(implementation = TaskInformationResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Задаче с указанным id не найдена",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении задачи",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
 
+        ]
+    )
     @GetMapping("/emp/tasks/getTask/{taskId}/")
     fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {
         val command = GetTaskInfCommand(
@@ -71,8 +121,28 @@ class PlanController(
     }
 
 
-    //Просматривать список задач из плана
+    @Operation(
+        summary = "Получение задач из плана мероприятий",
+        description = "Получение списка задач из плана мероприятий по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
 
+        ]
+    )
     @GetMapping("/dir/plans/getPlan/{planId}/tasks}")
     fun getPlanTasks(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetTasksFromPlanCommand(
@@ -83,7 +153,34 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр задач по статусу
+
+    @Operation(
+        summary = "Получение задач из плана мероприятий отфильтрованных по статуса",
+        description = "Получение списка задач из плана мероприятий отфильтрованных по id плана и статусу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{status}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
@@ -97,8 +194,35 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр задач по времени
 
+
+    @Operation(
+        summary = "Получение задач из плана мероприятий отсортированных по времени",
+        description = "Получение списка задач отсортированных по времени из плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/plans/{planId}/tasks/sortTime")
     fun getPlanTasksSortByTime(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = SortPlanTasksByEndDateCommand(
