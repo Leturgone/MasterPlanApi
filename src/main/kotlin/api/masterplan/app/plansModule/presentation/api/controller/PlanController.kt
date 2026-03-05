@@ -5,6 +5,8 @@ import api.masterplan.app.plansModule.application.usecase.*
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
 import api.masterplan.app.plansModule.presentation.dto.request.CreatePlanRequest
 import api.masterplan.app.plansModule.presentation.dto.request.CreateTaskRequest
+import api.masterplan.app.plansModule.presentation.dto.request.UpdatePlanRequest
+import api.masterplan.app.plansModule.presentation.dto.request.UpdateTaskRequest
 import api.masterplan.app.plansModule.presentation.dto.response.*
 import api.masterplan.app.plansModule.presentation.mapper.PlanDomainToResponseMapper
 import api.masterplan.app.plansModule.presentation.mapper.PlanRequestToDomainMapper
@@ -253,12 +255,61 @@ class PlanController(
     }
 
     // Изменение задачи
-
-    fun updateTask(): ResponseEntity<TaskIdResponse>{}
+    @PutMapping("/dir/tasks/updateTask/{taskId}")
+    fun updateTask(@PathVariable(value = "taskId") taskId: UUID, @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
+        val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
+        val updatedTask = PlanRequestToDomainMapper.toTask(
+            id = request.id,
+            title = request.title,
+            description = request.description,
+            urgency = request.urgency,
+            endDate = request.endDate,
+            status = request.status,
+            planId = request.planId,
+            documentId = request.documentId,
+            executorsIds = request.executorsIds,
+        )
+        val file = PlanRequestToDomainMapper.toTaskFile(
+            fileName = request.documentName,
+            fileData = request.document
+        )
+        val command = UpdateTaskCommand(
+            taskId = taskDomainId,
+            updatedTask = updatedTask,
+            document = file,
+        )
+        val result = updateTaskUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
     // Изменение плана
-
-    fun updatePlan(): ResponseEntity<PlanIdResponse>{}
+    @PutMapping("/dir/plans/updatePlan/{planId}")
+    fun updatePlan(@PathVariable(value = "planId") planId: UUID,@RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
+        val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
+        val updatedPlan = PlanRequestToDomainMapper.toPlan(
+            id = request.id,
+            title = request.title,
+            description = request.description,
+            startDate = request.startDate,
+            endDate = request.endDate,
+            directorId = request.directorId,
+            documentId = request.documentId,
+            status = request.status,
+        )
+        val file = PlanRequestToDomainMapper.toPlanFile(
+            fileName = request.documentName,
+            fileData = request.document
+        )
+        val command = UpdatePlanCommand(
+            planId = planDomainId,
+            updatedPlan = updatedPlan,
+            document = file
+        )
+        val result = updatePlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
 // УДаление плана
 fun deletePlan(): ResponseEntity<PlanIdResponse>{}
