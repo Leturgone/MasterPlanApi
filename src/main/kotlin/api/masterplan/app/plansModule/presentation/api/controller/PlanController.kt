@@ -6,7 +6,9 @@ import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanCont
 import api.masterplan.app.plansModule.presentation.dto.request.CreatePlanRequest
 import api.masterplan.app.plansModule.presentation.dto.request.CreateTaskRequest
 import api.masterplan.app.plansModule.presentation.dto.request.UpdatePlanRequest
+import api.masterplan.app.plansModule.presentation.dto.request.UpdatePlanStatusRequest
 import api.masterplan.app.plansModule.presentation.dto.request.UpdateTaskRequest
+import api.masterplan.app.plansModule.presentation.dto.request.UpdateTaskStatusRequest
 import api.masterplan.app.plansModule.presentation.dto.response.*
 import api.masterplan.app.plansModule.presentation.mapper.PlanDomainToResponseMapper
 import api.masterplan.app.plansModule.presentation.mapper.PlanRequestToDomainMapper
@@ -256,7 +258,8 @@ class PlanController(
 
     // Изменение задачи
     @PutMapping("/dir/tasks/updateTask/{taskId}")
-    fun updateTask(@PathVariable(value = "taskId") taskId: UUID, @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
+    fun updateTask(@PathVariable(value = "taskId") taskId: UUID,
+                   @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
         val updatedTask = PlanRequestToDomainMapper.toTask(
             id = request.id,
@@ -285,7 +288,8 @@ class PlanController(
 
     // Изменение плана
     @PutMapping("/dir/plans/updatePlan/{planId}")
-    fun updatePlan(@PathVariable(value = "planId") planId: UUID,@RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
+    fun updatePlan(@PathVariable(value = "planId") planId: UUID,
+                   @RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
         val updatedPlan = PlanRequestToDomainMapper.toPlan(
             id = request.id,
@@ -330,8 +334,33 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    fun updatePlanStatus(): ResponseEntity<PlanIdResponse>{}
+    @PatchMapping("/dir/plans/updatePlanStatus/{planId}")
+    fun updatePlanStatus(@PathVariable(value = "planId") planId: UUID,
+                         @RequestBody request: UpdatePlanStatusRequest): ResponseEntity<PlanIdResponse>{
+        val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
+        val status = PlanRequestToDomainMapper.toPlanStatus(request.status)
+        val command = ChangePlanStatusCommand(
+            planId = planDomainId,
+            status = status,
+        )
+        val result = changePlanStatusUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
-    fun updateTaskStatus(): ResponseEntity<TaskIdResponse>{}
+
+    @PatchMapping("/dir/tasks/updateTaskStatus/{taskId}")
+    fun updateTaskStatus(@PathVariable(value = "taskId") taskId: UUID,
+                         @RequestBody request: UpdateTaskStatusRequest): ResponseEntity<TaskIdResponse>{
+        val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
+        val status = PlanRequestToDomainMapper.toTaskStatus(request.status)
+        val command = ChangeTaskStatusCommand(
+            taskId = taskDomainId,
+            status = status,
+        )
+        val result = changeTaskStatusUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
 }
