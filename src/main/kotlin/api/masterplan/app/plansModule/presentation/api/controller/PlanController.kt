@@ -311,16 +311,27 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-// УДаление плана
-fun deletePlan(): ResponseEntity<PlanIdResponse>{}
 
-    // УДаление задач из плана
-    fun deleteTask(): ResponseEntity<TaskIdResponse>{}
+    @DeleteMapping("/dir/plans/deletePlan/{planId}")
+    fun deletePlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanIdResponse>{
+        val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
+        val command = DeletePlanCommand(planDomainId)
+        val result = deletePlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
-// Изменение статуса плана
-fun updatePlanStatus(): ResponseEntity<PlanIdResponse>{}
+    @DeleteMapping("/dir/tasks/deleteTask/{taskId}")
+    fun deleteTask(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskIdResponse>{
+        val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
+        val command = DeleteTaskFromPlanCommand(taskDomainId)
+        val result = deleteTaskFromPlanUseCase(command).getOrThrow()
+        val resp = PlanDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
 
-    // Изменение статуса задачи
+    fun updatePlanStatus(): ResponseEntity<PlanIdResponse>{}
+
     fun updateTaskStatus(): ResponseEntity<TaskIdResponse>{}
 
 }
