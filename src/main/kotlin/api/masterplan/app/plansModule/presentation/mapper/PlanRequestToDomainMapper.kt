@@ -4,23 +4,10 @@ import api.masterplan.app.plansModule.application.dto.PlanFile
 import api.masterplan.app.plansModule.application.dto.TaskFile
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
 import api.masterplan.app.plansModule.domain.model.entity.Plan
-import api.masterplan.app.plansModule.domain.model.value.ExecutorId
-import api.masterplan.app.plansModule.domain.model.value.PlanDate
-import api.masterplan.app.plansModule.domain.model.value.PlanDescription
-import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId
-import api.masterplan.app.plansModule.domain.model.value.PlanDocumentId
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.PlanStatus
-import api.masterplan.app.plansModule.domain.model.value.PlanTitle
-import api.masterplan.app.plansModule.domain.model.value.TaskDate
-import api.masterplan.app.plansModule.domain.model.value.TaskDescription
-import api.masterplan.app.plansModule.domain.model.value.TaskId
-import api.masterplan.app.plansModule.domain.model.value.TaskStatus
-import api.masterplan.app.plansModule.domain.model.value.TaskTitle
-import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
+import api.masterplan.app.plansModule.domain.model.entity.Task
+import api.masterplan.app.plansModule.domain.model.value.*
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 object PlanRequestToDomainMapper {
     fun toTaskStatus(status: String): TaskStatus{
@@ -37,6 +24,22 @@ object PlanRequestToDomainMapper {
         }catch (_: IllegalArgumentException){
             throw PlanException.InvalidPlanStatusTitle(status.uppercase())
         }
+    }
+
+    fun toTask(id: UUID, title: String, description: String, urgency: Double, endDate: LocalDate,
+               status: String, planId: UUID, documentId: UUID? = null, executorsIds: List<UUID>): Task{
+        return Task.create(
+            id = toTaskId(id),
+            title = TaskTitle.validate(title),
+            description = TaskDescription.validate(description),
+            endDate = TaskDate(endDate),
+            urgency = TaskUrgency.validate(urgency),
+            planId = toPlanId(planId),
+            documentId = documentId?.let { TaskDocumentId(documentId) },
+            executorsId = toExecutorList(executorsIds),
+        ).changeTaskStatus(
+            toTaskStatus(status)
+        )
     }
 
     fun toPlan(id: UUID, title: String, description: String,
