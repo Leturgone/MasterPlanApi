@@ -1,5 +1,5 @@
 create database masterplan_db;
-\c masterplan_db postgres;
+\c masterplan_db;
 psql \! chcp 1251
 
 
@@ -82,8 +82,8 @@ CREATE TABLE plan (
     id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255),
-    start_date TIMESTAMP NOT NULL,
-    end_date TIMESTAMP NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     plan_status_id INT NOT NULL,
     director_id UUID,
     document_id UUID,
@@ -109,10 +109,11 @@ CREATE TABLE task (
     id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(255),
-    end_date TIMESTAMP,
+    end_date DATE NOT NULL,
     task_status_id INT NOT NULL,
     plan_id UUID NOT NULL,
     document_id UUID,
+    urgency REAL NOT NULL,
     CONSTRAINT fk_task_task_status
     FOREIGN KEY (task_status_id)
     REFERENCES task_status(id)
@@ -257,3 +258,13 @@ INSERT INTO app_user_has_role VALUES
 
 INSERT INTO employee (id, name, surname, patronymic, director_id, app_user_id) VALUES
 ('019c658f-a8bb-7fcb-accf-f0c2af73dea6', 'ADMIN', 'MASTERPLAN', NULL, NULL, '019c657e-8b2a-72de-af27-24d1643de4ab');
+
+INSERT INTO task_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');
+
+INSERT INTO plan_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');
