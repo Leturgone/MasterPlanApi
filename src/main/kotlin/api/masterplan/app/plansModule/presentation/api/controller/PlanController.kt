@@ -621,7 +621,39 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Изменение задачи
+
+    @Operation(
+        summary = "Обновление задачи",
+        description = "Обновление задачи по id задачи",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Задача обновлена",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильные данные для обновления",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Задача с указанным id не найдена",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PutMapping("/dir/tasks/updateTask/{taskId}")
     fun updateTask(@PathVariable(value = "taskId") taskId: UUID,
                    @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
@@ -651,7 +683,39 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Изменение плана
+
+    @Operation(
+        summary = "Обновление плана",
+        description = "Обновление плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "План обновлен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильные данные для обновления",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План с указанным id не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PutMapping("/dir/plans/updatePlan/{planId}")
     fun updatePlan(@PathVariable(value = "planId") planId: UUID,
                    @RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
@@ -681,6 +745,33 @@ class PlanController(
     }
 
 
+    @Operation(
+        summary = "Удаление плана",
+        description = "Удаление плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "План удален",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План с указанным id не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при удалении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @DeleteMapping("/dir/plans/deletePlan/{planId}")
     fun deletePlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -690,6 +781,34 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Удаление плана",
+        description = "Удаление плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Задача удалена",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Задача с указанным id не найдена",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при удалении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @DeleteMapping("/dir/tasks/deleteTask/{taskId}")
     fun deleteTask(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
@@ -699,6 +818,39 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Обновление статуса плана",
+        description = "Обновление статуса плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Статус плана обновлен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус для обновления",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План с указанным id не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PatchMapping("/dir/plans/updatePlanStatus/{planId}")
     fun updatePlanStatus(@PathVariable(value = "planId") planId: UUID,
                          @RequestBody request: UpdatePlanStatusRequest): ResponseEntity<PlanIdResponse>{
@@ -714,6 +866,38 @@ class PlanController(
     }
 
 
+    @Operation(
+        summary = "Обновление статуса задачи",
+        description = "Обновление статуса плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Статус задачи обновлен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanIdResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус для обновления",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Задача с указанным id не найдена",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PatchMapping("/dir/tasks/updateTaskStatus/{taskId}")
     fun updateTaskStatus(@PathVariable(value = "taskId") taskId: UUID,
                          @RequestBody request: UpdateTaskStatusRequest): ResponseEntity<TaskIdResponse>{
