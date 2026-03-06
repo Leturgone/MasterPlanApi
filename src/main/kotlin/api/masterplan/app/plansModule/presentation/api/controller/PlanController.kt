@@ -142,7 +142,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/plans/getPlan/{planId}/tasks}")
+    @GetMapping("/dir/plans/getPlan/{planId}/tasks")
     fun getPlanTasks(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetTasksFromPlanCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
