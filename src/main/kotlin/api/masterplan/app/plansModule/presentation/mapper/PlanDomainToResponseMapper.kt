@@ -22,6 +22,8 @@ object PlanDomainToResponseMapper {
         )
     }
 
+
+    @JvmName("toPlanResponse")
     fun toResponse(planList: List<PlanDetails>): List<PlanInformationResponse> {
         return planList.map { toResponse(it) }
     }
@@ -40,6 +42,8 @@ object PlanDomainToResponseMapper {
         )
     }
 
+
+    @JvmName("toTaskResponse")
     fun toResponse(taskList: List<TaskDetails>): List<TaskInformationResponse> {
         return taskList.map { toResponse(it) }
     }
