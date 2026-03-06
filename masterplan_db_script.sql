@@ -1,5 +1,5 @@
 create database masterplan_db;
-\c masterplan_db postgres;
+\c masterplan_db;
 psql \! chcp 1251
 
 

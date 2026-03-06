@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class EmployeeExceptionHandler {
 
     @ExceptionHandler(Exception::class)
-    fun handleEmployeeException(e: Exception, ): ResponseEntity<EmployeeErrorResponse> {
+    fun handleEmployeeException(e: Exception): ResponseEntity<EmployeeErrorResponse> {
         val status = EmployeeExceptionToHttpCodeMapper.exceptionToHttpCode(e)
         val body = EmployeeErrorResponse(
             status = status.value(),

@@ -9,6 +9,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 import api.masterplan.app.plansModule.infrastructure.database.mapper.TaskDatabaseMapper
 import org.springframework.stereotype.Repository
+import kotlin.jvm.optionals.getOrElse
 
 @Repository
 class TaskRepositoryImpl(
@@ -18,7 +19,7 @@ class TaskRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun getTask(taskId: TaskId): Task? {
-        val task = jpaTaskRepository.findById(taskId.value).orElse(null)
+        val task = jpaTaskRepository.findById(taskId.value).getOrElse { return null }
         return TaskDatabaseMapper.toDomain(task)
     }
 

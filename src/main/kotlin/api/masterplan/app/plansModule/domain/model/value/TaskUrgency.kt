@@ -22,7 +22,7 @@ value class TaskUrgency private constructor(val value: Double) {
 
         fun calculate(deadline: LocalDate): TaskUrgency {
             val daysUntil = ChronoUnit.DAYS.between(
-                LocalDateTime.now(),
+                LocalDate.now(),
                 deadline
             )
             val value= when{
