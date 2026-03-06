@@ -133,7 +133,7 @@ class PlanController(
             ),
             ApiResponse(
                 responseCode = "500",
-                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                description = "Внутренняя ошибка сервера: сбой при получении",
                 content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
@@ -155,7 +155,7 @@ class PlanController(
 
 
     @Operation(
-        summary = "Получение задач из плана мероприятий отфильтрованных по статуса",
+        summary = "Получение задач из плана мероприятий отфильтрованных по статусу",
         description = "Получение списка задач из плана мероприятий отфильтрованных по id плана и статусу",
         responses = [
             ApiResponse(
@@ -171,7 +171,7 @@ class PlanController(
             ),
             ApiResponse(
                 responseCode = "500",
-                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                description = "Внутренняя ошибка сервера: сбой при получении",
                 content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
@@ -207,13 +207,8 @@ class PlanController(
                     array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
             ),
             ApiResponse(
-                responseCode = "400",
-                description = "Некорректные данные: неправильный статус",
-                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
-            ),
-            ApiResponse(
                 responseCode = "500",
-                description = "Внутренняя ошибка сервера: сбой при получении плана",
+                description = "Внутренняя ошибка сервера: сбой при получении",
                 content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
@@ -233,8 +228,28 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Просматривать порученные задачи
+    @Operation(
+        summary = "Получение порученных исполнителю задач",
+        description = "Получение списка порученных исполнителю задач по id исполнителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
 
+        ]
+    )
     @GetMapping("/emp/{executorId}/assignedTasks")
     fun getAssignedTasks(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetAssignedTasksCommand(
@@ -245,8 +260,29 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Поиск задач по названию
 
+    @Operation(
+        summary = "Поиск по списку порученных задач",
+        description = "Поиск по списку порученных исполнителю задач по id исполнителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении ",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/{executorId}/assignedTasks/search/{query}")
     fun searchAssignedTasksByTitle(
         @PathVariable(value = "executorId") executorId: UUID,
@@ -260,8 +296,34 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр порученных задач по статусу
 
+    @Operation(
+        summary = "Получение порученных задач отфильтрованных по статусу",
+        description = "Получение списка порученных исполнителю задач отфильтрованных по id исполнителя и статусу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/{executorId}/assignedTasks/filterStatus/{status}")
     fun getAssignedTasksFilterByStatus(
         @PathVariable(value = "executorId") executorId: UUID,
@@ -276,8 +338,29 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр порученных задач по времени
 
+    @Operation(
+        summary = "Получение порученных задач отсортированных по времени",
+        description = "Получение списка порученных исполнителю задач отсортированных по времени по id исполнителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список задач получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = TaskInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/{executorId}/assignedTasks/sortTime")
     fun getAssignedTasksSortByTime(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = SortAssignedTasksByEndDateCommand(
@@ -288,8 +371,32 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Экспортировать план мероприятий
 
+    @Operation(
+        summary = "Получение файла с экспортированным планом",
+        description = "Получение экспортированного плана по id плана",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Экспортированный план получен",
+                content = [Content(schema = Schema(implementation = ExportPlanResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План не найден"
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/dir/plans/{planId}/export")
     fun exportPlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<ExportPlanResponse>{
         val command = ExportPlanCommand(
@@ -300,7 +407,37 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Создать планы мероприятий
+
+    @Operation(
+        summary = "Создание плана мероприятий",
+        description = "Создание плана мероприятий со всеми данными",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "План создан",
+                content = [Content(schema = Schema(implementation = PlanIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при создании",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные для плана",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "План уже существует"
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PostMapping("/dir/plans/createPlan")
     fun createPLan(@RequestBody request: CreatePlanRequest): ResponseEntity<PlanIdResponse>{
         val file = PlanRequestToDomainMapper.toPlanFile(
@@ -322,8 +459,42 @@ class PlanController(
 
     }
 
-    // Добавить задачу в план мероприятий
 
+
+    @Operation(
+        summary = "Добавление задачи в план мероприятий",
+        description = "Создание задачи путем добавления в план мероприятий",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Задача создана и добавлена",
+                content = [Content(schema = Schema(implementation = TaskIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при создании",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные для задачи",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Задача уже существует"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "План не найден"
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @PostMapping("/dir/tasks/createTask")
     fun addTaskToPlan(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskIdResponse>{
         val file = PlanRequestToDomainMapper.toTaskFile(
@@ -344,7 +515,29 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Просматривать список планов мероприятий
+
+    @Operation(
+        summary = "Получение списка созданных руководителем планов",
+        description = "Получение списка созданных руководителем планов по id руководителя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список планов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/plans/myPlans")
     fun getDirPlans(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = GetDirPlansCommand(PlanRequestToDomainMapper.toDirectorId(directorId))
@@ -353,8 +546,35 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр планов по статусу
 
+
+    @Operation(
+        summary = "Получение списка созданных руководителем планов с фильтрацией по статуса",
+        description = "Получение списка созданных руководителем планов по id руководителя с фильтрацией по статусу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список планов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные: неправильный статус",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/plans/filterStatus/{status}")
     fun getDirPlansFilterByStatus(
         @PathVariable(value = "directorId") directorId: UUID,
@@ -368,8 +588,29 @@ class PlanController(
         return ResponseEntity.ok(resp)
     }
 
-    // Фильтр планов по времени
 
+    @Operation(
+        summary = "Получение списка созданных руководителем планов с сортировкой по времени",
+        description = "Получение списка созданных руководителем планов по id руководителя с сортировкой по времени",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список планов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = PlanInformationResponse::class)))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/plans/sortTime")
     fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = SortDirPlansByEndDateCommand(
