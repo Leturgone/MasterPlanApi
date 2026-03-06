@@ -1,6 +1,5 @@
 package api.masterplan.app.plansModule.presentation.api.controller
 
-import api.masterplan.app.employeeModule.presentation.dto.responce.EmployeeErrorResponse
 import api.masterplan.app.plansModule.application.command.*
 import api.masterplan.app.plansModule.application.usecase.*
 import api.masterplan.app.plansModule.presentation.api.exceptionHandler.PlanControllerExceptionHandler
