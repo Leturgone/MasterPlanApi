@@ -25,7 +25,7 @@ data class TaskReport private constructor(
     companion object{
         fun create(id: TaskReportId? = null,title: TaskReportTitle, description: TaskReportDescription? = null,
                    employeeId: ReportEmployeeId, taskId: ReportTaskId, documentId: ReportDocumentId
-                   ): TaskReport{
+        ): TaskReport{
             return TaskReport(
                 id = id?: TaskReportId.generate(),
                 title = title,
