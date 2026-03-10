@@ -25,9 +25,9 @@ interface TaskReportService {
 
     fun filterCreatedTaskByStatus(employeeId: ReportEmployeeId, status: TaskReportStatus): List<TaskReportDetails>
 
-    fun getToCheckTaskReports(directorId: ReportEmployeeId): List<TaskReportDetails>
+    fun getSubordinatesTaskReports(subordinatesIds:Set<ReportEmployeeId>): List<TaskReportDetails>
 
-    fun filterToCheckTaskByStatus(directorId: ReportEmployeeId, status: TaskReportStatus): List<TaskReportDetails>
+    fun filterSubordinatesTaskReportsByStatus(subordinatesIds:Set<ReportEmployeeId>, status: TaskReportStatus): List<TaskReportDetails>
 
     fun changeTaskReportStatus(reportId: TaskReportId, status: TaskReportStatus): TaskReportId
 
