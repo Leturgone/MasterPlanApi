@@ -7,7 +7,7 @@ import api.masterplan.app.reportsModule.domain.models.value.*
 interface PlanReportService {
     fun getPlanReport(reportId: PlanReportId): PlanReportDetails
 
-    fun updateTaskReport(reportId: PlanReportId, updatedPlanReport: PlanReport): PlanReportId
+    fun updatePlanReport(reportId: PlanReportId, updatedPlanReport: PlanReport): PlanReportId
 
     fun deletePlanReport(reportId: PlanReportId): PlanReportId
 
