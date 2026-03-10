@@ -12,11 +12,11 @@ import api.masterplan.app.reportsModule.domain.models.value.TaskReportTitle
 
 interface TaskReportService {
 
-    fun getTaskReport(taskId: TaskReportId): TaskReportDetails
+    fun getTaskReport(reportId: TaskReportId): TaskReportDetails
 
-    fun updateTaskReport(taskId: TaskReportId, updatedTaskReport: TaskReport): TaskReportId
+    fun updateTaskReport(reportId: TaskReportId, updatedTaskReport: TaskReport): TaskReportId
 
-    fun deleteTaskReport(taskId: TaskReportId): TaskReportId
+    fun deleteTaskReport(reportId: TaskReportId): TaskReportId
 
     fun createTaskReport(id: TaskReportId? = null,title: TaskReportTitle, description: TaskReportDescription? = null,
                          employeeId: ReportEmployeeId, taskId: ReportTaskId, documentId: ReportDocumentId): TaskReportId
