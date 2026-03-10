@@ -13,7 +13,7 @@ class CreatePlanReportUseCase(
 ) {
     operator fun invoke(command: CreatePlanReportCommand): Result<PlanReportId> {
         return try {
-            val planReportFileId = reportFilesPort.uploadPReportFile(command.document)
+            val planReportFileId = reportFilesPort.uploadReportFile(command.document)
             val planReportId = planReportService.createPlanReport(
                 id = command.id,
                 title = command.title,
