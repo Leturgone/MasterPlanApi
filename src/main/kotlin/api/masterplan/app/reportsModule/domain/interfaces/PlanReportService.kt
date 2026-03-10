@@ -9,7 +9,7 @@ interface PlanReportService {
 
     fun updateTaskReport(reportId: PlanReportId, updatedPlanReport: PlanReport): PlanReportId
 
-    fun deletePlanReport(reportId: PlanReportId): ReportPlanId
+    fun deletePlanReport(reportId: PlanReportId): PlanReportId
 
     fun createPlanReport(id: PlanReportId? = null,title: PlanReportTitle, description: PlanReportDescription? = null,
                          employeeId: ReportEmployeeId, taskId: ReportTaskId, documentId: ReportDocumentId): PlanReportId
