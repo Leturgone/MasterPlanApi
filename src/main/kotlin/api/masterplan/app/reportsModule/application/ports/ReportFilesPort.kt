@@ -9,6 +9,6 @@ interface ReportFilesPort {
 
     fun removeReportFile(reportFileId: ReportDocumentId): ReportDocumentId
 
-    fun uploadOrUpdateReportFile(reportFileId: ReportDocumentId?, reportFile: ReportFile): ReportDocumentId
+    fun updateReportFile(reportFileId: ReportDocumentId?, reportFile: ReportFile): ReportDocumentId
 
 }
