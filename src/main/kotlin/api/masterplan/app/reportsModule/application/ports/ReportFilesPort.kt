@@ -5,7 +5,7 @@ import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId
 
 interface ReportFilesPort {
 
-    fun uploadPReportFile(reportFile: ReportFile): ReportDocumentId
+    fun uploadReportFile(reportFile: ReportFile): ReportDocumentId
 
     fun removeReportFile(reportFileId: ReportDocumentId): ReportDocumentId
 
