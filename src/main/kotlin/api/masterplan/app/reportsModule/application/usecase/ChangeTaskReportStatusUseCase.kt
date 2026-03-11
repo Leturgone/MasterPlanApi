@@ -11,10 +11,10 @@ class ChangeTaskReportStatusUseCase(
 ) {
     operator fun invoke(command: ChangeTaskReportStatusCommand): Result<TaskReportId> {
         return try {
-            val planReportId = taskReportService.changeTaskReportStatus(
+            val taskReportId = taskReportService.changeTaskReportStatus(
                 command.reportId,command.status
             )
-            Result.success(planReportId)
+            Result.success(taskReportId)
         }catch (e: Exception){
             Result.failure(e)
         }
