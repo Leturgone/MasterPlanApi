@@ -31,7 +31,8 @@ class PlanReportServiceImpl(
 
     @LoggingMethod("reportModule")
     override fun updatePlanReport(reportId: PlanReportId, updatedPlanReport: PlanReport): PlanReportId {
-        val report = planReportRepository.getPlanReport(reportId)?: throw ReportException.PlanReportNotExist(reportId)
+        val report = planReportRepository.getPlanReport(reportId)
+            ?: throw ReportException.PlanReportNotExist(reportId)
 
         val updatedReport = report.update(
             title = updatedPlanReport.title,
@@ -93,7 +94,8 @@ class PlanReportServiceImpl(
 
     @LoggingMethod("reportModule")
     override fun changePlanReportStatus(reportId: PlanReportId, status: PlanReportStatus): PlanReportId {
-        val report = planReportRepository.getPlanReport(reportId)?: throw ReportException.PlanReportNotExist(reportId)
+        val report = planReportRepository.getPlanReport(reportId)
+            ?: throw ReportException.PlanReportNotExist(reportId)
 
         val reportWithNewStatus = report.changePlanReportStatus(status)
 
