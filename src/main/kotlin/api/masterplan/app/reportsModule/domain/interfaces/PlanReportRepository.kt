@@ -2,6 +2,7 @@ package api.masterplan.app.reportsModule.domain.interfaces
 
 import api.masterplan.app.reportsModule.domain.models.entity.PlanReport
 import api.masterplan.app.reportsModule.domain.models.value.PlanReportId
+import api.masterplan.app.reportsModule.domain.models.value.PlanReportTitle
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
 
 interface PlanReportRepository {
@@ -14,7 +15,7 @@ interface PlanReportRepository {
 
     fun getPlanReportsByEmployeeId(employeeId: ReportEmployeeId): List<PlanReport>
 
-    fun isPlanReportExist(planReportId: PlanReportId): Boolean
+    fun isPlanReportExist(employeeId: ReportEmployeeId,title: PlanReportTitle): Boolean
 
-    fun updatePlanReport(planReportId: PlanReportId, updatedReport: PlanReport): PlanReport?
+    fun updatePlanReport(planReportId: PlanReportId, updatedReport: PlanReport): PlanReportId?
 }

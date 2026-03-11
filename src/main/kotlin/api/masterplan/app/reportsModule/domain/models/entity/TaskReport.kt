@@ -44,7 +44,7 @@ data class TaskReport private constructor(
         return this.copy(reportStatus = taskReportStatus)
     }
 
-    fun update(title: TaskReportTitle,description: TaskReportDescription,documentId: ReportDocumentId):TaskReport{
+    fun update(title: TaskReportTitle,description: TaskReportDescription?,documentId: ReportDocumentId):TaskReport{
         return this.copy(
             title = title,
             description = description,
