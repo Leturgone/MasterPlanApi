@@ -53,7 +53,7 @@ sealed class ReportException(message: String) : Exception(message) {
         "Failed to save plan report with employeeId = ${employeeId.value} and title = ${planReportTitle.value}"
     )
 
-    class FailedToTaskPlanReport(employeeId: ReportEmployeeId, taskReportTitle: TaskReportTitle) : ReportException(
+    class FailedToSaveTaskReport(employeeId: ReportEmployeeId, taskReportTitle: TaskReportTitle) : ReportException(
         "Failed to save task report with employeeId = ${employeeId.value} and title = ${taskReportTitle.value}"
     )
 
