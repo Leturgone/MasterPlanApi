@@ -1,22 +1,22 @@
 package api.masterplan.app.reportsModule.domain.interfaces
 
-import api.masterplan.app.reportsModule.domain.models.entity.TaskReport
+import api.masterplan.app.reportsModule.domain.models.entity.Report
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportTitle
+import api.masterplan.app.reportsModule.domain.models.value.ReportId
+import api.masterplan.app.reportsModule.domain.models.value.ReportTitle
 
 interface TaskReportRepository {
-    fun getTaskReport(taskReportId: TaskReportId): TaskReport?
+    fun getTaskReport(taskReportId: ReportId): Report?
 
-    fun deleteTaskReport(taskReportId: TaskReportId): TaskReportId?
+    fun deleteTaskReport(taskReportId: ReportId): ReportId?
 
-    fun saveTaskReport(report: TaskReport): TaskReportId?
+    fun saveTaskReport(report: Report): ReportId?
 
-    fun getTaskReportsByEmployeeId(employeeId: ReportEmployeeId): List<TaskReport>
+    fun getTaskReportsByEmployeeId(employeeId: ReportEmployeeId): List<Report>
 
-    fun getTaskReportByEmployeeIds(employeeIds: Set<ReportEmployeeId>): List<TaskReport>
+    fun getTaskReportByEmployeeIds(employeeIds: Set<ReportEmployeeId>): List<Report>
 
-    fun isPlanReportExist(employeeId: ReportEmployeeId,taskReportTitle: TaskReportTitle): Boolean
+    fun isPlanReportExist(employeeId: ReportEmployeeId,taskReportTitle: ReportTitle): Boolean
 
-    fun updatePlanReport(taskReportId: TaskReportId, updatedReport: TaskReport): TaskReportId?
+    fun updatePlanReport(taskReportId: ReportId, updatedReport: Report): ReportId?
 }
