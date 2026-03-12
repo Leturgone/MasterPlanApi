@@ -3,7 +3,7 @@ package api.masterplan.app.reportsModule.infrastructure.adapters
 import api.masterplan.app.employeeModule.EmployeeModuleErrorDto
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
 
-object ReportInnerModuleErrorMapper {
+internal object ReportInnerModuleErrorMapper {
     fun exceptionToModuleException(ex: Throwable): ReportException{
         return when(ex){
             is EmployeeModuleErrorDto.InternalServerError -> ReportException.InternalServerError(ex.message)
