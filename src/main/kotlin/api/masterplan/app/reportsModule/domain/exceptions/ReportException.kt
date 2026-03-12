@@ -57,6 +57,7 @@ sealed class ReportException(message: String) : Exception(message) {
         "Failed to save task report with employeeId = ${employeeId.value} and title = ${taskReportTitle.value}"
     )
 
+    class InternalServerError(message: String? = null) : ReportException("Internal report module server error: ${message?:""}")
 
 
 }
