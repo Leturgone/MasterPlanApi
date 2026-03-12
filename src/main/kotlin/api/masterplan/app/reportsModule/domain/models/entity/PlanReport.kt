@@ -10,7 +10,7 @@ data class PlanReport private constructor(
     val creationDate: PlanReportDate,
     val editDate: PlanReportDate? = null,
     val description: PlanReportDescription? = null,
-    val reportStatus: PlanReportStatus,
+    val reportStatus: ReportStatus,
     val employeeId: ReportEmployeeId,
     val taskId: ReportTaskId,
     val documentId: ReportDocumentId
@@ -25,7 +25,7 @@ data class PlanReport private constructor(
                 creationDate = PlanReportDate(LocalDateTime.now()),
                 editDate = null,
                 description = description,
-                reportStatus = PlanReportStatus.NOT_CHECKED,
+                reportStatus = ReportStatus.NOT_CHECKED,
                 employeeId = employeeId,
                 taskId = taskId,
                 documentId = documentId
@@ -33,7 +33,7 @@ data class PlanReport private constructor(
         }
     }
 
-    fun changePlanReportStatus(taskReportStatus: PlanReportStatus): PlanReport{
+    fun changePlanReportStatus(taskReportStatus: ReportStatus): PlanReport{
         return this.copy(reportStatus = taskReportStatus)
     }
 
@@ -41,7 +41,7 @@ data class PlanReport private constructor(
         return this.copy(
             title = title,
             description = description,
-            reportStatus = PlanReportStatus.NOT_CHECKED,
+            reportStatus = ReportStatus.NOT_CHECKED,
             editDate = PlanReportDate(LocalDateTime.now()),
             documentId = documentId, )
     }

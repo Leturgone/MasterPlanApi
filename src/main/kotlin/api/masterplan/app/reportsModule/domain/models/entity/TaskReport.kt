@@ -1,13 +1,6 @@
 package api.masterplan.app.reportsModule.domain.models.entity
 
-import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId
-import api.masterplan.app.reportsModule.domain.models.value.ReportTaskId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportDate
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportDescription
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportStatus
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportTitle
+import api.masterplan.app.reportsModule.domain.models.value.*
 import java.time.LocalDateTime
 
 @ConsistentCopyVisibility
@@ -17,7 +10,7 @@ data class TaskReport private constructor(
     val creationDate: TaskReportDate,
     val editDate: TaskReportDate? = null,
     val description: TaskReportDescription? = null,
-    val reportStatus: TaskReportStatus,
+    val reportStatus: ReportStatus,
     val employeeId: ReportEmployeeId,
     val taskId: ReportTaskId,
     val documentId: ReportDocumentId
@@ -32,7 +25,7 @@ data class TaskReport private constructor(
                 creationDate = TaskReportDate(LocalDateTime.now()),
                 editDate = null,
                 description = description,
-                reportStatus = TaskReportStatus.NOT_CHECKED,
+                reportStatus = ReportStatus.NOT_CHECKED,
                 employeeId = employeeId,
                 taskId = taskId,
                 documentId = documentId
@@ -40,7 +33,7 @@ data class TaskReport private constructor(
         }
     }
 
-    fun changeTaskReportStatus(taskReportStatus: TaskReportStatus): TaskReport{
+    fun changeTaskReportStatus(taskReportStatus: ReportStatus): TaskReport{
         return this.copy(reportStatus = taskReportStatus)
     }
 
@@ -48,7 +41,7 @@ data class TaskReport private constructor(
         return this.copy(
             title = title,
             description = description,
-            reportStatus = TaskReportStatus.NOT_CHECKED,
+            reportStatus = ReportStatus.NOT_CHECKED,
             editDate = TaskReportDate(LocalDateTime.now()),
             documentId = documentId, )
     }

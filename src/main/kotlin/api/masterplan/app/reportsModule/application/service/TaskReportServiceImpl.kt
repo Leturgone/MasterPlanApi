@@ -78,7 +78,7 @@ class TaskReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
-    override fun filterCreatedTaskByStatus(employeeId: ReportEmployeeId, status: TaskReportStatus): List<TaskReportDetails> {
+    override fun filterCreatedTaskByStatus(employeeId: ReportEmployeeId, status: ReportStatus): List<TaskReportDetails> {
         val reportList = taskReportRepository.getTaskReportsByEmployeeId(employeeId)
 
         return reportList.filter { taskReport ->
@@ -96,7 +96,7 @@ class TaskReportServiceImpl(
     }
 
     @LoggingMethod("reportModule")
-    override fun filterSubordinatesTaskReportsByStatus(subordinatesIds: Set<ReportEmployeeId>, status: TaskReportStatus): List<TaskReportDetails> {
+    override fun filterSubordinatesTaskReportsByStatus(subordinatesIds: Set<ReportEmployeeId>, status: ReportStatus): List<TaskReportDetails> {
         val reportList = taskReportRepository.getTaskReportByEmployeeIds(subordinatesIds)
 
         return reportList.filter { taskReport ->
@@ -107,7 +107,7 @@ class TaskReportServiceImpl(
     }
 
     @LoggingMethod("reportModule")
-    override fun changeTaskReportStatus(reportId: TaskReportId, status: TaskReportStatus): TaskReportId {
+    override fun changeTaskReportStatus(reportId: TaskReportId, status: ReportStatus): TaskReportId {
         val report = taskReportRepository.getTaskReport(reportId)
             ?: throw ReportException.TaskReportNotExist(reportId)
 

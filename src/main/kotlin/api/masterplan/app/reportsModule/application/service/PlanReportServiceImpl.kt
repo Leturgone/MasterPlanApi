@@ -9,7 +9,7 @@ import api.masterplan.app.reportsModule.domain.interfaces.PlanReportService
 import api.masterplan.app.reportsModule.domain.models.entity.PlanReport
 import api.masterplan.app.reportsModule.domain.models.value.PlanReportDescription
 import api.masterplan.app.reportsModule.domain.models.value.PlanReportId
-import api.masterplan.app.reportsModule.domain.models.value.PlanReportStatus
+import api.masterplan.app.reportsModule.domain.models.value.ReportStatus
 import api.masterplan.app.reportsModule.domain.models.value.PlanReportTitle
 import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
@@ -82,7 +82,7 @@ class PlanReportServiceImpl(
     }
 
     @LoggingMethod("reportModule")
-    override fun filterCreatedPlanByStatus(employeeId: ReportEmployeeId, status: PlanReportStatus): List<PlanReportDetails> {
+    override fun filterCreatedPlanByStatus(employeeId: ReportEmployeeId, status: ReportStatus): List<PlanReportDetails> {
         val planReportList = planReportRepository.getPlanReportsByEmployeeId(employeeId)
 
         return planReportList.filter { planReport ->
@@ -93,7 +93,7 @@ class PlanReportServiceImpl(
     }
 
     @LoggingMethod("reportModule")
-    override fun changePlanReportStatus(reportId: PlanReportId, status: PlanReportStatus): PlanReportId {
+    override fun changePlanReportStatus(reportId: PlanReportId, status: ReportStatus): PlanReportId {
         val report = planReportRepository.getPlanReport(reportId)
             ?: throw ReportException.PlanReportNotExist(reportId)
 
