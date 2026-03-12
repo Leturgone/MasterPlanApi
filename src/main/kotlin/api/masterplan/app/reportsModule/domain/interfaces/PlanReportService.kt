@@ -16,7 +16,7 @@ interface PlanReportService {
 
     fun getCreatedPlanReports(employeeId: ReportEmployeeId): List<PlanReportDetails>
 
-    fun filterCreatedPlanByStatus(employeeId: ReportEmployeeId, status: PlanReportStatus): List<PlanReportDetails>
+    fun filterCreatedPlanByStatus(employeeId: ReportEmployeeId, status: ReportStatus): List<PlanReportDetails>
 
-    fun changePlanReportStatus(reportId: PlanReportId, status: PlanReportStatus): PlanReportId
+    fun changePlanReportStatus(reportId: PlanReportId, status: ReportStatus): PlanReportId
 }
