@@ -1,21 +1,22 @@
 package api.masterplan.app.reportsModule.application.usecase
 
-import api.masterplan.app.reportsModule.application.command.UpdatePlanReportCommand
+import api.masterplan.app.reportsModule.application.command.UpdateReportCommand
 import api.masterplan.app.reportsModule.application.ports.ReportFilesPort
-import api.masterplan.app.reportsModule.domain.interfaces.PlanReportService
-import api.masterplan.app.reportsModule.domain.models.value.PlanReportId
+import api.masterplan.app.reportsModule.domain.interfaces.ReportService
+import api.masterplan.app.reportsModule.domain.models.value.ReportId
 import org.springframework.stereotype.Service
 
 @Service
-class UpdatePlanReportUseCase(
-    private val planReportService: PlanReportService,
+class UpdateReportUseCase(
+    private val reportService: ReportService,
     private val reportFilesPort: ReportFilesPort
 ) {
-    operator fun invoke(command: UpdatePlanReportCommand):Result<PlanReportId>{
+    operator fun invoke(command: UpdateReportCommand):Result<ReportId>{
         return try {
-            val updatedReport = planReportService.updatePlanReport(
+            val updatedReport = reportService.updateReport(
                 reportId = command.reportId,
-                updatedPlanReport = command.updatedReport
+                reportType = command.reportType,
+                updatedReport = command.updatedReport,
             )
 
             reportFilesPort.updateReportFile(
