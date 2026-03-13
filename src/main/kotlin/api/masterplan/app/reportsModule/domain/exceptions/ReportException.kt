@@ -1,12 +1,6 @@
 package api.masterplan.app.reportsModule.domain.exceptions
 
-import api.masterplan.app.reportsModule.domain.models.value.ReportId
-import api.masterplan.app.reportsModule.domain.models.value.ReportTitle
-import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.ReportStatus
-import api.masterplan.app.reportsModule.domain.models.value.ReportType
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportTitle
+import api.masterplan.app.reportsModule.domain.models.value.*
 
 sealed class ReportException(message: String) : Exception(message) {
 
