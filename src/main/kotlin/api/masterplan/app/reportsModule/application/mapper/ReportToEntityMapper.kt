@@ -1,14 +1,12 @@
 package api.masterplan.app.reportsModule.application.mapper
 
-import api.masterplan.app.reportsModule.domain.dtos.PlanReportDetails
-import api.masterplan.app.reportsModule.domain.dtos.TaskReportDetails
-import api.masterplan.app.reportsModule.domain.models.entity.PlanReport
-import api.masterplan.app.reportsModule.domain.models.entity.TaskReport
+import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
+import api.masterplan.app.reportsModule.domain.models.entity.Report
 
 object ReportToEntityMapper {
 
-    fun toPlanReportDetails(report: PlanReport): PlanReportDetails {
-        return PlanReportDetails(
+    fun toReportDetails(report: Report): ReportDetails {
+        return ReportDetails(
             id = report.id,
             title = report.title,
             creationDate = report.creationDate,
@@ -16,22 +14,9 @@ object ReportToEntityMapper {
             description = report.description,
             reportStatus = report.reportStatus,
             employeeId = report.employeeId,
-            taskId = report.taskId,
+            referenceId = report.referenceId,
+            type = report.type,
             documentId = report.documentId,
-        )
-    }
-
-    fun toTaskReportDetails(report: TaskReport): TaskReportDetails {
-        return TaskReportDetails(
-            id = report.id,
-            title = report.title,
-            creationDate = report.creationDate,
-            editDate = report.editDate,
-            description = report.description,
-            reportStatus = report.reportStatus,
-            employeeId = report.employeeId,
-            taskId = report.taskId,
-            documentId = report.documentId
         )
     }
 }

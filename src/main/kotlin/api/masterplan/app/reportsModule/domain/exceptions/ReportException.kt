@@ -1,10 +1,6 @@
 package api.masterplan.app.reportsModule.domain.exceptions
 
-import api.masterplan.app.reportsModule.domain.models.value.PlanReportId
-import api.masterplan.app.reportsModule.domain.models.value.PlanReportTitle
-import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportId
-import api.masterplan.app.reportsModule.domain.models.value.TaskReportTitle
+import api.masterplan.app.reportsModule.domain.models.value.*
 
 sealed class ReportException(message: String) : Exception(message) {
 
@@ -16,45 +12,32 @@ sealed class ReportException(message: String) : Exception(message) {
         "Invalid report description: ${message?.let { ": $it" } ?: ""}"
     )
 
-    class PlanReportNotExist(planReportId: PlanReportId) : ReportException(
-        "Plan Report with id = ${planReportId.id} not found"
-    )
-
-    class TaskReportNotExist(taskReportId: TaskReportId) : ReportException(
-        "Task Report with id = ${taskReportId.id} not found"
-    )
-
-    class FailedToUpdatePlanReport(planReportId: PlanReportId) : ReportException(
-        "Failed to update plan report with id = ${planReportId.id}"
+    class ReportNotExist(planReportId: ReportId, reportType: ReportType) : ReportException(
+        "${reportType.name} Report with id = ${planReportId.id} not found"
     )
 
 
-    class FailedToUpdateTaskReport(taskReportId: TaskReportId) : ReportException(
-        "Failed to update task report with id = ${taskReportId.id}"
+    class FailedToUpdateReport(planReportId: ReportId,reportType: ReportType) : ReportException(
+        "Failed to update ${reportType.name} report with id = ${planReportId.id}"
     )
 
-    class FailedToDeletePlanReport(planReportId: PlanReportId) : ReportException(
-        "Failed to delete plan report with id = ${planReportId.id}"
+    class FailedToUpdateReportStatus(status: ReportStatus, planReportId: ReportId,reportType: ReportType) : ReportException(
+        "Failed to update status ${status.name} for ${reportType.name} report with id = ${planReportId.id}"
     )
 
-    class FailedToDeleteTaskReport(taskReportId: TaskReportId) : ReportException(
-        "Failed to delete task report with id = ${taskReportId.id}"
+
+    class FailedToDeleteReport(planReportId: ReportId,reportType: ReportType) : ReportException(
+        "Failed to delete ${reportType.name}  report with id = ${planReportId.id}"
     )
 
-    class PlanReportAlreadyExist(employeeId: ReportEmployeeId,planReportTitle: PlanReportTitle) : ReportException(
-        "Plan report with employeeId = ${employeeId.value} and title = ${planReportTitle.value} already exist"
+
+    class ReportAlreadyExist(employeeId: ReportEmployeeId,planReportTitle: ReportTitle) : ReportException(
+        "Report with employeeId = ${employeeId.value} and title = ${planReportTitle.value} already exist"
     )
 
-    class TaskReportAlreadyExist(employeeId: ReportEmployeeId,taskReportTitle: TaskReportTitle) : ReportException(
-        "Task report with employeeId = ${employeeId.value} and title = ${taskReportTitle.value} already exist"
-    )
 
-    class FailedToSavePlanReport(employeeId: ReportEmployeeId, planReportTitle: PlanReportTitle) : ReportException(
-        "Failed to save plan report with employeeId = ${employeeId.value} and title = ${planReportTitle.value}"
-    )
-
-    class FailedToSaveTaskReport(employeeId: ReportEmployeeId, taskReportTitle: TaskReportTitle) : ReportException(
-        "Failed to save task report with employeeId = ${employeeId.value} and title = ${taskReportTitle.value}"
+    class FailedToSaveReport(employeeId: ReportEmployeeId, planReportTitle: ReportTitle,reportType: ReportType) : ReportException(
+        "Failed to save ${reportType.name}  report with employeeId = ${employeeId.value} and title = ${planReportTitle.value}"
     )
 
     class InternalServerError(message: String? = null) : ReportException("Internal report module server error: ${message?:""}")
