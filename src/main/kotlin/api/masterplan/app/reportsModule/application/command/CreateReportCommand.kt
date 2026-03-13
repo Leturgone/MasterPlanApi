@@ -8,7 +8,7 @@ data class CreateReportCommand(
     val title: ReportTitle,
     val description: ReportDescription? = null,
     val employeeId: ReportEmployeeId,
-    val taskId: ReportTaskId,
+    val referenceId: ReportReferenceId,
     val document: ReportFile,
     val reportType: ReportType
 )
