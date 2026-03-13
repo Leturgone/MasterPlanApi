@@ -8,7 +8,7 @@ interface ReportService {
 
     fun getReport(reportId: ReportId, reportType: ReportType): ReportDetails
 
-    fun updateReport(reportId: ReportId, reportType: ReportType, updatedPlanReport: Report): ReportId
+    fun updateReport(reportId: ReportId, reportType: ReportType, updatedReport: Report): ReportId
 
     fun deleteReport(reportId: ReportId,reportType: ReportType): ReportId
 

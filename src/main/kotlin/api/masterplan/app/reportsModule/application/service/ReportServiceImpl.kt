@@ -28,16 +28,16 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
-    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedPlanReport: Report): ReportId {
+    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedReport: Report): ReportId {
         val report =  when(reportType) {
             ReportType.TASK -> planReportRepository.getPlanReport(reportId)
             ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val updatedReport = report.update(
-            title = updatedPlanReport.title,
-            description = updatedPlanReport.description,
-            documentId = updatedPlanReport.documentId,
+            title = updatedReport.title,
+            description = updatedReport.description,
+            documentId = updatedReport.documentId,
         )
 
         val updatedReportId = when(reportType) {
