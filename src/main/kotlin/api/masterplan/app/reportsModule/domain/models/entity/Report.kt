@@ -28,9 +28,13 @@ data class Report private constructor (
 ){
     companion object{
 
-        fun createForTask(id: ReportId? = null, title: ReportTitle, description: ReportDescription? = null,
-                   employeeId: ReportEmployeeId, taskId: ReportTaskId, documentId: ReportDocumentId
+        fun create(id: ReportId? = null, title: ReportTitle, description: ReportDescription? = null,
+                   employeeId: ReportEmployeeId, referenceId: ReportReferenceId, documentId: ReportDocumentId
         ): Report{
+            val type = when(referenceId){
+                is ReportReferenceId.ForPlan -> ReportType.PLAN
+                is ReportReferenceId.ForTask -> ReportType.TASK
+            }
             return Report(
                 id = id ?: ReportId.generate(),
                 title = title,
@@ -39,25 +43,8 @@ data class Report private constructor (
                 description = description,
                 reportStatus = ReportStatus.NOT_CHECKED,
                 employeeId = employeeId,
-                referenceId = ReportReferenceId.ForTask(taskId),
-                type = ReportType.TASK,
-                documentId = documentId,
-            )
-        }
-
-        fun createForPlan(id: ReportId? = null, title: ReportTitle, description: ReportDescription? = null,
-                          employeeId: ReportEmployeeId, planId: ReportPlanId, documentId: ReportDocumentId
-        ): Report{
-            return Report(
-                id = id ?: ReportId.generate(),
-                title = title,
-                creationDate = ReportDate(LocalDateTime.now()),
-                editDate = null,
-                description = description,
-                reportStatus = ReportStatus.NOT_CHECKED,
-                employeeId = employeeId,
-                referenceId = ReportReferenceId.ForPlan(planId),
-                type = ReportType.PLAN,
+                referenceId = referenceId,
+                type = type,
                 documentId = documentId,
             )
         }
