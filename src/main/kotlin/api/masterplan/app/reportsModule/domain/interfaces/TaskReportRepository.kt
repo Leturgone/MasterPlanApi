@@ -16,7 +16,7 @@ interface TaskReportRepository {
 
     fun getTaskReportByEmployeeIds(employeeIds: Set<ReportEmployeeId>): List<Report>
 
-    fun isPlanReportExist(employeeId: ReportEmployeeId,taskReportTitle: ReportTitle): Boolean
+    fun isTaskReportExist(employeeId: ReportEmployeeId, taskReportTitle: ReportTitle): Boolean
 
-    fun updatePlanReport(taskReportId: ReportId, updatedReport: Report): ReportId?
+    fun updateTaskReport(taskReportId: ReportId, updatedReport: Report): ReportId?
 }
