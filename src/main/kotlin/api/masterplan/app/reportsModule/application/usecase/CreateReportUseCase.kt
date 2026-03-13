@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class CreateReportUseCase(
-    private val planReportService: ReportService,
+    private val reportService: ReportService,
     private val reportFilesPort: ReportFilesPort
 ) {
     operator fun invoke(command: CreateReportCommand): Result<ReportId> {
         return try {
             val planReportFileId = reportFilesPort.uploadReportFile(command.document)
-            val planReportId = planReportService.createReport(
+            val planReportId = reportService.createReport(
                 id = command.id,
                 title = command.title,
                 description = command.description,

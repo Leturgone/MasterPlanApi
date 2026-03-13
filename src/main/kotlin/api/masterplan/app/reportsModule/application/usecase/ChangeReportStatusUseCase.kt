@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class ChangeReportStatusUseCase(
-    private val planReportService: ReportService
+    private val reportService: ReportService
 ) {
     operator fun invoke(command: ChangeReportStatusCommand): Result<ReportId> {
         return try {
-            val planReportId = planReportService.changeReportStatus(
+            val planReportId = reportService.changeReportStatus(
                 reportId = command.reportId,
                 reportType = command.reportType,
                 status = command.status
