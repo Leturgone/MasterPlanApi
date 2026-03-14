@@ -1,4 +1,5 @@
 package api.masterplan.app.reportsModule.infrastructure.database.entity
 
-class PlanReportEntity {
-}
+data class PlanReportEntity(
+
+)
