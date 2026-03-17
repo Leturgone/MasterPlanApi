@@ -21,7 +21,7 @@ data class PlanReportEntity(
     val editDate: LocalDateTime? = null,
 
     @Column(name = "description", length = 255, nullable = false)
-    val description : String,
+    val description : String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.PERSIST])
     @JoinColumn(
