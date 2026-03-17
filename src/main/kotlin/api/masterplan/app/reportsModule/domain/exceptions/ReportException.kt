@@ -12,6 +12,10 @@ sealed class ReportException(message: String) : Exception(message) {
         "Invalid report description: ${message?.let { ": $it" } ?: ""}"
     )
 
+    class InvalidReportStatus(status: String) : ReportException(
+        "Invalid report status: $status"
+    )
+
     class ReportNotExist(planReportId: ReportId, reportType: ReportType) : ReportException(
         "${reportType.name} Report with id = ${planReportId.value} not found"
     )
