@@ -13,8 +13,8 @@ internal object ReportStatusDatabaseMapper {
         }
     }
 
-    fun toEntity(reportStatusList: Set<ReportStatusEntity>, reportStatus: ReportStatus): ReportStatusEntity {
-        val statusByTitle = reportStatusList.associateBy { it.status.uppercase() }
+    fun toEntity(reportStatusSet: Set<ReportStatusEntity>, reportStatus: ReportStatus): ReportStatusEntity {
+        val statusByTitle = reportStatusSet.associateBy { it.status.uppercase() }
         val domainStatus = statusByTitle[reportStatus.name]?:throw ReportException.InvalidReportStatus(reportStatus.name)
         return domainStatus
     }
