@@ -16,6 +16,10 @@ sealed class ReportException(message: String) : Exception(message) {
         "Invalid report status: $status"
     )
 
+    class InvalidReferenceId(ref: ReportReferenceId) : ReportException(
+        "Invalid reference ID: $ref"
+    )
+
     class ReportNotExist(planReportId: ReportId, reportType: ReportType) : ReportException(
         "${reportType.name} Report with id = ${planReportId.value} not found"
     )
