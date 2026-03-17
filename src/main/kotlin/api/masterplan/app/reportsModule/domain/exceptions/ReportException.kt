@@ -13,21 +13,21 @@ sealed class ReportException(message: String) : Exception(message) {
     )
 
     class ReportNotExist(planReportId: ReportId, reportType: ReportType) : ReportException(
-        "${reportType.name} Report with id = ${planReportId.id} not found"
+        "${reportType.name} Report with id = ${planReportId.value} not found"
     )
 
 
     class FailedToUpdateReport(planReportId: ReportId,reportType: ReportType) : ReportException(
-        "Failed to update ${reportType.name} report with id = ${planReportId.id}"
+        "Failed to update ${reportType.name} report with id = ${planReportId.value}"
     )
 
     class FailedToUpdateReportStatus(status: ReportStatus, planReportId: ReportId,reportType: ReportType) : ReportException(
-        "Failed to update status ${status.name} for ${reportType.name} report with id = ${planReportId.id}"
+        "Failed to update status ${status.name} for ${reportType.name} report with id = ${planReportId.value}"
     )
 
 
     class FailedToDeleteReport(planReportId: ReportId,reportType: ReportType) : ReportException(
-        "Failed to delete ${reportType.name}  report with id = ${planReportId.id}"
+        "Failed to delete ${reportType.name}  report with id = ${planReportId.value}"
     )
 
 
