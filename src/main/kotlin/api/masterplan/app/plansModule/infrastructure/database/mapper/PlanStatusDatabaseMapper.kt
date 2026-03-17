@@ -13,8 +13,8 @@ internal object PlanStatusDatabaseMapper {
         }
     }
 
-    fun toEntity(planStatusList: Set<PlanStatusEntity>, planStatus: PlanStatus): PlanStatusEntity {
-        val statusByTitle = planStatusList.associateBy { it.status.uppercase() }
+    fun toEntity(planStatusSet: Set<PlanStatusEntity>, planStatus: PlanStatus): PlanStatusEntity {
+        val statusByTitle = planStatusSet.associateBy { it.status.uppercase() }
         val domainStatus = statusByTitle[planStatus.name]?:throw PlanException.InvalidPlanStatusTitle(planStatus.name)
         return domainStatus
     }
