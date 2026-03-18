@@ -50,5 +50,5 @@ data class PlanReportEntity(
 
     override fun hashCode() = id.hashCode()
 
-    override fun toString() = "PlanReportEntity(id=$id, title='$title', creationDate=$creationDate, editDate=$editDate, description=$description)"
+    override fun toString() = "PlanReportEntity(id=$id, title='$title', creationDate=$creationDate, employeeId=$employeeId, planId=$planId, documentId=$documentId)"
 }
