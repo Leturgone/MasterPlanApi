@@ -1,20 +1,20 @@
 package api.masterplan.app.reportsModule.application.usecase
 
 import api.masterplan.app.reportsModule.application.command.FilterByStatusToSubordinatesTaskReportsCommand
-import api.masterplan.app.reportsModule.application.ports.EmployeesPort
-import api.masterplan.app.reportsModule.domain.dtos.TaskReportDetails
-import api.masterplan.app.reportsModule.domain.interfaces.TaskReportService
+import api.masterplan.app.reportsModule.application.ports.ReportEmployeesPort
+import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
+import api.masterplan.app.reportsModule.domain.interfaces.ReportService
 import org.springframework.stereotype.Service
 
 @Service
 class FilterByStatusSubordinatesTaskReportsUseCase(
-    private val taskReportService: TaskReportService,
-    private val employeesPort: EmployeesPort
+    private val reportService: ReportService,
+    private val reportEmployeesPort: ReportEmployeesPort
 ) {
-    operator fun invoke(command: FilterByStatusToSubordinatesTaskReportsCommand): Result<List<TaskReportDetails>>{
+    operator fun invoke(command: FilterByStatusToSubordinatesTaskReportsCommand): Result<List<ReportDetails>>{
         return try {
-            val subordinatesList = employeesPort.getSubordinates(command.directorId)
-            val filterList = taskReportService.filterSubordinatesTaskReportsByStatus(
+            val subordinatesList = reportEmployeesPort.getSubordinates(command.directorId)
+            val filterList = reportService.filterSubordinatesTaskReportsByStatus(
                 subordinatesIds = subordinatesList,
                 status = command.status
             )
