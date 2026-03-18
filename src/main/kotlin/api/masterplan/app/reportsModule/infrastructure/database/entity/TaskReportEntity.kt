@@ -29,7 +29,7 @@ data class TaskReportEntity(
     val editDate: LocalDateTime? = null,
 
     @Column(name = "description", length = 255, nullable = false)
-    val description : String,
+    val description : String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.PERSIST])
     @JoinColumn(
@@ -57,5 +57,5 @@ data class TaskReportEntity(
 
     override fun hashCode() = id.hashCode()
 
-    override fun toString() = "TaskReportEntity(id=$id, title='$title', creationDate=$creationDate, editDate=$editDate, description=$description)"
+    override fun toString() = "TaskReportEntity(id=$id, title='$title', creationDate=$creationDate, employeeId=$employeeId, taskId=$taskId, documentId=$documentId)"
 }
