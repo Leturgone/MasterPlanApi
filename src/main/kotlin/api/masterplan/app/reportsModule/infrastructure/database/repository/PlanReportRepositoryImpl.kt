@@ -49,7 +49,7 @@ class PlanReportRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun isPlanReportExist(employeeId: ReportEmployeeId, title: ReportTitle): Boolean {
-         return jpaPlanReportRepository.existsByTitleAndeEmployeeId(title.value,employeeId.value)
+         return jpaPlanReportRepository.existsByTitleAndEmployeeId(title.value,employeeId.value)
     }
 
 
