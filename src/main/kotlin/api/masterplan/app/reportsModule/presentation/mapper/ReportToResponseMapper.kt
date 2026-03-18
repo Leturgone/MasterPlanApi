@@ -33,5 +33,10 @@ object ReportToResponseMapper {
         )
     }
 
+
+    fun toResponse(reportList: List<ReportDetails>): List<ReportResponse> {
+        return reportList.map { toResponse(it) }
+    }
+
     fun toResponse(reportId: ReportId) = reportId.value
 }
