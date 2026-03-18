@@ -22,11 +22,13 @@ class PlanReportRepositoryImpl(
         return PlanReportDatabaseMapper.toDomain(planReport)
     }
 
+
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun deletePlanReport(planReportId: ReportId): ReportId? {
         jpaPlanReportRepository.deleteById(planReportId.value)
         return planReportId
     }
+
 
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun savePlanReport(report: Report): ReportId? {
@@ -36,6 +38,7 @@ class PlanReportRepositoryImpl(
         return ReportId(planReportId)
     }
 
+
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun getPlanReportsByEmployeeId(employeeId: ReportEmployeeId): List<Report> {
         val planReports = jpaPlanReportRepository.findByEmployeeId(employeeId.value)
@@ -43,10 +46,12 @@ class PlanReportRepositoryImpl(
 
     }
 
+
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun isPlanReportExist(employeeId: ReportEmployeeId, title: ReportTitle): Boolean {
          return jpaPlanReportRepository.existsByTitleAndeEmployeeId(title.value,employeeId.value)
     }
+
 
     @LoggingDatabaseMethod(moduleName = "reportModule")
     override fun updatePlanReport(planReportId: ReportId, updatedReport: Report): ReportId? {
