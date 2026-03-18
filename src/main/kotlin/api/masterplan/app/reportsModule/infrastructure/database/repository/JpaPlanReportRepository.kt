@@ -8,5 +8,5 @@ interface JpaPlanReportRepository: CrudRepository<PlanReportEntity, UUID>  {
 
     fun findByEmployeeId(employeeId: UUID): List<PlanReportEntity>
 
-    fun existsByTitleAndeEmployeeId(title: String, employeeId: UUID): Boolean
+    fun existsByTitleAndEmployeeId(title: String, employeeId: UUID): Boolean
 }
