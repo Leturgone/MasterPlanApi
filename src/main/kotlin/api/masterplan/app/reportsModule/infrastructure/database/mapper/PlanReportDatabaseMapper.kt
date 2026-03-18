@@ -26,6 +26,10 @@ object PlanReportDatabaseMapper {
         ).changeReportStatus(domainStatus)
     }
 
+    fun toDomain(entities: List<PlanReportEntity>): List<Report> {
+        return entities.map { toDomain(it) }
+    }
+
     fun toEntity(report: Report,statusSet: Set<ReportStatusEntity>): PlanReportEntity{
         val statusEntity = ReportStatusDatabaseMapper.toEntity(statusSet,report.reportStatus)
         val planId = when (report.referenceId) {
