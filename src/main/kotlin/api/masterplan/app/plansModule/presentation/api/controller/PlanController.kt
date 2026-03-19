@@ -387,7 +387,8 @@ class PlanController(
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "План не найден"
+                description = "План не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -428,7 +429,8 @@ class PlanController(
             ),
             ApiResponse(
                 responseCode = "409",
-                description = "План уже существует"
+                description = "План уже существует",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
@@ -481,11 +483,13 @@ class PlanController(
             ),
             ApiResponse(
                 responseCode = "409",
-                description = "Задача уже существует"
+                description = "Задача уже существует",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "План не найден"
+                description = "План не найден",
+                content = [Content(schema = Schema(implementation = PlanErrorResponse::class))]
             ),
             ApiResponse(
                 responseCode = "403",
