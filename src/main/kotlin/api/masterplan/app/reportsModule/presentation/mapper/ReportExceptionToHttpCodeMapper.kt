@@ -17,6 +17,7 @@ object ReportExceptionToHttpCodeMapper {
             is ReportException.InvalidReportTitle -> HttpStatus.BAD_REQUEST
             is ReportException.ReportAlreadyExist -> HttpStatus.CONFLICT
             is ReportException.ReportNotExist -> HttpStatus.NOT_FOUND
+            is ReportException.InvalidReportType -> HttpStatus.BAD_REQUEST
             else -> HttpStatus.INTERNAL_SERVER_ERROR
         }
     }
