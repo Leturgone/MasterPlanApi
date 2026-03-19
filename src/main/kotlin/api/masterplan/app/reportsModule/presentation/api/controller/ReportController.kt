@@ -1,29 +1,19 @@
 package api.masterplan.app.reportsModule.presentation.api.controller
 
-import api.masterplan.app.plansModule.application.command.GetPlanInfCommand
-import api.masterplan.app.reportsModule.application.command.GetReportInfCommand
-import api.masterplan.app.reportsModule.application.usecase.ChangeReportStatusUseCase
-import api.masterplan.app.reportsModule.application.usecase.CreateReportUseCase
-import api.masterplan.app.reportsModule.application.usecase.DeleteReportUseCase
-import api.masterplan.app.reportsModule.application.usecase.FilterByStatusCreatedReportsUseCase
-import api.masterplan.app.reportsModule.application.usecase.FilterByStatusSubordinatesTaskReportsUseCase
-import api.masterplan.app.reportsModule.application.usecase.GetCreatedReportsUseCase
-import api.masterplan.app.reportsModule.application.usecase.GetReportInfUseCase
-import api.masterplan.app.reportsModule.application.usecase.GetSubordinatesTaskReportsUseCase
-import api.masterplan.app.reportsModule.application.usecase.UpdateReportUseCase
-import api.masterplan.app.reportsModule.domain.models.value.ReportId
-import api.masterplan.app.reportsModule.domain.models.value.ReportType
+import api.masterplan.app.reportsModule.application.command.*
+import api.masterplan.app.reportsModule.application.usecase.*
 import api.masterplan.app.reportsModule.presentation.api.exceptionHandler.ReportControllerExceptionHandler
+import api.masterplan.app.reportsModule.presentation.dto.request.CreateReportRequest
+import api.masterplan.app.reportsModule.presentation.dto.request.UpdateReportRequest
+import api.masterplan.app.reportsModule.presentation.dto.request.UpdateReportStatusRequest
+import api.masterplan.app.reportsModule.presentation.dto.response.ReportIdResponse
 import api.masterplan.app.reportsModule.presentation.dto.response.ReportResponse
-import api.masterplan.app.reportsModule.presentation.mapper.ReportToDomainMapper
-import api.masterplan.app.reportsModule.presentation.mapper.ReportToResponseMapper
+import api.masterplan.app.reportsModule.presentation.mapper.ReportDomainToResponseMapper
+import api.masterplan.app.reportsModule.presentation.mapper.ReportRequestToDomainMapper
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @ReportControllerExceptionHandler
@@ -48,44 +38,152 @@ class ReportController(
         @PathVariable(value = "reportId") reportId: UUID
     ): ResponseEntity<ReportResponse>{
         val command = GetReportInfCommand(
-            reportId = ReportToDomainMapper.toReportId(reportId),
-            reportType = ReportToDomainMapper.toReportType(reportType)
+            reportId = ReportRequestToDomainMapper.toReportId(reportId),
+            reportType = ReportRequestToDomainMapper.toReportType(reportType)
         )
         val result = getReportInfUserCase(command).getOrThrow()
-        val resp = ReportToResponseMapper.toResponse(result)
+        val resp = ReportDomainToResponseMapper.toResponse(result)
         return ResponseEntity.ok(resp)
     }
 
-    fun getCreatedReports(){
-        getCreatedReportsUseCase
+
+    fun getCreatedReports(
+        @PathVariable(value = "employeeId") employeeId: UUID,
+        @PathVariable(value = "reportType") reportType: String,
+    ): ResponseEntity<List<ReportResponse>> {
+        val command = GetCreatedReportsCommand(
+            employeeId = ReportRequestToDomainMapper.toReportEmployeeId(employeeId),
+            reportType = ReportRequestToDomainMapper.toReportType(reportType)
+        )
+        val result = getCreatedReportsUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
-    fun getSubordinatesTaskReports(){
-        getSubordinatesTaskReportsUseCase
+    fun getSubordinatesTaskReports(
+        @PathVariable(value = "directorId") directorId: UUID
+    ):ResponseEntity<List<ReportResponse>> {
+        val command = GetSubordinatesTaskReportsCommand(
+            directorId = ReportRequestToDomainMapper.toReportEmployeeId(directorId)
+        )
+
+        val result = getSubordinatesTaskReportsUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
-    fun  createReport(){
-        createReportUseCase
-    }
-    fun  updateReport(){
-        updateReportUseCase
+    fun  createReport(
+        @PathVariable(value = "reportType") reportType: String,
+        @RequestBody request: CreateReportRequest): ResponseEntity<ReportIdResponse> {
+        val file = ReportRequestToDomainMapper.toReportFile(
+            fileName = request.documentName,
+            fileData = request.document
+        )
+        val reportType = ReportRequestToDomainMapper.toReportType(reportType)
+        val reportReferenceId = ReportRequestToDomainMapper.toReportReferenceId(request.referenceId,reportType)
+
+        val command = CreateReportCommand(
+            id = request.id?.let {ReportRequestToDomainMapper.toReportId(it)},
+            title = ReportRequestToDomainMapper.toReportTitle(request.title),
+            description = request.description?.let { ReportRequestToDomainMapper.toReportDescription(it)},
+            employeeId = ReportRequestToDomainMapper.toReportEmployeeId(request.employeeId),
+            referenceId = reportReferenceId,
+            document = file,
+            reportType = reportType,
+        )
+
+        val result = createReportUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
-    fun getFilterByStatusSubordinatesTaskReports(){
-        filterByStatusSubordinatesTaskReportsUseCase
+
+    fun  updateReport(
+        @PathVariable(value = "reportType") reportType: String,
+        @PathVariable(value = "reportId") reportId: UUID,
+        @RequestBody request: UpdateReportRequest
+    ): ResponseEntity<ReportIdResponse> {
+        val file = ReportRequestToDomainMapper.toReportFile(
+            fileName = request.documentName,
+            fileData = request.document
+        )
+        val updatedReport = ReportRequestToDomainMapper.toUpdateReportData(
+            title = request.title,
+            description = request.description,
+            documentId = request.documentId
+        )
+        val reportType = ReportRequestToDomainMapper.toReportType(reportType)
+        val command = UpdateReportCommand(
+            reportId = ReportRequestToDomainMapper.toReportId(reportId),
+            updatedData = updatedReport,
+            reportType = reportType,
+            document = file,
+        )
+        val result = updateReportUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
-    fun getFilterByStatusCreatedReports(){
-        filterByStatusCreatedReportsUseCase
+    fun getFilterByStatusSubordinatesTaskReports(
+        @PathVariable(value = "directorId") directorId: UUID,
+        @PathVariable(value = "reportStatus") reportStatus: String
+    ): ResponseEntity<List<ReportResponse>> {
+
+        val command = FilterByStatusToSubordinatesTaskReportsCommand(
+            directorId = ReportRequestToDomainMapper.toReportEmployeeId(directorId),
+            status = ReportRequestToDomainMapper.toReportStatus(reportStatus)
+        )
+
+        val result = filterByStatusSubordinatesTaskReportsUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
-    fun deleteReport(){
-        deleteReportUseCase
+    fun getFilterByStatusCreatedReports(
+        @PathVariable(value = "reportType") reportType: String,
+        @PathVariable(value = "employeeId") employeeId: UUID,
+        @PathVariable(value = "reportStatus") reportStatus: String
+    ): ResponseEntity<List<ReportResponse>>{
+        val command = FilterByStatusCreatedReportsCommand(
+            employeeId = ReportRequestToDomainMapper.toReportEmployeeId(employeeId),
+            status = ReportRequestToDomainMapper.toReportStatus(reportStatus),
+            reportType = ReportRequestToDomainMapper.toReportType(reportType)
+        )
+
+        val result = filterByStatusCreatedReportsUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
-    fun changeReportStatus(){
-        changeReportStatusUseCase
+    fun deleteReport(
+        @PathVariable(value = "reportType") reportType: String,
+        @PathVariable(value = "reportId") reportId: UUID,
+    ): ResponseEntity<ReportIdResponse> {
+        val command = DeleteReportCommand(
+            reportId = ReportRequestToDomainMapper.toReportId(reportId),
+            reportType = ReportRequestToDomainMapper.toReportType(reportType)
+        )
+
+        val result = deleteReportUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
+    }
+
+    fun changeReportStatus(
+        @PathVariable(value = "reportType") reportType: String,
+        @PathVariable(value = "reportId") reportId: UUID,
+        @RequestBody request: UpdateReportStatusRequest
+    ): ResponseEntity<ReportIdResponse>{
+        val command = ChangeReportStatusCommand(
+            reportId = ReportRequestToDomainMapper.toReportId(reportId),
+            reportType = ReportRequestToDomainMapper.toReportType(reportType),
+            status = ReportRequestToDomainMapper.toReportStatus(request.status)
+        )
+
+        val result = changeReportStatusUseCase(command).getOrThrow()
+        val resp = ReportDomainToResponseMapper.toResponse(result)
+        return ResponseEntity.ok(resp)
     }
 
 
