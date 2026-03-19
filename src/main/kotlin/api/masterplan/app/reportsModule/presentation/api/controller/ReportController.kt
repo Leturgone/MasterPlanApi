@@ -32,7 +32,7 @@ class ReportController(
 ) {
 
 
-    @GetMapping("/emp/reports/getReport/{reportType}/{reportId}/")
+    @GetMapping("/emp/reports/getReport/{reportType}/{reportId}")
     fun getReportInformation(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID
@@ -46,7 +46,7 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
-
+    @GetMapping("/emp/{employeeId}/reports/{reportType}/createdReports")
     fun getCreatedReports(
         @PathVariable(value = "employeeId") employeeId: UUID,
         @PathVariable(value = "reportType") reportType: String,
@@ -60,6 +60,7 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+    @GetMapping("/dir/{directorId}/reports/TASK/subordinatesReports")
     fun getSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID
     ):ResponseEntity<List<ReportResponse>> {
@@ -72,7 +73,7 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
-
+    @PostMapping("/emp/reports/createReport")
     fun  createReport(
         @PathVariable(value = "reportType") reportType: String,
         @RequestBody request: CreateReportRequest): ResponseEntity<ReportIdResponse> {
@@ -99,6 +100,7 @@ class ReportController(
     }
 
 
+    @PatchMapping(("/emp/reports/updateReport/{reportType}/{reportId}"))
     fun  updateReport(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
@@ -125,6 +127,8 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @GetMapping("/dir/{directorId}/reports/TASK/subordinatesReports/filterStatus/{reportStatus}")
     fun getFilterByStatusSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID,
         @PathVariable(value = "reportStatus") reportStatus: String
@@ -140,9 +144,11 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @GetMapping("/emp/{employeeId}/reports/{reportType}/createdReports/filterStatus/{reportStatus}")
     fun getFilterByStatusCreatedReports(
-        @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "employeeId") employeeId: UUID,
+        @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportStatus") reportStatus: String
     ): ResponseEntity<List<ReportResponse>>{
         val command = FilterByStatusCreatedReportsCommand(
@@ -156,6 +162,8 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @DeleteMapping(("/emp/reports/deleteReport/{reportType}/{reportId}"))
     fun deleteReport(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
@@ -170,6 +178,8 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @PatchMapping(("/emp/reports/updateReportStatus/{reportType}/{reportId}"))
     fun changeReportStatus(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
