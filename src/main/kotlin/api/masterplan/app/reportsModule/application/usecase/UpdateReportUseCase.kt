@@ -16,11 +16,11 @@ class UpdateReportUseCase(
             val updatedReport = reportService.updateReport(
                 reportId = command.reportId,
                 reportType = command.reportType,
-                updatedReport = command.updatedReport,
+                updatedData = command.updatedData,
             )
 
             reportFilesPort.updateReportFile(
-                reportFileId = command.updatedReport.documentId,
+                reportFileId = command.updatedData.documentId,
                 reportFile = command.document
             )
             Result.success(updatedReport)
