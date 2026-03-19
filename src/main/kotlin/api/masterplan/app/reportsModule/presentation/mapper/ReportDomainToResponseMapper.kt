@@ -4,9 +4,10 @@ import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.models.value.ReportId
 import api.masterplan.app.reportsModule.domain.models.value.ReportReferenceId
 import api.masterplan.app.reportsModule.domain.models.value.ReportType
+import api.masterplan.app.reportsModule.presentation.dto.response.ReportIdResponse
 import api.masterplan.app.reportsModule.presentation.dto.response.ReportResponse
 
-object ReportToResponseMapper {
+object ReportDomainToResponseMapper {
 
     fun toResponse(report: ReportDetails): ReportResponse {
         val refId = when(report.type) {
@@ -38,5 +39,5 @@ object ReportToResponseMapper {
         return reportList.map { toResponse(it) }
     }
 
-    fun toResponse(reportId: ReportId) = reportId.value
+    fun toResponse(reportId: ReportId) = ReportIdResponse(reportId.value)
 }
