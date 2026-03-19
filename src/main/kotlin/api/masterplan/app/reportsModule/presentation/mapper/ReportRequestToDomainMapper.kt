@@ -1,15 +1,9 @@
 package api.masterplan.app.reportsModule.presentation.mapper
 
 import api.masterplan.app.reportsModule.application.dto.ReportFile
+import api.masterplan.app.reportsModule.domain.dtos.ReportUpdateData
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
-import api.masterplan.app.reportsModule.domain.models.value.ReportDescription
-import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.ReportId
-import api.masterplan.app.reportsModule.domain.models.value.ReportPlanId
-import api.masterplan.app.reportsModule.domain.models.value.ReportReferenceId
-import api.masterplan.app.reportsModule.domain.models.value.ReportTaskId
-import api.masterplan.app.reportsModule.domain.models.value.ReportTitle
-import api.masterplan.app.reportsModule.domain.models.value.ReportType
+import api.masterplan.app.reportsModule.domain.models.value.*
 import java.util.*
 
 object ReportRequestToDomainMapper {
@@ -20,7 +14,15 @@ object ReportRequestToDomainMapper {
         return try {
             ReportType.valueOf(type.uppercase())
         }catch (_: IllegalArgumentException){
-            throw ReportException.InvalidReportStatus(type.uppercase())
+            throw ReportException.InvalidReportType(type.uppercase())
+        }
+    }
+
+    fun toReportStatus(status: String): ReportStatus {
+        return try {
+            ReportStatus.valueOf(status.uppercase())
+        }catch (_: IllegalArgumentException){
+            throw ReportException.InvalidReportStatus(status.uppercase())
         }
     }
 
@@ -42,6 +44,16 @@ object ReportRequestToDomainMapper {
             ReportType.TASK -> ReportReferenceId.ForTask(ReportTaskId(id))
             ReportType.PLAN -> ReportReferenceId.ForPlan(ReportPlanId(id))
         }
+    }
+
+    fun toReportDocumentId(documentId: UUID) = ReportDocumentId(documentId)
+
+    fun toUpdateReportData(title: String, description: String?, documentId: UUID): ReportUpdateData {
+        return ReportUpdateData(
+            title = toReportTitle(title),
+            description = description?.let { toReportDescription(it)},
+            documentId = toReportDocumentId(documentId)
+        )
     }
 
 }
