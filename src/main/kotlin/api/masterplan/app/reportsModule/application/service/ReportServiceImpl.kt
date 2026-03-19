@@ -3,6 +3,7 @@ package api.masterplan.app.reportsModule.application.service
 import api.masterplan.app.logging.LoggingMethod
 import api.masterplan.app.reportsModule.application.mapper.ReportToEntityMapper
 import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
+import api.masterplan.app.reportsModule.domain.dtos.ReportUpdateData
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
 import api.masterplan.app.reportsModule.domain.interfaces.PlanReportRepository
 import api.masterplan.app.reportsModule.domain.interfaces.ReportService
@@ -28,16 +29,16 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
-    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedReport: Report): ReportId {
+    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportId {
         val report =  when(reportType) {
             ReportType.TASK -> planReportRepository.getPlanReport(reportId)
             ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val updatedReport = report.update(
-            title = updatedReport.title,
-            description = updatedReport.description,
-            documentId = updatedReport.documentId,
+            title = updatedData.title,
+            description = updatedData.description,
+            documentId = updatedData.documentId,
         )
 
         val updatedReportId = when(reportType) {
