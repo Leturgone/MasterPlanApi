@@ -13,12 +13,16 @@ data class CreateReportRequest(
     val title: String,
     @Schema(description = "Описание отчета", example = "Отчет с заметкой")
     val description: String? = null,
+    @NotBlank(message = "Employee id cant be blank")
     @Schema(description = "ID создателя отчета UUIDv7", example = "06115aa098-9277-0087-49a8-cb901fc2f7")
     val employeeId: UUID,
+    @NotBlank(message = "Reference id cant be blank")
     @Schema(description = "ID задачи или плана, на которую ссылается отчет UUIDv7", example = "06115aa098-9277-0087-49a8-cb901fc2f7")
     val referenceId: UUID,
+    @NotBlank(message = "Document name cant be blank")
     @Schema(description = "Название файла", example = "PlanExport23022026172732")
     val documentName: String,
+    @NotBlank(message = "Document cant be blank")
     @Schema(description = "Файл")
     val document: ByteArray
 ) {
