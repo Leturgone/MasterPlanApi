@@ -16,6 +16,10 @@ sealed class ReportException(message: String) : Exception(message) {
         "Invalid report status: $status"
     )
 
+    class InvalidReportType(type: String) : ReportException(
+        "Invalid report type: $type"
+    )
+
     class InvalidReferenceId(ref: ReportReferenceId) : ReportException(
         "Invalid reference ID: $ref"
     )
