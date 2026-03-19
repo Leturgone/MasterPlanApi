@@ -20,9 +20,7 @@ data class CreateReportRequest(
     @Schema(description = "Название файла", example = "PlanExport23022026172732")
     val documentName: String,
     @Schema(description = "Файл")
-    val document: ByteArray,
-    @Schema(description = "Тип отчета", example = "TASK")
-    val reportType: String
+    val document: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -37,7 +35,6 @@ data class CreateReportRequest(
         if (referenceId != other.referenceId) return false
         if (documentName != other.documentName) return false
         if (!document.contentEquals(other.document)) return false
-        if (reportType != other.reportType) return false
 
         return true
     }
@@ -50,7 +47,7 @@ data class CreateReportRequest(
         result = 31 * result + referenceId.hashCode()
         result = 31 * result + documentName.hashCode()
         result = 31 * result + document.contentHashCode()
-        result = 31 * result + reportType.hashCode()
         return result
     }
+
 }
