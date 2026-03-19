@@ -1,15 +1,23 @@
 package api.masterplan.app.reportsModule.presentation.api.controller
 
+import api.masterplan.app.plansModule.presentation.dto.response.PlanErrorResponse
+import api.masterplan.app.plansModule.presentation.dto.response.PlanInformationResponse
 import api.masterplan.app.reportsModule.application.command.*
 import api.masterplan.app.reportsModule.application.usecase.*
 import api.masterplan.app.reportsModule.presentation.api.exceptionHandler.ReportControllerExceptionHandler
 import api.masterplan.app.reportsModule.presentation.dto.request.CreateReportRequest
 import api.masterplan.app.reportsModule.presentation.dto.request.UpdateReportRequest
 import api.masterplan.app.reportsModule.presentation.dto.request.UpdateReportStatusRequest
+import api.masterplan.app.reportsModule.presentation.dto.response.ReportErrorResponse
 import api.masterplan.app.reportsModule.presentation.dto.response.ReportIdResponse
 import api.masterplan.app.reportsModule.presentation.dto.response.ReportResponse
 import api.masterplan.app.reportsModule.presentation.mapper.ReportDomainToResponseMapper
 import api.masterplan.app.reportsModule.presentation.mapper.ReportRequestToDomainMapper
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -32,6 +40,37 @@ class ReportController(
 ) {
 
 
+    @Operation(
+        summary = "Получение информации об отчете",
+        description = "Получение информации об отчете по id отчета и типу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Информация об отчете получена",
+                content = [Content(schema = Schema(implementation = ReportResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Отчет с указанным id не найден",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении отчета",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/reports/getReport/{reportType}/{reportId}")
     fun getReportInformation(
         @PathVariable(value = "reportType") reportType: String,
@@ -46,6 +85,35 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Получение списка созданных отчетов",
+        description = "Получение списка созданных сотрудников отчетов по id сотрудника и типу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список отчетов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = ReportResponse::class)))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка отчетов",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/{employeeId}/reports/{reportType}/createdReports")
     fun getCreatedReports(
         @PathVariable(value = "employeeId") employeeId: UUID,
@@ -60,6 +128,35 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Получение списка созданных исполнителями отчетов для проверки",
+        description = "Получение списка созданных сотрудниками отчетов для проверки руководителем по id руководителем",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список отчетов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = ReportResponse::class)))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка отчетов",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителем"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/reports/TASK/subordinatesReports")
     fun getSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID
@@ -73,6 +170,38 @@ class ReportController(
         return ResponseEntity.ok(resp)
     }
 
+
+    @Operation(
+        summary = "Создание отчета",
+        description = "Создание отчета со всеми данными",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Отчет создан",
+                content = [Content(schema = Schema(implementation = ReportIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Отчет уже существует",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при создании отчета",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @PostMapping("/emp/reports/createReport")
     fun  createReport(
         @PathVariable(value = "reportType") reportType: String,
@@ -100,6 +229,37 @@ class ReportController(
     }
 
 
+    @Operation(
+        summary = "Обновление отчета",
+        description = "Обновление отчета, включая название, описание и прикрепленный файл",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Отчет обновлен",
+                content = [Content(schema = Schema(implementation = ReportIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Отчет с указанным id и типом не найден",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при обновлении отчета",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @PatchMapping(("/emp/reports/updateReport/{reportType}/{reportId}"))
     fun  updateReport(
         @PathVariable(value = "reportType") reportType: String,
@@ -128,6 +288,34 @@ class ReportController(
     }
 
 
+    @Operation(
+        summary = "Получение списка созданных исполнителями отчетов для проверки с фильтром по статусу",
+        description = "Получение списка созданных сотрудниками отчетов для проверки руководителем с фильтром по статусу по id руководителя и статусу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список отчетов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = ReportResponse::class)))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка отчетов",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителем"
+            )
+
+        ]
+    )
     @GetMapping("/dir/{directorId}/reports/TASK/subordinatesReports/filterStatus/{reportStatus}")
     fun getFilterByStatusSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID,
@@ -145,6 +333,34 @@ class ReportController(
     }
 
 
+    @Operation(
+        summary = "Получение списка созданных отчетов с фильтром по статусу",
+        description = "Получение списка созданных сотрудником отчетов с фильтром по статусу по id сотрудника и статусу",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Список отчетов получен",
+                content = [Content(
+                    array = ArraySchema(schema = Schema(implementation = ReportResponse::class)))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении списка отчетов",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @GetMapping("/emp/{employeeId}/reports/{reportType}/createdReports/filterStatus/{reportStatus}")
     fun getFilterByStatusCreatedReports(
         @PathVariable(value = "employeeId") employeeId: UUID,
@@ -163,6 +379,38 @@ class ReportController(
     }
 
 
+
+    @Operation(
+        summary = "Удаление отчета",
+        description = "Удаление отчета по id отчета и типу отчета",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Отчет обновлен",
+                content = [Content(schema = Schema(implementation = ReportIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Отчет с указанным id и типом не найден",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при удалении отчета",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли сотрудника"
+            )
+
+        ]
+    )
     @DeleteMapping(("/emp/reports/deleteReport/{reportType}/{reportId}"))
     fun deleteReport(
         @PathVariable(value = "reportType") reportType: String,
@@ -179,7 +427,39 @@ class ReportController(
     }
 
 
-    @PatchMapping(("/emp/reports/updateReportStatus/{reportType}/{reportId}"))
+
+    @Operation(
+        summary = "Изменение статуса отчета",
+        description = "Изменение статуса отчета по id отчета и типу отчета",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Статус отчета изменен",
+                content = [Content(schema = Schema(implementation = ReportIdResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Некорректные данные запроса",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Отчет с указанным id и типом не найден",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при удалении отчета",
+                content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
+    @PatchMapping(("/dir/reports/updateReportStatus/{reportType}/{reportId}"))
     fun changeReportStatus(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
@@ -195,8 +475,5 @@ class ReportController(
         val resp = ReportDomainToResponseMapper.toResponse(result)
         return ResponseEntity.ok(resp)
     }
-
-
-
 
 }
