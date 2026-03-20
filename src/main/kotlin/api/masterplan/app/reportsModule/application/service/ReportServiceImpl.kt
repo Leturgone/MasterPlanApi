@@ -1,7 +1,7 @@
 package api.masterplan.app.reportsModule.application.service
 
 import api.masterplan.app.logging.LoggingMethod
-import api.masterplan.app.reportsModule.application.mapper.ReportToEntityMapper
+import api.masterplan.app.reportsModule.application.mapper.ReportToDetailsMapper
 import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.dtos.ReportUpdateData
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
@@ -24,7 +24,7 @@ class ReportServiceImpl(
             ReportType.TASK -> planReportRepository.getPlanReport(reportId)
             ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
-        return ReportToEntityMapper.toReportDetails(report)
+        return ReportToDetailsMapper.toReportDetails(report)
     }
 
 
@@ -98,7 +98,7 @@ class ReportServiceImpl(
             ReportType.PLAN -> planReportRepository.getPlanReportsByEmployeeId(employeeId)
         }
 
-        return reportList.map { ReportToEntityMapper.toReportDetails(it) }
+        return reportList.map { ReportToDetailsMapper.toReportDetails(it) }
     }
 
 
@@ -113,7 +113,7 @@ class ReportServiceImpl(
         return reportList.filter { planReport ->
             planReport.reportStatus == status
         }.map {
-            ReportToEntityMapper.toReportDetails(it)
+            ReportToDetailsMapper.toReportDetails(it)
         }
     }
 
@@ -141,7 +141,7 @@ class ReportServiceImpl(
     override fun getSubordinatesTaskReports(subordinatesIds: Set<ReportEmployeeId>): List<ReportDetails> {
         val reportList = taskReportRepository.getTaskReportByEmployeeIds(subordinatesIds)
 
-        return reportList.map { ReportToEntityMapper.toReportDetails(it) }
+        return reportList.map { ReportToDetailsMapper.toReportDetails(it) }
     }
 
 
@@ -153,7 +153,7 @@ class ReportServiceImpl(
         return reportList.filter { taskReport ->
             taskReport.reportStatus == status
         }.map {
-            ReportToEntityMapper.toReportDetails(it)
+            ReportToDetailsMapper.toReportDetails(it)
         }
     }
 
