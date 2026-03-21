@@ -4,5 +4,4 @@ import api.masterplan.app.filesModule.domain.dtos.ExportFileDetails
 
 interface ExportFileService {
     fun <T> exportListToExel(data: List<T>): ExportFileDetails
-    fun <T> exportSingletEntityToExel(data: T): ExportFileDetails
 }
