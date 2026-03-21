@@ -44,17 +44,13 @@ class DocumentFileServiceImpl(
     }
 
     @LoggingMethod("filesModule")
-    override fun uploadOrUpdateFile(fileId: DocumentFileId?,documentFileBaseName: DocumentFileBaseName,
+    override fun updateFile(fileId: DocumentFileId,documentFileBaseName: DocumentFileBaseName,
                                     documentFileData: DocumentFileData): DocumentFileId {
-        if (fileId==null) {
-            return uploadFile(documentFileBaseName, documentFileData)
-        }else{
-            val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
-            val updatedFile = file.update(documentFileBaseName,documentFileData)
-            val updatedFileId = documentFileRepository.updateFile(fileId,updatedFile)
-                ?: throw FilesException.FailedToUpdateFile(fileId)
-            return updatedFileId
-        }
+        val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
+        val updatedFile = file.update(documentFileBaseName,documentFileData)
+        val updatedFileId = documentFileRepository.updateFile(fileId,updatedFile)
+            ?: throw FilesException.FailedToUpdateFile(fileId)
+        return updatedFileId
     }
 
     @LoggingMethod("filesModule")
