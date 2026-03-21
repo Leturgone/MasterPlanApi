@@ -41,7 +41,7 @@ sealed class PlanException(message: String): Exception(message){
     )
 
     class FailedToCreatePlan(planTitle: PlanTitle, directorId: PlanDirectorId) : PlanException(
-        "Failed to create plan with id =  ${planTitle.value} with director id = ${directorId.value}"
+        "Failed to create plan with title =  ${planTitle.value} with director id = ${directorId.value}"
     )
 
     class FailedToUpdatePlan(planId: PlanId) : PlanException(
