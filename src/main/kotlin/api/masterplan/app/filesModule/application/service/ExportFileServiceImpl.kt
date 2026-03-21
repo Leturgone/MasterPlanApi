@@ -17,11 +17,4 @@ class ExportFileServiceImpl(
         val file = exportFileRepository.exportListToExel(data)
         return FilesToDetailsMapper.toExportFileDetails(file)
     }
-
-
-    @LoggingMethod("filesModule")
-    override fun <T> exportSingletEntityToExel(data: T): ExportFileDetails {
-        val file = exportFileRepository.exportSingletEntityToExel(data)
-        return FilesToDetailsMapper.toExportFileDetails(file)
-    }
 }
