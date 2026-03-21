@@ -39,9 +39,9 @@ class PlanServiceImpl(
             documentId = documentId
         )
 
-        val plan = planRepository.savePlan(planEntity)?: throw PlanException.FailedToCreatePlan(title, directorId)
+        val planId = planRepository.savePlan(planEntity)?: throw PlanException.FailedToCreatePlan(title, directorId)
 
-        return plan
+        return planId
     }
 
 
