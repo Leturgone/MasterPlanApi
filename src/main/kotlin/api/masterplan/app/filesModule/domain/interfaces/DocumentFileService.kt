@@ -11,7 +11,7 @@ interface DocumentFileService {
 
     fun removeFile(fileId: DocumentFileId):DocumentFileId
 
-    fun uploadOrUpdateFile(fileId: DocumentFileId? = null,
+    fun updateFile(fileId: DocumentFileId,
                            documentFileBaseName: DocumentFileBaseName,
                            documentFileData: DocumentFileData):DocumentFileId
 
