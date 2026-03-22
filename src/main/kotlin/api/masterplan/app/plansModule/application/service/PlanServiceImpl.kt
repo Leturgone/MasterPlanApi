@@ -1,7 +1,7 @@
 package api.masterplan.app.plansModule.application.service
 
 import api.masterplan.app.logging.LoggingMethod
-import api.masterplan.app.plansModule.application.mapper.TasksPlanToEntityMapper
+import api.masterplan.app.plansModule.application.mapper.TasksPlanToDetailsMapper
 import api.masterplan.app.plansModule.domain.dtos.PlanDetails
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
 import api.masterplan.app.plansModule.domain.interfaces.PlanRepository
@@ -19,7 +19,7 @@ class PlanServiceImpl(
     override fun getPlanById(planId: PlanId): PlanDetails {
         val plan = planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
 
-        return TasksPlanToEntityMapper.toPlanDetails(plan)
+        return TasksPlanToDetailsMapper.toPlanDetails(plan)
     }
 
 
@@ -39,9 +39,9 @@ class PlanServiceImpl(
             documentId = documentId
         )
 
-        val plan = planRepository.savePlan(planEntity)?: throw PlanException.FailedToCreatePlan(title, directorId)
+        val planId = planRepository.savePlan(planEntity)?: throw PlanException.FailedToCreatePlan(title, directorId)
 
-        return plan
+        return planId
     }
 
 
@@ -50,7 +50,7 @@ class PlanServiceImpl(
     override fun getAllDirPlans(directorId: PlanDirectorId): List<PlanDetails> {
         val planList = planRepository.getDirPlans(directorId)
 
-        return planList.map { TasksPlanToEntityMapper.toPlanDetails(it)}
+        return planList.map { TasksPlanToDetailsMapper.toPlanDetails(it)}
     }
 
 
@@ -79,7 +79,7 @@ class PlanServiceImpl(
         return dirPlans.sortedBy{ plan ->
             plan.endDate.value
         }.map {
-            TasksPlanToEntityMapper.toPlanDetails(it)
+            TasksPlanToDetailsMapper.toPlanDetails(it)
         }
     }
 
@@ -92,7 +92,7 @@ class PlanServiceImpl(
         return dirPlans.filter { plan ->
             plan.status == status
         }.map {
-            TasksPlanToEntityMapper.toPlanDetails(it)
+            TasksPlanToDetailsMapper.toPlanDetails(it)
         }
     }
 

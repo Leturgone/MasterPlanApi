@@ -1,5 +1,6 @@
 package api.masterplan.app.filesModule.domain.model.entity
 
+import api.masterplan.app.filesModule.domain.model.value.DocumentFileBaseName
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileName
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileData
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
@@ -11,7 +12,7 @@ data class DocumentFile private constructor(
     val fileName: DocumentFileName,
 ){
     companion object{
-        fun create(id: DocumentFileId? = null, baseName: String, fileData: DocumentFileData): DocumentFile{
+        fun create(id: DocumentFileId? = null, baseName: DocumentFileBaseName, fileData: DocumentFileData): DocumentFile{
             val docId = id?:DocumentFileId.generate()
             val name = DocumentFileName.generate(baseName)
             return DocumentFile(
@@ -21,7 +22,7 @@ data class DocumentFile private constructor(
             )
         }
 
-        fun create(id: DocumentFileId? = null, fileData: DocumentFileData, fileName: DocumentFileName): DocumentFile {
+        fun create(id: DocumentFileId? = null, fileName: DocumentFileName, fileData: DocumentFileData): DocumentFile {
             val docId = id?:DocumentFileId.generate()
             return DocumentFile(
                 fileId = docId,
@@ -29,5 +30,13 @@ data class DocumentFile private constructor(
                 fileName = fileName
             )
         }
+
+    }
+    fun update(baseName: DocumentFileBaseName, fileData: DocumentFileData):DocumentFile{
+        return DocumentFile(
+            fileId = this.fileId,
+            fileData = fileData,
+            fileName = DocumentFileName.generate(baseName)
+        )
     }
 }

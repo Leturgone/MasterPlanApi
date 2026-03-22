@@ -3,7 +3,7 @@ package api.masterplan.app.reportsModule.application.mapper
 import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.models.entity.Report
 
-object ReportToEntityMapper {
+object ReportToDetailsMapper {
 
     fun toReportDetails(report: Report): ReportDetails {
         return ReportDetails(

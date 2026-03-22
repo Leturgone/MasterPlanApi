@@ -5,7 +5,7 @@ import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.model.entity.Plan
 import api.masterplan.app.plansModule.domain.model.entity.Task
 
-object TasksPlanToEntityMapper {
+object TasksPlanToDetailsMapper {
     
     fun toPlanDetails(entity: Plan): PlanDetails {
         return PlanDetails(

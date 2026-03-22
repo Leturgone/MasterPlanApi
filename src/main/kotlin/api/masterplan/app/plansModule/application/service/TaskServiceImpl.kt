@@ -1,7 +1,7 @@
 package api.masterplan.app.plansModule.application.service
 
 import api.masterplan.app.logging.LoggingMethod
-import api.masterplan.app.plansModule.application.mapper.TasksPlanToEntityMapper
+import api.masterplan.app.plansModule.application.mapper.TasksPlanToDetailsMapper
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
 import api.masterplan.app.plansModule.domain.interfaces.TaskRepository
@@ -26,7 +26,7 @@ class TaskServiceImpl(
     override fun getTaskById(taskId: TaskId): TaskDetails {
         val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
 
-        return TasksPlanToEntityMapper.toTaskDetails(task)
+        return TasksPlanToDetailsMapper.toTaskDetails(task)
     }
 
 
@@ -34,7 +34,7 @@ class TaskServiceImpl(
     override fun getTasksByPlanId(planId: PlanId): List<TaskDetails> {
         val tasks = taskRepository.getTasksByPlanId(planId)
 
-        return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        return tasks.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -86,13 +86,13 @@ class TaskServiceImpl(
     override fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails> {
         val tasks = taskRepository.getTasksByExecutorId(executorId)
 
-        return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        return tasks.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
     override fun getAssignedTasksForMultipleExecutors(executorIds: Set<ExecutorId>): List<TaskDetails> {
         val tasks = taskRepository.getTasksByExecutorIds(executorIds)
 
-        return tasks.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        return tasks.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -102,7 +102,7 @@ class TaskServiceImpl(
 
         return tasks.sortedBy { task ->
             task.endDate.value
-        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        }.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -112,7 +112,7 @@ class TaskServiceImpl(
 
         return tasks.sortedBy { task ->
             task.endDate.value
-        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        }.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -122,7 +122,7 @@ class TaskServiceImpl(
 
         return tasks.filter { task ->
             task.status == taskStatus
-        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        }.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -132,7 +132,7 @@ class TaskServiceImpl(
 
         return tasks.filter { task ->
             task.status == taskStatus
-        }.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        }.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
@@ -140,7 +140,7 @@ class TaskServiceImpl(
     override fun searchAssignedTasksByTitle(executorId: ExecutorId, query: String): List<TaskDetails> {
         val searchResult = taskRepository.searchExecutorTasksByTitle(executorId, query)
 
-        return searchResult.map { task -> TasksPlanToEntityMapper.toTaskDetails(task) }
+        return searchResult.map { task -> TasksPlanToDetailsMapper.toTaskDetails(task) }
     }
 
 
