@@ -1,5 +1,7 @@
 package api.masterplan.app.filesModule.infrastructure.database.mapper
 
+import api.masterplan.app.filesModule.domain.model.entity.DocumentFile
+import api.masterplan.app.filesModule.domain.model.value.DocumentFileData
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileName
 import api.masterplan.app.filesModule.infrastructure.database.dto.DocumentEntityDto
@@ -19,6 +21,14 @@ object DocumentDatabaseMapper {
             id = dto.id.value,
             name = dto.name.value,
             path = dto.path
+        )
+    }
+
+    fun toDomain(entity: DocumentEntity, bytes: ByteArray): DocumentFile{
+        return DocumentFile.create(
+            id = DocumentFileId(entity.id),
+            fileName = DocumentFileName(entity.name),
+            fileData = DocumentFileData(bytes)
         )
     }
 }
