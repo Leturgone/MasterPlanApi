@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 // Внутренний юзкейс для использования между модулей
 @Service
-class ExportListToExelUseCase(
+class ExportListToExcelUseCase(
     private val exportFileService: ExportFileService
 ) {
     operator fun <T: Any> invoke(command: ExportListToExelCommand<T> ): Result<ExportFileDetails> {
