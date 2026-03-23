@@ -5,9 +5,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 @Repository
-class FIleStorageRepositoryImpl(
+class FileStorageRepositoryImpl(
     private val storageFolder: Path
-): FIleStorageRepository {
+): FileStorageRepository {
     override fun isFileExist(fileName: String): Boolean {
         val file = storageFolder.resolve(fileName)
         return Files.exists(file)

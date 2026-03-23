@@ -1,6 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.filesStorage.repository
 
-interface FIleStorageRepository {
+interface FileStorageRepository {
 
     fun isFileExist(fileName: String): Boolean
 
