@@ -11,7 +11,7 @@ data class ExportFile private constructor(
 ){
     companion object{
         fun create(baseName: DocumentFileBaseName,fileData: DocumentFileData): ExportFile{
-            val name = DocumentFileName.generate(baseName)
+            val name = DocumentFileName.generateExportName(baseName)
             return ExportFile (
                 fileData = fileData,
                 fileName = name
