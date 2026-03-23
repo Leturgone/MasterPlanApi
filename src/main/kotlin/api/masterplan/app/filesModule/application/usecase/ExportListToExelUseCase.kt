@@ -5,6 +5,7 @@ import api.masterplan.app.filesModule.domain.dtos.ExportFileDetails
 import api.masterplan.app.filesModule.domain.interfaces.ExportFileService
 import org.springframework.stereotype.Service
 
+// Внутренний юзкейс для использования между модулей
 @Service
 class ExportListToExelUseCase(
     private val exportFileService: ExportFileService
