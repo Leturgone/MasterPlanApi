@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service
 class ExportListToExelUseCase(
     private val exportFileService: ExportFileService
 ) {
-    operator fun <T> invoke(command: ExportListToExelCommand<T> ): Result<ExportFileDetails> {
+    operator fun <T: Any> invoke(command: ExportListToExelCommand<T> ): Result<ExportFileDetails> {
         return try {
-            val exportedFile = exportFileService.exportListToExel(command.data)
+            val exportedFile = exportFileService.exportListToExcel(command.fileName,command.data)
             Result.success(exportedFile)
         }catch (e: Exception){
             Result.failure(e)
