@@ -36,8 +36,8 @@ class DocumentFileServiceImpl(
 
     @LoggingMethod("filesModule")
     override fun removeFile(fileId: DocumentFileId): DocumentFileId {
-        documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
-        val deletedFileId = documentFileRepository.removeFile(fileId)
+        val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
+        val deletedFileId = documentFileRepository.removeFile(fileId,file.fileName)
             ?: throw FilesException.FailedToDeleteFile(fileId)
 
         return deletedFileId
@@ -48,8 +48,11 @@ class DocumentFileServiceImpl(
                                     documentFileData: DocumentFileData): DocumentFileId {
         val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
         val updatedFile = file.update(documentFileBaseName,documentFileData)
-        val updatedFileId = documentFileRepository.updateFile(fileId,updatedFile)
-            ?: throw FilesException.FailedToUpdateFile(fileId)
+        val updatedFileId = documentFileRepository.updateFile(
+            fileId = fileId,
+            oldFileName = file.fileName,
+            updatedDocumentFile = updatedFile
+        ) ?: throw FilesException.FailedToUpdateFile(fileId)
         return updatedFileId
     }
 
