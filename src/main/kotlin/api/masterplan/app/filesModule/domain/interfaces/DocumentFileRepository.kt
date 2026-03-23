@@ -12,7 +12,7 @@ interface DocumentFileRepository {
 
     fun removeFile(fileId: DocumentFileId):DocumentFileId?
 
-    fun updateFile(fileId: DocumentFileId,documentFileData: DocumentFile):DocumentFileId?
+    fun updateFile(fileId: DocumentFileId,updatedDocumentFile: DocumentFile):DocumentFileId?
 
     fun getFile(fileId: DocumentFileId): DocumentFile?
 }
