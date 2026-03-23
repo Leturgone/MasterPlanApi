@@ -16,7 +16,7 @@ class ExportFileServiceImpl(
     @LoggingMethod("filesModule")
     override fun <T: Any> exportListToExcel(fileName: DocumentFileBaseName, data: List<T>): ExportFileDetails {
         val file = exportFileRepository.exportListToExcel(
-            fileName,
+            fileName = fileName,
             data = data
         )
         return FilesToDetailsMapper.toExportFileDetails(file)
