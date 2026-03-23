@@ -1,5 +1,5 @@
 package api.masterplan.app.filesModule.infrastructure.excel
 
 interface ExcelWorker {
-    fun <T: Any> exportListToExel(data: List<T>): ByteArray
+    fun <T: Any> exportListToExcel(data: List<T>): ByteArray
 }

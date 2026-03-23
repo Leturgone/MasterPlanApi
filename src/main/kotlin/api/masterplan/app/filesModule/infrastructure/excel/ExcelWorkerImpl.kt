@@ -11,7 +11,7 @@ import kotlin.reflect.full.memberProperties
 
 @Component
 class ExcelWorkerImpl(): ExcelWorker {
-    override fun <T: Any> exportListToExel(data: List<T>): ByteArray {
+    override fun <T: Any> exportListToExcel(data: List<T>): ByteArray {
         if (data.isEmpty()) return  createEmptyWorkbook()
 
         // Создание книги
