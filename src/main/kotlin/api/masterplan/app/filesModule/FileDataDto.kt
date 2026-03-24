@@ -1,9 +1,6 @@
 package api.masterplan.app.filesModule
 
-import java.util.UUID
-
 data class FileDataDto(
-    val fileId: UUID,
     val fileData: ByteArray,
     val fileName: String
 ) {
@@ -13,7 +10,6 @@ data class FileDataDto(
 
         other as FileDataDto
 
-        if (fileId != other.fileId) return false
         if (!fileData.contentEquals(other.fileData)) return false
         if (fileName != other.fileName) return false
 
@@ -21,8 +17,7 @@ data class FileDataDto(
     }
 
     override fun hashCode(): Int {
-        var result = fileId.hashCode()
-        result = 31 * result + fileData.contentHashCode()
+        var result = fileData.contentHashCode()
         result = 31 * result + fileName.hashCode()
         return result
     }
