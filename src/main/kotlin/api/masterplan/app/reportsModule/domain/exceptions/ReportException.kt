@@ -1,6 +1,7 @@
 package api.masterplan.app.reportsModule.domain.exceptions
 
 import api.masterplan.app.reportsModule.domain.models.value.*
+import java.util.*
 
 sealed class ReportException(message: String) : Exception(message) {
 
@@ -54,5 +55,27 @@ sealed class ReportException(message: String) : Exception(message) {
 
     class InternalServerError(message: String? = null) : ReportException("Internal report module server error: ${message?:""}")
 
+    class InvalidReportFileName(val errorMessage: String?) : ReportException(
+        "Invalid report file name: ${errorMessage?.let { ": $it" } ?: ""}"
+    )
 
+    class ReportFileNotExist(val fileId: UUID): ReportException(
+        "Report file with id $fileId not found"
+    )
+
+    class ReportFileAlreadyExists(val fileName: String): ReportException(
+        "Report file with name: $fileName already exists"
+    )
+
+    class FailedToCreateReportFile(val fileName: String): ReportException(
+        "Failed to create report file with name: $fileName"
+    )
+
+    class FailedToUpdateReportFile(val fileId: UUID): ReportException(
+        "Failed to update report file with id: $fileId"
+    )
+
+    class FailedToDeleteReportFile(val fileId: UUID): ReportException(
+        "Failed to delete report file with id: $fileId"
+    )
 }
