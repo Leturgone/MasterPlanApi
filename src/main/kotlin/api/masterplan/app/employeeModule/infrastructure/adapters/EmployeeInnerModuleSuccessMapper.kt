@@ -2,8 +2,10 @@ package api.masterplan.app.employeeModule.infrastructure.adapters
 
 import api.masterplan.app.employeeModule.application.dto.EmpTaskModel
 import api.masterplan.app.employeeModule.application.dto.EmpTaskStatus
+import api.masterplan.app.employeeModule.application.dto.FileModel
 import api.masterplan.app.employeeModule.application.exceptions.EmpTaskException
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
+import api.masterplan.app.filesModule.ExportFileDto
 import api.masterplan.app.plansModule.TaskModelDto
 
 internal object EmployeeInnerModuleSuccessMapper {
@@ -21,5 +23,12 @@ internal object EmployeeInnerModuleSuccessMapper {
                 weight = taskModelDto.weight,
             )
         }
+    }
+
+    fun toExportFileModel(file: ExportFileDto): FileModel {
+        return FileModel(
+            fileData = file.fileData,
+            fileName = file.fileName
+        )
     }
 }
