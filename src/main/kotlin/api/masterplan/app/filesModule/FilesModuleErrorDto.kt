@@ -1,32 +1,30 @@
 package api.masterplan.app.filesModule
 
-import api.masterplan.app.filesModule.domain.model.value.DocumentFileBaseName
-import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
-import api.masterplan.app.filesModule.domain.model.value.DocumentFileName
+import java.util.*
 
 sealed class FilesModuleErrorDto(message : String) : Exception(message) {
     class InvalidFileName(val errorMessage: String?) : FilesModuleErrorDto(
         "Invalid file name: ${errorMessage?.let { ": $it" } ?: ""}"
     )
 
-    class FileNotExist(val fileId: DocumentFileId): FilesModuleErrorDto(
-        "File with id ${fileId.value} not found"
+    class FileNotExist(val fileId: UUID): FilesModuleErrorDto(
+        "File with id $fileId not found"
     )
 
-    class FileAlreadyExists(val fileName: DocumentFileBaseName): FilesModuleErrorDto(
-        "File with name: ${fileName.value} already exists"
+    class FileAlreadyExists(val fileName: String): FilesModuleErrorDto(
+        "File with name: $fileName already exists"
     )
 
-    class FailedToCreateFile(val fileName: DocumentFileName): FilesModuleErrorDto(
-        "Failed to create file with name: ${fileName.value}"
+    class FailedToCreateFile(val fileName: String): FilesModuleErrorDto(
+        "Failed to create file with name: $fileName"
     )
 
-    class FailedToUpdateFile(val fileId: DocumentFileId): FilesModuleErrorDto(
-        "Failed to update file with id: ${fileId.value}"
+    class FailedToUpdateFile(val fileId: UUID): FilesModuleErrorDto(
+        "Failed to update file with id: $fileId"
     )
 
-    class FailedToDeleteFile(val fileId: DocumentFileId): FilesModuleErrorDto(
-        "Failed to delete file with id: ${fileId.value}"
+    class FailedToDeleteFile(val fileId: UUID): FilesModuleErrorDto(
+        "Failed to delete file with id: $fileId"
     )
 
     class InternalServerError(message: String) : FilesModuleErrorDto(message)
