@@ -1,6 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.intermodule
 
-import api.masterplan.app.filesModule.ExportFileDto
+import api.masterplan.app.filesModule.FileDataDto
 import api.masterplan.app.filesModule.FilesModuleService
 import api.masterplan.app.filesModule.application.command.ExportListToExelCommand
 import api.masterplan.app.filesModule.application.command.RemoveFileCommand
@@ -23,7 +23,7 @@ class FilesModuleServiceImpl(
     private val updateFileUseCase: UpdateFileUseCase,
     private val exportListToExcelUseCase: ExportListToExcelUseCase
 ): FilesModuleService {
-    override fun <T : Any> exportListToExcel(fileName: String, data: List<T>): Result<ExportFileDto> {
+    override fun <T : Any> exportListToExcel(fileName: String, data: List<T>): Result<FileDataDto> {
         return try {
             val command = ExportListToExelCommand(
                 fileName = DocumentFileBaseName.validate(fileName),
