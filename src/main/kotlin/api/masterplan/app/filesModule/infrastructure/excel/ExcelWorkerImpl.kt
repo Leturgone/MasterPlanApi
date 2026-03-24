@@ -1,5 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.excel
 
+import api.masterplan.app.export.DisplayNameUtil
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
@@ -21,15 +22,20 @@ class ExcelWorkerImpl(): ExcelWorker {
 
         // Создание заголовка
         val headerRow = sheet.createRow(0)
+
         // Используем рефлексию
         val kClass = data.first()::class
+
+        val classDisplayNames = getExportFieldNamesMap(data.first())
 
         // Получаем поля класса
         val classFields = kClass.memberProperties
 
+
         classFields.forEachIndexed { index, field->
             val fieldName = field.name
-            headerRow.createCell(index).setCellValue(fieldName)
+            val displayName = classDisplayNames[fieldName]
+            headerRow.createCell(index).setCellValue(displayName)
         }
 
         // Заполнение данными
@@ -62,6 +68,11 @@ class ExcelWorkerImpl(): ExcelWorker {
             workbook.write(outputStream)
             outputStream.toByteArray()
         }
+    }
+
+    private fun <T: Any> getExportFieldNamesMap(instate: T): Map<String, String> {
+        val fieldNames = DisplayNameUtil.getDisplayNames(instate::class.java)
+        return fieldNames
     }
 
     private fun getFormattedValue(value: Any?): String{
