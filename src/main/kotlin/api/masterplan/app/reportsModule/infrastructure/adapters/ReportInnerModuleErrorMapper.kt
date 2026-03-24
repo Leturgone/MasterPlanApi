@@ -15,7 +15,7 @@ internal object ReportInnerModuleErrorMapper {
             is FilesModuleErrorDto.FileAlreadyExists -> ReportFileAlreadyExists(ex.fileName)
             is FilesModuleErrorDto.FileNotExist -> ReportFileNotExist(ex.fileId)
             is FilesModuleErrorDto.InternalServerError -> InternalServerError(ex.message)
-            is FilesModuleErrorDto.InvalidFileName -> InvalidReportTitle(ex.message)
+            is FilesModuleErrorDto.InvalidFileName -> InvalidReportFileName(ex.message)
             else -> InternalServerError()
         }
     }
