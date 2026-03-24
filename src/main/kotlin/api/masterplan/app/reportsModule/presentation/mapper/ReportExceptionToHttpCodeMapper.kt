@@ -18,6 +18,12 @@ object ReportExceptionToHttpCodeMapper {
             is ReportException.ReportAlreadyExist -> HttpStatus.CONFLICT
             is ReportException.ReportNotExist -> HttpStatus.NOT_FOUND
             is ReportException.InvalidReportType -> HttpStatus.BAD_REQUEST
+            is ReportException.FailedToCreateReportFile -> HttpStatus.INTERNAL_SERVER_ERROR
+            is ReportException.FailedToDeleteReportFile -> HttpStatus.INTERNAL_SERVER_ERROR
+            is ReportException.FailedToUpdateReportFile -> HttpStatus.INTERNAL_SERVER_ERROR
+            is ReportException.InvalidReportFileName -> HttpStatus.BAD_REQUEST
+            is ReportException.ReportFileAlreadyExists -> HttpStatus.CONFLICT
+            is ReportException.ReportFileNotExist -> HttpStatus.NOT_FOUND
             else -> HttpStatus.INTERNAL_SERVER_ERROR
         }
     }
