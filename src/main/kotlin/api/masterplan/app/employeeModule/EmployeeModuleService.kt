@@ -8,4 +8,6 @@ interface EmployeeModuleService {
 
     fun getSubordinateEmployees(directorId: UUID): Result<Set<UUID>>
 
+    fun getEmployeeById(employeeId: UUID): Result<EmployeeDataDto>
+
 }
