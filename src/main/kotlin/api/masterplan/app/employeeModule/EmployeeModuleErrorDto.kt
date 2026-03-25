@@ -1,5 +1,7 @@
 package api.masterplan.app.employeeModule
 
+import java.util.UUID
+
 sealed class EmployeeModuleErrorDto(message: String): Exception(message){
 
     class InvalidEmployeeName(message: String?): EmployeeModuleErrorDto(
@@ -28,6 +30,9 @@ sealed class EmployeeModuleErrorDto(message: String): Exception(message){
         "Failed to create employee with name $name $surname ${patronymic ?: ""}"
     )
 
+    class EmployeeNotExist(val employeeId: UUID): EmployeeModuleErrorDto(
+        "Employee with employee id $employeeId does not exist"
+    )
 
     class InternalServerError : EmployeeModuleErrorDto("Internal employee module server error")
 }
