@@ -11,6 +11,7 @@ internal object InterModuleEmplToDtoErrorMapper {
             is EmployeeException.InvalidEmployeePatronymic -> EmployeeModuleErrorDto.InvalidEmployeePatronymic(exception.message)
             is EmployeeException.FailedToCreateEmployee -> EmployeeModuleErrorDto.FailedToCreateEmployee(exception.name.value,exception.surname.value,exception.patronymic?.value)
             is EmployeeException.EmployeeAlreadyExists -> EmployeeModuleErrorDto.EmployeeAlreadyExists(exception.name.value,exception.surname.value,exception.patronymic?.value)
+            is EmployeeException.EmployeeNotExist -> EmployeeModuleErrorDto.EmployeeNotExist(exception.id.value)
             else -> EmployeeModuleErrorDto.InternalServerError()
         }
     }
