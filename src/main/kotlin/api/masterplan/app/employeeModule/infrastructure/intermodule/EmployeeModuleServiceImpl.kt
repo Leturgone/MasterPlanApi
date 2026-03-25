@@ -4,8 +4,11 @@ import api.masterplan.app.employeeModule.EmployeeDataDto
 import api.masterplan.app.employeeModule.EmployeeModuleService
 import api.masterplan.app.employeeModule.application.command.CreateEmployeeCommand
 import api.masterplan.app.employeeModule.application.command.GetAllDirectorEmployeesCommand
+import api.masterplan.app.employeeModule.application.command.GetEmployeeByIdCommand
 import api.masterplan.app.employeeModule.application.usecase.CreateEmployeeUseCase
 import api.masterplan.app.employeeModule.application.usecase.GetAllDirectorEmployeesUseCase
+import api.masterplan.app.employeeModule.application.usecase.GetEmployeeByIdUseCase
+import api.masterplan.app.employeeModule.domain.dtos.EmployeeDetails
 import api.masterplan.app.employeeModule.domain.exceptions.EmployeeException
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
@@ -19,6 +22,7 @@ import java.util.*
 class EmployeeModuleServiceImpl(
     private val createEmployeeUseCase: CreateEmployeeUseCase,
     private val getAllDirectorEmployeesUseCase: GetAllDirectorEmployeesUseCase,
+    private val getEmployeeByIdUseCase: GetEmployeeByIdUseCase,
 ): EmployeeModuleService {
     override fun createEmployee(employee: EmployeeDataDto): Result<UUID> {
         return try {
@@ -51,4 +55,27 @@ class EmployeeModuleServiceImpl(
         }
     }
 
+    override fun getEmployeeById(employeeId: UUID): Result<EmployeeDataDto> {
+        return try {
+            val command = GetEmployeeByIdCommand(
+                id = EmployeeId(employeeId)
+            )
+            val result = getEmployeeByIdUseCase(command).getOrThrow()
+            val emp = result.toDto()
+            Result.success(emp)
+        }catch (e: EmployeeException){
+            val exception = InterModuleEmplToDtoErrorMapper.toDto(e)
+            Result.failure(exception)
+        }
+    }
+
+    private fun EmployeeDetails.toDto():EmployeeDataDto{
+        return EmployeeDataDto(
+            name = name.value,
+            surname = surname.value,
+            patronymic = patronymic?.value,
+            directorId = directorId?.value,
+            userId = userId.value
+        )
+    }
 }
