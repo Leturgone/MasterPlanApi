@@ -30,9 +30,16 @@ class SecurityConfig(
             auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/dir/**").hasAuthority("DIRECTOR")
             auth.requestMatchers("/api/v1/employees/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/files/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/plans/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/plans/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/tasks/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/tasks/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/reports/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/reports/emp/**").hasAuthority("EMPLOYEE")
             auth.anyRequest().authenticated()
         }
-        // ДОБАВИТЬ ЕЩЕ РЕКВЕСТ МАТЧЕРЫ ДЛЯ ДРУГИХ МОДУЛЕЙ
+
         // Загрузка пользователя при аутентификации
         http.userDetailsService(appUserDetailsService)
 
