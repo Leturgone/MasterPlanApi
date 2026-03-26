@@ -72,7 +72,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/plans/getPlan/{planId}/")
+    @GetMapping("/plans/emp/plan/{planId}/")
     fun getPlanInformation(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanInformationResponse> {
         val command = GetPlanInfCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -109,7 +109,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/tasks/getTask/{taskId}/")
+    @GetMapping("/tasks/emp/task/{taskId}/")
     fun getTaskInformation(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskInformationResponse> {
         val command = GetTaskInfCommand(
             taskId = PlanRequestToDomainMapper.toTaskId(taskId)
@@ -142,7 +142,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/plans/getPlan/{planId}/tasks")
+    @GetMapping("/plans/dir/plan/{planId}/tasks")
     fun getPlanTasks(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetTasksFromPlanCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -180,7 +180,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/plans/{planId}/tasks/filterStatus/{status}")
+    @GetMapping("/plans/dir/plan/{planId}/tasks/filterStatus/{status}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
         @PathVariable(value = "status") status: String): ResponseEntity<List<TaskInformationResponse>>{
@@ -217,7 +217,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/plans/{planId}/tasks/sortTime")
+    @GetMapping("/plans/dir/plan/{planId}/tasks/sortTime")
     fun getPlanTasksSortByTime(@PathVariable(value = "planId") planId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = SortPlanTasksByEndDateCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -249,7 +249,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/{executorId}/assignedTasks")
+    @GetMapping("/tasks/emp/{executorId}/assignedTasks")
     fun getAssignedTasks(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = GetAssignedTasksCommand(
             executorId = PlanRequestToDomainMapper.toExecutorId(executorId)
@@ -282,7 +282,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/{executorId}/assignedTasks/search/{query}")
+    @GetMapping("/tasks/emp/{executorId}/assignedTasks/search/{query}")
     fun searchAssignedTasksByTitle(
         @PathVariable(value = "executorId") executorId: UUID,
         @PathVariable(value = "query") query: String): ResponseEntity<List<TaskInformationResponse>>{
@@ -323,7 +323,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/{executorId}/assignedTasks/filterStatus/{status}")
+    @GetMapping("/tasks/emp/{executorId}/assignedTasks/filterStatus/{status}")
     fun getAssignedTasksFilterByStatus(
         @PathVariable(value = "executorId") executorId: UUID,
         @PathVariable(value = "status") status: String
@@ -360,7 +360,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/emp/{executorId}/assignedTasks/sortTime")
+    @GetMapping("/tasks/emp/{executorId}/assignedTasks/sortTime")
     fun getAssignedTasksSortByTime(@PathVariable(value = "executorId") executorId: UUID): ResponseEntity<List<TaskInformationResponse>>{
         val command = SortAssignedTasksByEndDateCommand(
             executorId = PlanRequestToDomainMapper.toExecutorId(executorId)
@@ -397,7 +397,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/plans/{planId}/export")
+    @GetMapping("/plans/dir/plan/{planId}/export")
     fun exportPlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<ExportPlanResponse>{
         val command = ExportPlanCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -439,7 +439,7 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/dir/plans/createPlan")
+    @PostMapping("/plans/dir/createPlan")
     fun createPLan(@RequestBody request: CreatePlanRequest): ResponseEntity<PlanIdResponse>{
         val file = PlanRequestToDomainMapper.toPlanFile(
             fileName = request.documentName,
@@ -498,7 +498,7 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/dir/tasks/createTask")
+    @PostMapping("/tasks/dir/createTask")
     fun addTaskToPlan(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskIdResponse>{
         val file = PlanRequestToDomainMapper.toTaskFile(
             fileName = request.documentName,
@@ -541,7 +541,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/plans/myPlans")
+    @GetMapping("/plans/dir/{directorId}/myPlans")
     fun getDirPlans(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = GetDirPlansCommand(PlanRequestToDomainMapper.toDirectorId(directorId))
         val result = getDirPlansUseCase(command).getOrThrow()
@@ -578,7 +578,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/plans/filterStatus/{status}")
+    @GetMapping("/plans/dir/{directorId}/myPlans/filterStatus/{status}")
     fun getDirPlansFilterByStatus(
         @PathVariable(value = "directorId") directorId: UUID,
         @PathVariable(value = "status") status: String): ResponseEntity<List<PlanInformationResponse>>{
@@ -614,7 +614,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/plans/sortTime")
+    @GetMapping("/plans/dir/{directorId}/myPlans/sortTime")
     fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = SortDirPlansByEndDateCommand(
             directorId = PlanRequestToDomainMapper.toDirectorId(directorId)
@@ -657,7 +657,7 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/dir/tasks/updateTask/{taskId}")
+    @PutMapping("/tasks/dir/updateTask/{taskId}")
     fun updateTask(@PathVariable(value = "taskId") taskId: UUID,
                    @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
@@ -719,7 +719,7 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/dir/plans/updatePlan/{planId}")
+    @PutMapping("/plans/dir/updatePlan/{planId}")
     fun updatePlan(@PathVariable(value = "planId") planId: UUID,
                    @RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -775,7 +775,7 @@ class PlanController(
 
         ]
     )
-    @DeleteMapping("/dir/plans/deletePlan/{planId}")
+    @DeleteMapping("/plans/dir/deletePlan/{planId}")
     fun deletePlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
         val command = DeletePlanCommand(planDomainId)
@@ -812,7 +812,7 @@ class PlanController(
 
         ]
     )
-    @DeleteMapping("/dir/tasks/deleteTask/{taskId}")
+    @DeleteMapping("/tasks/dir/deleteTask/{taskId}")
     fun deleteTask(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
         val command = DeleteTaskFromPlanCommand(taskDomainId)
@@ -854,7 +854,7 @@ class PlanController(
 
         ]
     )
-    @PatchMapping("/dir/plans/updatePlanStatus/{planId}")
+    @PatchMapping("/plans/dir/updatePlanStatus/{planId}")
     fun updatePlanStatus(@PathVariable(value = "planId") planId: UUID,
                          @RequestBody request: UpdatePlanStatusRequest): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -901,7 +901,7 @@ class PlanController(
 
         ]
     )
-    @PatchMapping("/dir/tasks/updateTaskStatus/{taskId}")
+    @PatchMapping("/tasks/dir/updateTaskStatus/{taskId}")
     fun updateTaskStatus(@PathVariable(value = "taskId") taskId: UUID,
                          @RequestBody request: UpdateTaskStatusRequest): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
