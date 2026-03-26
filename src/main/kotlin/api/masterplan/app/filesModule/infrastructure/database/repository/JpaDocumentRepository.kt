@@ -9,7 +9,7 @@ import java.util.UUID
 @Repository
 interface JpaDocumentRepository: CrudRepository<DocumentEntity, UUID> {
 
-    @Query("SELECT p FROM Document p WHERE p.name LIKE CONCAT(:baseName, '%')")
+    @Query("SELECT p FROM DocumentEntity p WHERE p.name LIKE CONCAT(:baseName, '%')")
     fun existsByBaseName(baseName: String): Boolean
 
 }
