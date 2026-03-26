@@ -1,4 +1,4 @@
-package api.masterplan.app.logging
+package api.masterplan.app.logging.annotations
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
