@@ -1,4 +1,4 @@
-package api.masterplan.app.filesModule
+package api.masterplan.app.apiContracts.files
 
 data class FileDataDto(
     val fileData: ByteArray,
