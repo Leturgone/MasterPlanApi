@@ -5,7 +5,7 @@ import api.masterplan.app.authModule.domain.dto.UserAuthCredentials
 import api.masterplan.app.authModule.application.ports.UserCredentialsProvider
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
-import api.masterplan.app.userManagementModule.UserManageModuleService
+import api.masterplan.app.apiContracts.userManagement.UserManageModuleService
 import org.springframework.stereotype.Component
 
 @Component

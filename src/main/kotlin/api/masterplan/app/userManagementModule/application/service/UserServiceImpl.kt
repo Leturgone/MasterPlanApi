@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.application.service
 
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import api.masterplan.app.userManagementModule.application.dto.EmployeeInfo
 import api.masterplan.app.userManagementModule.application.ports.EmployeeCreationPort
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails

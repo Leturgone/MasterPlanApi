@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.infrastructure.intermodule
 
-import api.masterplan.app.userManagementModule.UserModuleErrorDto
+import api.masterplan.app.apiContracts.userManagement.UserModuleErrorDto
 import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
 
 internal object InterModuleUserToDtoErrorMapper {

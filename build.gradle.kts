@@ -46,6 +46,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.github.f4b6a3:uuid-creator:6.1.0")
 	implementation("org.bouncycastle:bcprov-jdk18on:1.83")
+	implementation("org.apache.poi:poi-ooxml:5.5.1")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 }

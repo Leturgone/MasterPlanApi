@@ -1,6 +1,6 @@
 package api.masterplan.app.reportsModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeModuleService
+import api.masterplan.app.apiContracts.employee.EmployeeModuleService
 import api.masterplan.app.reportsModule.application.ports.ReportEmployeesPort
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
 import org.springframework.stereotype.Component

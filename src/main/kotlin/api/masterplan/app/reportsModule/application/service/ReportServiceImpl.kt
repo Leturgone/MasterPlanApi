@@ -1,6 +1,6 @@
 package api.masterplan.app.reportsModule.application.service
 
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import api.masterplan.app.reportsModule.application.mapper.ReportToDetailsMapper
 import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.dtos.ReportUpdateData

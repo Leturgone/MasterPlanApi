@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.intermodule
 
-import api.masterplan.app.plansModule.PlanModuleErrorDto
+import api.masterplan.app.apiContracts.plans.PlanModuleErrorDto
 
 internal object InterModuleTaskToDtoErrorMapper {
     fun toDto(exception: Throwable): PlanModuleErrorDto {

@@ -32,7 +32,7 @@ class SecurityConfig(
             auth.requestMatchers("/api/v1/employees/emp/**").hasAuthority("EMPLOYEE")
             auth.anyRequest().authenticated()
         }
-        // СДЕЛАТЬ ФИЛЬТР ДЛЯ АДМИНА  И ДИРЕКТОРА В ЕМПЛОЙ
+        // ДОБАВИТЬ ЕЩЕ РЕКВЕСТ МАТЧЕРЫ ДЛЯ ДРУГИХ МОДУЛЕЙ
         // Загрузка пользователя при аутентификации
         http.userDetailsService(appUserDetailsService)
 
@@ -45,5 +45,7 @@ class SecurityConfig(
         http.logout { it.disable() }
 
         return http.build()
+
+
     }
 }

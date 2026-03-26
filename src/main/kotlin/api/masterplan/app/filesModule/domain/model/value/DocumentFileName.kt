@@ -11,5 +11,10 @@ value class DocumentFileName(val value: String){
             val newFileName = "$timeSnap${fileName.value}"
             return DocumentFileName(newFileName)
         }
+        fun generateExportName(fileName: DocumentFileBaseName):DocumentFileName{
+            val timeSnap = DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now())
+            val newFileName = "export_$timeSnap${fileName.value}.xlsx"
+            return DocumentFileName(newFileName)
+        }
     }
 }

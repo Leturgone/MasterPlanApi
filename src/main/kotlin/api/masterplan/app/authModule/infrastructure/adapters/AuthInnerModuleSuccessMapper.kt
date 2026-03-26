@@ -5,7 +5,7 @@ import api.masterplan.app.authModule.domain.dto.UserAuthCredentials
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
 import api.masterplan.app.authModule.domain.model.value.AuthUserRole
-import api.masterplan.app.userManagementModule.UserCredentialsDto
+import api.masterplan.app.apiContracts.userManagement.UserCredentialsDto
 
 internal object AuthInnerModuleSuccessMapper {
 

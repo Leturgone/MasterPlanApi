@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeModuleErrorDto
+import api.masterplan.app.apiContracts.employee.EmployeeModuleErrorDto
 import api.masterplan.app.userManagementModule.domain.exceprions.UserManagementException
 import api.masterplan.app.userManagementModule.domain.models.value.UserLogin
 

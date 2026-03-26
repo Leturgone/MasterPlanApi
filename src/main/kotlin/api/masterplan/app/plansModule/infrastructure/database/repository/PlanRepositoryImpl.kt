@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.database.repository
 
-import api.masterplan.app.logging.LoggingDatabaseMethod
+import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import api.masterplan.app.plansModule.domain.interfaces.PlanRepository
 import api.masterplan.app.plansModule.domain.model.entity.Plan
 import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId

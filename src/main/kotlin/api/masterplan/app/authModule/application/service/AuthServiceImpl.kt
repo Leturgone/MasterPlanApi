@@ -5,7 +5,7 @@ import api.masterplan.app.authModule.domain.dto.UserAuthCredentials
 import api.masterplan.app.authModule.domain.interfaces.AuthService
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
 import api.masterplan.app.authModule.domain.model.value.AuthUserPassword
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
 
 @Service

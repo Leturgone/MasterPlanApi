@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.infrastructure.database.repository
 
-import api.masterplan.app.logging.LoggingDatabaseMethod
+import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import api.masterplan.app.userManagementModule.domain.interfaces.UserRepository
 import api.masterplan.app.userManagementModule.domain.models.entity.AppUser
 import api.masterplan.app.userManagementModule.domain.models.value.UserId
