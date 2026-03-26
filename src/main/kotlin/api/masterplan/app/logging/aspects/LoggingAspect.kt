@@ -1,5 +1,6 @@
-package api.masterplan.app.logging
+package api.masterplan.app.logging.aspects
 
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.*
 import org.aspectj.lang.reflect.MethodSignature

@@ -1,5 +1,6 @@
-package api.masterplan.app.logging
+package api.masterplan.app.logging.aspects
 
+import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.AfterThrowing
 import org.aspectj.lang.annotation.Aspect
