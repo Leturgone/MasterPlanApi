@@ -1,7 +1,7 @@
 package api.masterplan.app.plansModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeModuleErrorDto
-import api.masterplan.app.filesModule.FilesModuleErrorDto
+import api.masterplan.app.apiContracts.employee.EmployeeModuleErrorDto
+import api.masterplan.app.apiContracts.files.FilesModuleErrorDto
 import api.masterplan.app.plansModule.domain.exceptions.PlanException
 
 object PlansInnerModuleErrorMapper {

@@ -5,7 +5,7 @@ import api.masterplan.app.filesModule.domain.dtos.ExportFileDetails
 import api.masterplan.app.filesModule.domain.interfaces.ExportFileRepository
 import api.masterplan.app.filesModule.domain.interfaces.ExportFileService
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileBaseName
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
 
 @Service

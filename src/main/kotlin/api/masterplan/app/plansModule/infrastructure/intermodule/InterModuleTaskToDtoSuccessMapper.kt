@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.intermodule
 
-import api.masterplan.app.plansModule.TaskModelDto
+import api.masterplan.app.apiContracts.plans.TaskModelDto
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 
 internal object InterModuleTaskToDtoSuccessMapper {

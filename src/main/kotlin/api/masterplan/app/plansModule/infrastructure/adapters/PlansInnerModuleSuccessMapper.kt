@@ -1,7 +1,7 @@
 package api.masterplan.app.plansModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeDataDto
-import api.masterplan.app.filesModule.FileDataDto
+import api.masterplan.app.apiContracts.employee.EmployeeDataDto
+import api.masterplan.app.apiContracts.files.FileDataDto
 import api.masterplan.app.plansModule.application.dto.ExecutorDto
 import api.masterplan.app.plansModule.application.dto.PlanExportFile
 import api.masterplan.app.plansModule.domain.model.value.ExecutorId

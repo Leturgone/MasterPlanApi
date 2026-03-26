@@ -1,7 +1,7 @@
 package api.masterplan.app.reportsModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeModuleErrorDto
-import api.masterplan.app.filesModule.FilesModuleErrorDto
+import api.masterplan.app.apiContracts.employee.EmployeeModuleErrorDto
+import api.masterplan.app.apiContracts.files.FilesModuleErrorDto
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException.*
 

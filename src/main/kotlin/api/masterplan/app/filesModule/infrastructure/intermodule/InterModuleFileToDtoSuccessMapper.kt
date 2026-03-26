@@ -1,6 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.intermodule
 
-import api.masterplan.app.filesModule.FileDataDto
+import api.masterplan.app.apiContracts.files.FileDataDto
 import api.masterplan.app.filesModule.domain.dtos.ExportFileDetails
 
 object InterModuleFileToDtoSuccessMapper {

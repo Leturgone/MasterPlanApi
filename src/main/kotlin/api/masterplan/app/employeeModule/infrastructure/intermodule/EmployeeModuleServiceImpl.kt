@@ -1,7 +1,7 @@
 package api.masterplan.app.employeeModule.infrastructure.intermodule
 
-import api.masterplan.app.employeeModule.EmployeeDataDto
-import api.masterplan.app.employeeModule.EmployeeModuleService
+import api.masterplan.app.apiContracts.employee.EmployeeDataDto
+import api.masterplan.app.apiContracts.employee.EmployeeModuleService
 import api.masterplan.app.employeeModule.application.command.CreateEmployeeCommand
 import api.masterplan.app.employeeModule.application.command.GetAllDirectorEmployeesCommand
 import api.masterplan.app.employeeModule.application.command.GetEmployeeByIdCommand

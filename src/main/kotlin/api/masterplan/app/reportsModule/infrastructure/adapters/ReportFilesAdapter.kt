@@ -1,6 +1,6 @@
 package api.masterplan.app.reportsModule.infrastructure.adapters
 
-import api.masterplan.app.filesModule.FilesModuleService
+import api.masterplan.app.apiContracts.files.FilesModuleService
 import api.masterplan.app.reportsModule.application.dto.ReportFile
 import api.masterplan.app.reportsModule.application.ports.ReportFilesPort
 import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId

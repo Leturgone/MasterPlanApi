@@ -1,6 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.excel
 
-import api.masterplan.app.export.DisplayNameUtil
+import api.masterplan.app.export.util.DisplayNameUtil
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream

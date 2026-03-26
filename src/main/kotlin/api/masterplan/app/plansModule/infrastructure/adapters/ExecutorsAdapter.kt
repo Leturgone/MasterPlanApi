@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeModuleService
+import api.masterplan.app.apiContracts.employee.EmployeeModuleService
 import api.masterplan.app.plansModule.application.dto.ExecutorDto
 import api.masterplan.app.plansModule.application.ports.ExecutorsPort
 import api.masterplan.app.plansModule.domain.dtos.TaskDetails

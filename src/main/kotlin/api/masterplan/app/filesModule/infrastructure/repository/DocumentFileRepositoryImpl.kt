@@ -9,7 +9,7 @@ import api.masterplan.app.filesModule.infrastructure.database.dto.DocumentEntity
 import api.masterplan.app.filesModule.infrastructure.database.mapper.DocumentDatabaseMapper
 import api.masterplan.app.filesModule.infrastructure.database.repository.JpaDocumentRepository
 import api.masterplan.app.filesModule.infrastructure.filesStorage.repository.FileStorageRepository
-import api.masterplan.app.logging.LoggingDatabaseMethod
+import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import org.springframework.stereotype.Repository
 
 @Repository

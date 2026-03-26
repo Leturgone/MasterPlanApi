@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.adapters.dto
 
-import api.masterplan.app.export.ExportDisplayName
+import api.masterplan.app.export.annotation.ExportDisplayName
 import java.time.LocalDate
 
 data class TaskWithExecutorsDto(

@@ -5,8 +5,8 @@ import api.masterplan.app.employeeModule.application.dto.EmpTaskStatus
 import api.masterplan.app.employeeModule.application.dto.FileModel
 import api.masterplan.app.employeeModule.application.exceptions.EmpTaskException
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
-import api.masterplan.app.filesModule.FileDataDto
-import api.masterplan.app.plansModule.TaskModelDto
+import api.masterplan.app.apiContracts.files.FileDataDto
+import api.masterplan.app.apiContracts.plans.TaskModelDto
 
 internal object EmployeeInnerModuleSuccessMapper {
     fun toEmpTaskModelList(tasks: List<TaskModelDto>): List<EmpTaskModel> {

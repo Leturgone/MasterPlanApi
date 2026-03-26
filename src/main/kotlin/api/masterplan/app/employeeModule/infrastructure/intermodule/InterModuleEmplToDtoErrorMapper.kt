@@ -1,6 +1,6 @@
 package api.masterplan.app.employeeModule.infrastructure.intermodule
 
-import api.masterplan.app.employeeModule.EmployeeModuleErrorDto
+import api.masterplan.app.apiContracts.employee.EmployeeModuleErrorDto
 import api.masterplan.app.employeeModule.domain.exceptions.EmployeeException
 
 internal object InterModuleEmplToDtoErrorMapper {

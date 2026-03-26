@@ -7,7 +7,7 @@ import api.masterplan.app.employeeModule.domain.interfaces.EmployeeMetricsServic
 import api.masterplan.app.employeeModule.domain.model.entity.Employee
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeMetrics
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

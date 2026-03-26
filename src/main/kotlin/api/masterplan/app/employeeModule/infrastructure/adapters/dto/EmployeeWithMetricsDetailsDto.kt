@@ -1,6 +1,6 @@
 package api.masterplan.app.employeeModule.infrastructure.adapters.dto
 
-import api.masterplan.app.export.ExportDisplayName
+import api.masterplan.app.export.annotation.ExportDisplayName
 
 data class EmployeeWithMetricsDetailsDto(
     @ExportDisplayName("ID")

@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.infrastructure.intermodule
 
-import api.masterplan.app.userManagementModule.UserCredentialsDto
+import api.masterplan.app.apiContracts.userManagement.UserCredentialsDto
 import api.masterplan.app.userManagementModule.domain.dtos.AppUserDetails
 
 internal object InterModuleUserToDtoSuccessMapper {

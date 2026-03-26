@@ -1,7 +1,7 @@
 package api.masterplan.app.userManagementModule.infrastructure.intermodule
 
-import api.masterplan.app.userManagementModule.UserCredentialsDto
-import api.masterplan.app.userManagementModule.UserManageModuleService
+import api.masterplan.app.apiContracts.userManagement.UserCredentialsDto
+import api.masterplan.app.apiContracts.userManagement.UserManageModuleService
 import api.masterplan.app.userManagementModule.application.command.GetUserByLoginCommand
 import api.masterplan.app.userManagementModule.application.command.ValidateCredentialsCommand
 import api.masterplan.app.userManagementModule.application.usecase.GetUserByLoginUseCase

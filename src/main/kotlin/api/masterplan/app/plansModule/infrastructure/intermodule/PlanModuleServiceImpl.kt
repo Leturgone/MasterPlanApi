@@ -1,7 +1,7 @@
 package api.masterplan.app.plansModule.infrastructure.intermodule
 
-import api.masterplan.app.plansModule.PlanModuleService
-import api.masterplan.app.plansModule.TaskModelDto
+import api.masterplan.app.apiContracts.plans.PlanModuleService
+import api.masterplan.app.apiContracts.plans.TaskModelDto
 import api.masterplan.app.plansModule.application.command.GetAssignedTasksCommand
 import api.masterplan.app.plansModule.application.command.GetAssignedTasksForMultipleEmpCommand
 import api.masterplan.app.plansModule.application.usecase.GetAssignedTasksForMultipleEmpUseCase

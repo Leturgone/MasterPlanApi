@@ -2,7 +2,7 @@ package api.masterplan.app.authModule.infrastructure.adapters
 
 import api.masterplan.app.authModule.domain.exception.AuthException
 import api.masterplan.app.authModule.domain.model.value.AuthUserLogin
-import api.masterplan.app.userManagementModule.UserModuleErrorDto
+import api.masterplan.app.apiContracts.userManagement.UserModuleErrorDto
 
 internal object AuthInnerModuleErrorMapper {
     fun exceptionToModuleException(ex: Throwable): AuthException {

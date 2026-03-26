@@ -1,8 +1,8 @@
 package api.masterplan.app.employeeModule.infrastructure.adapters
 
 import api.masterplan.app.employeeModule.domain.exceptions.EmployeeException
-import api.masterplan.app.filesModule.FilesModuleErrorDto
-import api.masterplan.app.plansModule.PlanModuleErrorDto
+import api.masterplan.app.apiContracts.files.FilesModuleErrorDto
+import api.masterplan.app.apiContracts.plans.PlanModuleErrorDto
 
 internal object EmployeeInnerModuleErrorMapper {
     fun exceptionToModuleException(ex: Throwable): EmployeeException{

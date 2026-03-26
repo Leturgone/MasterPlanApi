@@ -1,7 +1,7 @@
 package api.masterplan.app.filesModule.infrastructure.intermodule
 
-import api.masterplan.app.filesModule.FileDataDto
-import api.masterplan.app.filesModule.FilesModuleService
+import api.masterplan.app.apiContracts.files.FileDataDto
+import api.masterplan.app.apiContracts.files.FilesModuleService
 import api.masterplan.app.filesModule.application.command.ExportListToExelCommand
 import api.masterplan.app.filesModule.application.command.RemoveFileCommand
 import api.masterplan.app.filesModule.application.command.UpdateFileCommand

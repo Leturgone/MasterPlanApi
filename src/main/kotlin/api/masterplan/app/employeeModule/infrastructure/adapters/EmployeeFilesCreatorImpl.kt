@@ -4,7 +4,7 @@ import api.masterplan.app.employeeModule.application.dto.FileModel
 import api.masterplan.app.employeeModule.application.ports.EmployeeFilesCreator
 import api.masterplan.app.employeeModule.domain.dtos.EmployeeWithMetricsDetails
 import api.masterplan.app.employeeModule.infrastructure.adapters.dto.EmployeeWithMetricsDetailsDto
-import api.masterplan.app.filesModule.FilesModuleService
+import api.masterplan.app.apiContracts.files.FilesModuleService
 import org.springframework.stereotype.Component
 
 @Component

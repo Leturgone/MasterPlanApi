@@ -15,7 +15,7 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
 import api.masterplan.app.employeeModule.domain.model.value.EmployeePatronymic
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeSurname
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeUserId
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -9,7 +9,7 @@ import api.masterplan.app.filesModule.domain.model.entity.DocumentFile
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileBaseName
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileData
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.application.service
 
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import api.masterplan.app.plansModule.application.mapper.TasksPlanToDetailsMapper
 import api.masterplan.app.plansModule.domain.dtos.PlanDetails
 import api.masterplan.app.plansModule.domain.exceptions.PlanException

@@ -1,6 +1,6 @@
 package api.masterplan.app.plansModule.infrastructure.adapters
 
-import api.masterplan.app.filesModule.FilesModuleService
+import api.masterplan.app.apiContracts.files.FilesModuleService
 import api.masterplan.app.plansModule.application.dto.ExecutorDto
 import api.masterplan.app.plansModule.application.dto.PlanExportFile
 import api.masterplan.app.plansModule.application.dto.PlanFile

@@ -1,6 +1,6 @@
 package api.masterplan.app.filesModule.infrastructure.intermodule
 
-import api.masterplan.app.filesModule.FilesModuleErrorDto
+import api.masterplan.app.apiContracts.files.FilesModuleErrorDto
 import api.masterplan.app.filesModule.domain.exceptions.FilesException
 
 object InterModuleFileToDtoErrorMapper {
