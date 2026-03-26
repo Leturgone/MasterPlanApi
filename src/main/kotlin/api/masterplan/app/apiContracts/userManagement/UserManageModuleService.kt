@@ -1,4 +1,4 @@
-package api.masterplan.app.userManagementModule
+package api.masterplan.app.apiContracts.userManagement
 
 interface UserManageModuleService {
 
