@@ -71,7 +71,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/emp/getReport/{reportType}/{reportId}")
+    @GetMapping("/emp/report/{reportType}/{reportId}")
     fun getReportInformation(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID
