@@ -1,4 +1,4 @@
-package api.masterplan.app.employeeModule
+package api.masterplan.app.apiContracts.employee
 
 import java.util.*
 
