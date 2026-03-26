@@ -1,4 +1,6 @@
-package api.masterplan.app.export
+package api.masterplan.app.export.util
+
+import api.masterplan.app.export.annotation.ExportDisplayName
 
 object DisplayNameUtil {
     /**
