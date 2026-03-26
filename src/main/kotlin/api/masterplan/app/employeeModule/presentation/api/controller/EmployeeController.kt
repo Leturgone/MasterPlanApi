@@ -248,7 +248,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/getEmployee/{id}")
+    @GetMapping("/dir/employee/{id}")
     fun getEmployeeById(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeDetailsResponse> {
         val employeeId = EmployeeId(empId)
         val command = GetEmployeeByIdCommand(employeeId)
@@ -265,7 +265,7 @@ class EmployeeController(
         responses = [
             ApiResponse(
                 responseCode = "200",
-                description = "ПРолфиль успешно получен",
+                description = "Профиль успешно получен",
                 content = [Content(schema = Schema(implementation = EmployeeWithMetricsDetailsResponse::class))]
             ),
             ApiResponse(
@@ -285,7 +285,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/emp/getProfile/{id}")
+    @GetMapping("/emp/profile/{id}")
     fun getProfileInformation(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeWithMetricsDetailsResponse>{
         val profileId = EmployeeId(empId)
         val command = GetProfileInformationCommand(profileId)
