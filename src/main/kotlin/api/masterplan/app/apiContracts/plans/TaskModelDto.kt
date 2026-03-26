@@ -1,4 +1,4 @@
-package api.masterplan.app.plansModule
+package api.masterplan.app.apiContracts.plans
 
 import java.util.UUID
 
