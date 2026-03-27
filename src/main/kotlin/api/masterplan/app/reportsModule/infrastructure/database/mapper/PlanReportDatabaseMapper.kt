@@ -2,6 +2,7 @@ package api.masterplan.app.reportsModule.infrastructure.database.mapper
 
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
 import api.masterplan.app.reportsModule.domain.models.entity.Report
+import api.masterplan.app.reportsModule.domain.models.value.ReportDate
 import api.masterplan.app.reportsModule.domain.models.value.ReportDescription
 import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
@@ -19,11 +20,14 @@ object PlanReportDatabaseMapper {
         return Report.create(
             id = ReportId(entity.id),
             title = ReportTitle.validate(entity.title),
+            creationDate = ReportDate(entity.creationDate),
+            editDate = entity.editDate?.let { ReportDate(it) },
             description = entity.description?.let { ReportDescription.validate(it)},
+            reportStatus = domainStatus,
             employeeId = ReportEmployeeId(entity.employeeId),
             referenceId = ReportReferenceId.ForPlan(ReportPlanId(entity.planId)),
             documentId = ReportDocumentId(entity.documentId),
-        ).changeReportStatus(domainStatus)
+        )
     }
 
     fun toDomain(entities: List<PlanReportEntity>): List<Report> {
