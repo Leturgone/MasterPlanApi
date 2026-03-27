@@ -202,7 +202,7 @@ class ReportController(
 
         ]
     )
-    @PostMapping("/emp/createReport",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/emp/createReport/{reportType}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun  createReport(
         @PathVariable(value = "reportType") reportType: String,
         @RequestPart("request") request: CreateReportRequest,
