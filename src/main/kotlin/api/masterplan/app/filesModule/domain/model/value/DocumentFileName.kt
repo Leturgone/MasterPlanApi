@@ -8,7 +8,7 @@ value class DocumentFileName(val value: String){
     companion object {
         fun generate(fileName: DocumentFileBaseName):DocumentFileName{
             val timeSnap = DateTimeFormatter.ofPattern("yyyMMddHHmmss").format(LocalDateTime.now())
-            val newFileName = "$timeSnap${fileName.value}"
+            val newFileName = "$timeSnap${fileName.value}.pdf"
             return DocumentFileName(newFileName)
         }
         fun generateExportName(fileName: DocumentFileBaseName):DocumentFileName{
