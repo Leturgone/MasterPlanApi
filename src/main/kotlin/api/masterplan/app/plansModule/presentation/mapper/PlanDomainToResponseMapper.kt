@@ -6,6 +6,8 @@ import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.model.value.PlanId
 import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.presentation.dto.response.*
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 
 object PlanDomainToResponseMapper {
 
@@ -53,9 +55,16 @@ object PlanDomainToResponseMapper {
     fun toResponse(planId: PlanId) = PlanIdResponse(planId.value)
 
     fun toResponse(exportFile: PlanExportFile): ExportPlanResponse {
+        val contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.parseMediaType(contentType)
+        headers.setContentDispositionFormData("attachment",exportFile.fileName)
+        headers.contentLength = exportFile.fileData.size.toLong()
+
         return ExportPlanResponse(
-            fileData = exportFile.fileData,
-            fileName = exportFile.fileName,
+            fileHeaders = headers,
+            fileData = exportFile.fileData
         )
     }
 
