@@ -113,12 +113,12 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/{directorId}/exportMyEmployees/")
-    suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<EmployeeFileResponse> {
+    suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<ByteArray> {
         val domainId = EmployeeId(directorId)
         val command = ExportDirEmployeesCommand(directorId = domainId)
         val result = exportDirEmployeesUseCase(command).getOrThrow()
         val resp = EmployeeDomainToResponseMapper.empFileToResponse(result)
-        return ResponseEntity.ok(resp)
+        return ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
     }
 
 
