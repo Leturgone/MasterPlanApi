@@ -24,7 +24,7 @@ class SecurityConfig(
         http.csrf { it.disable() }
 
         http.authorizeHttpRequests { auth ->
-            auth.requestMatchers("/swagger-ui/**", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
+            auth.requestMatchers("/swagger-ui/**","/error", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
             auth.requestMatchers("/api/v1/auth/login").permitAll()
             auth.requestMatchers("/api/v1/users/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")
