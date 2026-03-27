@@ -268,3 +268,8 @@ INSERT INTO plan_status (status) VALUES
 ('COMPLETED'),
 ('IN_PROGRESS'),
 ('NOT_STARTED');
+
+INSERT INTO report_status (status) VALUES
+('NOT_CHECKED'),
+('CHECKED'),
+('CHECKING');
