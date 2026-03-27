@@ -8,6 +8,4 @@ import java.util.*
 @Repository
 interface JpaDocumentRepository: CrudRepository<DocumentEntity, UUID> {
 
-    fun existsByNameStartingWith(baseName: String): Boolean
-
 }

@@ -19,11 +19,6 @@ class DocumentFileRepositoryImpl(
     private val fileStorageRepository: FileStorageRepository
 ): DocumentFileRepository {
 
-    @LoggingDatabaseMethod(moduleName = "filesModule")
-    override fun isFileExist(documentFileBaseName: DocumentFileBaseName): Boolean {
-        return jpaDocumentRepository.existsByNameStartingWith(documentFileBaseName.value)
-    }
-
 
     @LoggingDatabaseMethod(moduleName = "filesModule")
     override fun saveFile(documentFile: DocumentFile): DocumentFileId? {
