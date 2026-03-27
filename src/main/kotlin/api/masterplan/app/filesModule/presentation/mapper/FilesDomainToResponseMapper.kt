@@ -12,7 +12,7 @@ object FilesDomainToResponseMapper {
         val headers = HttpHeaders()
         headers.contentType = MediaType.parseMediaType(contentType)
         headers.set("Content-ID", file.fileId.value.toString())
-        headers.setContentDispositionFormData("file", "application/pdf")
+        headers.setContentDispositionFormData("attachment",file.fileName.value)
         headers.contentLength = file.fileData.value.size.toLong()
 
         return FileResponse(
@@ -20,4 +20,5 @@ object FilesDomainToResponseMapper {
             fileData = file.fileData.value
         )
     }
+
 }
