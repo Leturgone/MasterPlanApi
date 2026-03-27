@@ -1,7 +1,9 @@
 package api.masterplan.app.filesModule.presentation.dto.response
 
+import org.springframework.http.HttpHeaders
+
 data class FileResponse(
-    val fileHeaders: org.springframework.http.HttpHeaders,
+    val fileHeaders: HttpHeaders,
     val fileData: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
