@@ -54,12 +54,12 @@ class FilesController(
         ]
     )
     @GetMapping("/emp/downloadFile/{fileId}/")
-    fun downloadFile(@PathVariable(value = "fileId") fileId: UUID): ResponseEntity<FileResponse>{
+    fun downloadFile(@PathVariable(value = "fileId") fileId: UUID): ResponseEntity<ByteArray>{
         val command = DownloadFileCommand(
             fileId = FIleRequestToDomainMapper.toDocumentFileId(fileId)
         )
         val result = downloadFileUseCase(command).getOrThrow()
         val resp = FilesDomainToResponseMapper.toFileResponse(result)
-        return ResponseEntity.ok(resp)
+        return ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
     }
 }
