@@ -12,7 +12,8 @@ value class DocumentFileBaseName(val value: String){
             } catch (e: IllegalArgumentException) {
                 throw FilesException.InvalidFileName(errorMessage = e.message)
             }
-            return DocumentFileBaseName(fileName)
+            val filteredName = fileName.replace("[^a-zA-Zа-яА-я0-9._-]".toRegex(), "_")
+            return DocumentFileBaseName(filteredName)
         }
     }
 }
