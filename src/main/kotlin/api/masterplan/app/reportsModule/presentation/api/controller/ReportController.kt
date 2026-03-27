@@ -1,7 +1,5 @@
 package api.masterplan.app.reportsModule.presentation.api.controller
 
-import api.masterplan.app.plansModule.presentation.dto.response.PlanErrorResponse
-import api.masterplan.app.plansModule.presentation.dto.response.PlanInformationResponse
 import api.masterplan.app.reportsModule.application.command.*
 import api.masterplan.app.reportsModule.application.usecase.*
 import api.masterplan.app.reportsModule.presentation.api.exceptionHandler.ReportControllerExceptionHandler
@@ -19,8 +17,10 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
@@ -202,13 +202,17 @@ class ReportController(
 
         ]
     )
-    @PostMapping("/emp/createReport")
+    @PostMapping("/emp/createReport",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun  createReport(
         @PathVariable(value = "reportType") reportType: String,
-        @RequestBody request: CreateReportRequest): ResponseEntity<ReportIdResponse> {
+        @RequestPart("request") request: CreateReportRequest,
+        @RequestPart(value = "file") file: MultipartFile
+    ): ResponseEntity<ReportIdResponse> {
+        val fileByteArray = file.bytes
+        val fileName = file.originalFilename
         val file = ReportRequestToDomainMapper.toReportFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileByteArray
         )
         val reportType = ReportRequestToDomainMapper.toReportType(reportType)
         val reportReferenceId = ReportRequestToDomainMapper.toReportReferenceId(request.referenceId,reportType)
@@ -260,15 +264,18 @@ class ReportController(
 
         ]
     )
-    @PatchMapping(("/emp/updateReport/{reportType}/{reportId}"))
+    @PatchMapping("/emp/updateReport/{reportType}/{reportId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun  updateReport(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
-        @RequestBody request: UpdateReportRequest
+        @RequestPart(value = "file") file: MultipartFile,
+        @RequestPart("request") request: UpdateReportRequest
     ): ResponseEntity<ReportIdResponse> {
+        val fileByteArray = file.bytes
+        val fileName = file.originalFilename
         val file = ReportRequestToDomainMapper.toReportFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileByteArray
         )
         val updatedReport = ReportRequestToDomainMapper.toUpdateReportData(
             title = request.title,
