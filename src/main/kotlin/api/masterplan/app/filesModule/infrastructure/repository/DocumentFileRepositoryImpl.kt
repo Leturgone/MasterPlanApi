@@ -20,7 +20,7 @@ class DocumentFileRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "filesModule")
     override fun isFileExist(documentFileBaseName: DocumentFileBaseName): Boolean {
-        return jpaDocumentRepository.existsByBaseName(documentFileBaseName.value)
+        return jpaDocumentRepository.existsByNameStartingWith(documentFileBaseName.value)
     }
 
 
