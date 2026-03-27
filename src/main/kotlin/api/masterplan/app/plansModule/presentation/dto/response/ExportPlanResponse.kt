@@ -1,13 +1,10 @@
 package api.masterplan.app.plansModule.presentation.dto.response
 
-import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.http.HttpHeaders
 
-@Schema(description = "Ответ Файл с экспортрованным планом")
 data class ExportPlanResponse(
-    @Schema(description = "Файл")
+    val fileHeaders: HttpHeaders,
     val fileData: ByteArray,
-    @Schema(description = "Название файла", example = "PlanExport23022026172732")
-    val fileName: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -15,16 +12,15 @@ data class ExportPlanResponse(
 
         other as ExportPlanResponse
 
+        if (fileHeaders != other.fileHeaders) return false
         if (!fileData.contentEquals(other.fileData)) return false
-        if (fileName != other.fileName) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = fileData.contentHashCode()
-        result = 31 * result + fileName.hashCode()
+        var result = fileHeaders.hashCode()
+        result = 31 * result + fileData.contentHashCode()
         return result
     }
-
 }
