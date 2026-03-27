@@ -98,7 +98,11 @@ class EmployeeController(
             ApiResponse(
                 responseCode = "200",
                 description = "Список сотрудников успешно экспортирован",
-                content = [Content(schema = Schema(implementation = EmployeeFileResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Руководитель не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
