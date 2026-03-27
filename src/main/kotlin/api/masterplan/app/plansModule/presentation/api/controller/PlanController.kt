@@ -13,8 +13,10 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
@@ -398,13 +400,13 @@ class PlanController(
         ]
     )
     @GetMapping("/plans/dir/plan/{planId}/export")
-    fun exportPlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<ExportPlanResponse>{
+    fun exportPlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<ByteArray>{
         val command = ExportPlanCommand(
             planId = PlanRequestToDomainMapper.toPlanId(planId)
         )
         val result = exportPlanUseCase(command).getOrThrow()
         val resp = PlanDomainToResponseMapper.toResponse(result)
-        return ResponseEntity.ok(resp)
+        return ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
     }
 
 
@@ -439,11 +441,16 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/plans/dir/createPlan")
-    fun createPLan(@RequestBody request: CreatePlanRequest): ResponseEntity<PlanIdResponse>{
+    @PostMapping("/plans/dir/createPlan",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun createPLan(
+        @RequestPart("request") request: CreatePlanRequest,
+        @RequestPart(value = "file", required = false) file: MultipartFile?
+    ): ResponseEntity<PlanIdResponse>{
+        val fileByteArray = file?.bytes
+        val fileName = file?.originalFilename
         val file = PlanRequestToDomainMapper.toPlanFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileByteArray
         )
         val command = CreatePlanCommand(
             id = request.id?.let { PlanRequestToDomainMapper.toPlanId(it)},
@@ -498,11 +505,16 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/tasks/dir/createTask")
-    fun addTaskToPlan(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskIdResponse>{
+    @PostMapping("/tasks/dir/createTask",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun addTaskToPlan(
+        @RequestPart("request") request: CreateTaskRequest,
+        @RequestPart(value = "file", required = false) file: MultipartFile?
+    ): ResponseEntity<TaskIdResponse>{
+        val fileByteArray = file?.bytes
+        val fileName = file?.originalFilename
         val file = PlanRequestToDomainMapper.toTaskFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileByteArray
         )
         val command = AddTaskToPlanCommand(
             planId = PlanRequestToDomainMapper.toPlanId(request.planId),
@@ -657,9 +669,12 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/tasks/dir/updateTask/{taskId}")
-    fun updateTask(@PathVariable(value = "taskId") taskId: UUID,
-                   @RequestBody request: UpdateTaskRequest): ResponseEntity<TaskIdResponse>{
+    @PutMapping("/tasks/dir/updateTask/{taskId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun updateTask(
+        @PathVariable(value = "taskId") taskId: UUID,
+        @RequestPart("request") request: UpdateTaskRequest,
+        @RequestPart(value = "file", required = false) file: MultipartFile?
+    ): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
         val updatedTask = PlanRequestToDomainMapper.toTask(
             id = request.id,
@@ -672,9 +687,11 @@ class PlanController(
             documentId = request.documentId,
             executorsIds = request.executorsIds,
         )
+        val fileBytes = file?.bytes
+        val fileName = file?.originalFilename
         val file = PlanRequestToDomainMapper.toTaskFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileBytes
         )
         val command = UpdateTaskCommand(
             taskId = taskDomainId,
@@ -719,9 +736,12 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/plans/dir/updatePlan/{planId}")
-    fun updatePlan(@PathVariable(value = "planId") planId: UUID,
-                   @RequestBody request: UpdatePlanRequest): ResponseEntity<PlanIdResponse>{
+    @PutMapping("/plans/dir/updatePlan/{planId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun updatePlan(
+        @PathVariable(value = "planId") planId: UUID,
+        @RequestPart("request") request: UpdatePlanRequest,
+        @RequestPart(value = "file", required = false) file: MultipartFile?
+    ): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
         val updatedPlan = PlanRequestToDomainMapper.toPlan(
             id = request.id,
@@ -733,9 +753,11 @@ class PlanController(
             documentId = request.documentId,
             status = request.status,
         )
+        val fileBytes = file?.bytes
+        val fileName = file?.originalFilename
         val file = PlanRequestToDomainMapper.toPlanFile(
-            fileName = request.documentName,
-            fileData = request.document
+            fileName = fileName,
+            fileData = fileBytes
         )
         val command = UpdatePlanCommand(
             planId = planDomainId,
