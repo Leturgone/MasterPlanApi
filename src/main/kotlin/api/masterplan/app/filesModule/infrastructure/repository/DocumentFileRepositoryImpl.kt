@@ -11,6 +11,7 @@ import api.masterplan.app.filesModule.infrastructure.database.repository.JpaDocu
 import api.masterplan.app.filesModule.infrastructure.filesStorage.repository.FileStorageRepository
 import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import org.springframework.stereotype.Repository
+import kotlin.jvm.optionals.getOrElse
 
 @Repository
 class DocumentFileRepositoryImpl(
@@ -79,7 +80,7 @@ class DocumentFileRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "filesModule")
     override fun getFile(fileId: DocumentFileId): DocumentFile? {
-        val fileEntity = jpaDocumentRepository.findById(fileId.value).get()
+        val fileEntity = jpaDocumentRepository.findById(fileId.value).getOrElse { return null }
         val fileBytes = fileStorageRepository.readFile(fileEntity.name) ?: return null
         return DocumentDatabaseMapper.toDomain(fileEntity, fileBytes)
     }
