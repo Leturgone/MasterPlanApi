@@ -379,8 +379,7 @@ class PlanController(
         responses = [
             ApiResponse(
                 responseCode = "200",
-                description = "Экспортированный план получен",
-                content = [Content(schema = Schema(implementation = ExportPlanResponse::class))]
+                description = "Экспортированный план получен"
             ),
             ApiResponse(
                 responseCode = "500",
