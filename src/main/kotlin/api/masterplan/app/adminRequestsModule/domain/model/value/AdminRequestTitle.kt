@@ -11,8 +11,7 @@ class AdminRequestTitle(val value: String) {
             }catch(e:IllegalStateException){
                 throw AdminRequestException.InvalidAdminRequestTitle(e.message)
             }
-            val text = title.replace("[^a-zA-Zа-яА-я0-9 ]".toRegex(), "_")
-            return AdminRequestTitle(text)
+            return AdminRequestTitle(title)
         }
     }
 }
