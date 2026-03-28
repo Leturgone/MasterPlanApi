@@ -21,4 +21,8 @@ data class TaskFile(
         result = 31 * result + fileName.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "TaskFile(fileName='$fileName')"
+    }
 }

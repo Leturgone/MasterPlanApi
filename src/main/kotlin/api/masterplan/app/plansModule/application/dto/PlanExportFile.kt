@@ -21,4 +21,8 @@ data class PlanExportFile(
         result = 31 * result + fileName.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "PlanExportFile(fileName='$fileName')"
+    }
 }

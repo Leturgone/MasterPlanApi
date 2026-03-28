@@ -22,4 +22,8 @@ data class FileModel(
         return result
     }
 
+    override fun toString(): String {
+        return "FileModel(fileName='$fileName')"
+    }
+
 }
