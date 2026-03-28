@@ -1,4 +1,4 @@
-package api.masterplan.app.adminRequestsModule.domain.dto
+package api.masterplan.app.adminRequestsModule.domain.dtos
 
 import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestCreationDate
 import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestDescription
