@@ -26,10 +26,10 @@ class ExcelWorkerImpl(): ExcelWorker {
         // Используем рефлексию
         val kClass = data.first()::class
 
-        val classDisplayNames = getExportFieldNamesMap(data.first())
+        val classDisplayNames = DisplayNameUtil.getFieldNamesMap(kClass)
 
         // Получаем поля класса
-        val classFields = kClass.memberProperties
+        val classFields = kClass.memberProperties.sortedByDescending { it.name }
 
 
         classFields.forEachIndexed { index, field->
@@ -70,10 +70,7 @@ class ExcelWorkerImpl(): ExcelWorker {
         }
     }
 
-    private fun <T: Any> getExportFieldNamesMap(instate: T): Map<String, String> {
-        val fieldNames = DisplayNameUtil.getDisplayNames(instate::class.java)
-        return fieldNames
-    }
+
 
     private fun getFormattedValue(value: Any?): String{
         return when(value){

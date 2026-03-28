@@ -21,8 +21,8 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun getReport(reportId: ReportId, reportType: ReportType): ReportDetails {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
         return ReportToDetailsMapper.toReportDetails(report)
     }
@@ -31,8 +31,8 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportId {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val updatedReport = report.update(
@@ -42,8 +42,8 @@ class ReportServiceImpl(
         )
 
         val updatedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.updatePlanReport(reportId, updatedReport)
-            ReportType.PLAN -> taskReportRepository.updateTaskReport(reportId, updatedReport)
+            ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, updatedReport)
+            ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, updatedReport)
         }?: throw ReportException.FailedToUpdateReport(reportId, reportType)
 
         return updatedReportId
@@ -53,8 +53,8 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun deleteReport(reportId: ReportId, reportType: ReportType): ReportId {
         val deletedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.deletePlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.deleteTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.deletePlanReport(reportId)
+            ReportType.TASK -> taskReportRepository.deleteTaskReport(reportId)
         }?: throw ReportException.FailedToDeleteReport(reportId,reportType)
 
         return deletedReportId
@@ -121,15 +121,15 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportId {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val reportWithNewStatus = report.changeReportStatus(status)
 
         val updatedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.updatePlanReport(reportId, reportWithNewStatus)
-            ReportType.PLAN -> taskReportRepository.updateTaskReport(reportId, reportWithNewStatus)
+            ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, reportWithNewStatus)
+            ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, reportWithNewStatus)
         }?: throw ReportException.FailedToUpdateReportStatus(status,reportId, reportType)
 
         return updatedReportId

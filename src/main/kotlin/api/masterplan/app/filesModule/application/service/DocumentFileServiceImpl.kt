@@ -19,9 +19,6 @@ class DocumentFileServiceImpl(
 
     @LoggingMethod("filesModule")
     override fun uploadFile(documentFileBaseName: DocumentFileBaseName, documentFileData: DocumentFileData): DocumentFileId {
-        if (documentFileRepository.isFileExist(documentFileBaseName)) throw FilesException.FileAlreadyExists(
-            documentFileBaseName
-        )
 
         val file = DocumentFile.create(
             baseName = documentFileBaseName,

@@ -5,6 +5,7 @@ import api.masterplan.app.filesModule.domain.interfaces.DocumentFileService
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
 import org.springframework.stereotype.Service
 
+// Внутренний юзкейс для использования между модулей
 @Service
 class UpdateFileUseCase(
     private val documentFileService: DocumentFileService

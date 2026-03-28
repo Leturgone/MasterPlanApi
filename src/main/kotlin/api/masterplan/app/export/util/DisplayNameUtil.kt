@@ -1,15 +1,18 @@
 package api.masterplan.app.export.util
 
 import api.masterplan.app.export.annotation.ExportDisplayName
+import kotlin.reflect.KClass
+import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.memberProperties
 
 object DisplayNameUtil {
     /**
      * Получает карту соответствия имён полей и их русских названий для класса.
      */
-    fun <T : Any> getFieldNamesMap(clazz: Class<T>): Map<String, String> {
-        return clazz.declaredFields.associate { field ->
-            val annotation = field.getAnnotation(ExportDisplayName::class.java)
-            field.name to (annotation?.value ?: field.name)
+    fun <T : Any> getFieldNamesMap(clazz: KClass<T>): Map<String, String> {
+        return clazz.memberProperties.associate { property ->
+            val annotation = property.findAnnotation<ExportDisplayName>()
+            property.name to (annotation?.value ?: property.name)
         }
     }
 
@@ -17,7 +20,7 @@ object DisplayNameUtil {
      * Получает русские названия для всех полей экземпляра класса.
      */
     fun <T: Any> getDisplayNames(instate: T): Map<String, String> {
-        return getFieldNamesMap(instate::class.java)
+        return getFieldNamesMap(instate::class)
     }
 
     /**

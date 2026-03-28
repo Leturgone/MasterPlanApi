@@ -98,7 +98,11 @@ class EmployeeController(
             ApiResponse(
                 responseCode = "200",
                 description = "Список сотрудников успешно экспортирован",
-                content = [Content(schema = Schema(implementation = EmployeeFileResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Руководитель не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
             ),
             ApiResponse(
                 responseCode = "500",
@@ -113,12 +117,12 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/{directorId}/exportMyEmployees/")
-    suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<EmployeeFileResponse> {
+    suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<ByteArray> {
         val domainId = EmployeeId(directorId)
         val command = ExportDirEmployeesCommand(directorId = domainId)
         val result = exportDirEmployeesUseCase(command).getOrThrow()
         val resp = EmployeeDomainToResponseMapper.empFileToResponse(result)
-        return ResponseEntity.ok(resp)
+        return ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
     }
 
 
@@ -248,7 +252,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/getEmployee/{id}")
+    @GetMapping("/dir/employee/{id}")
     fun getEmployeeById(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeDetailsResponse> {
         val employeeId = EmployeeId(empId)
         val command = GetEmployeeByIdCommand(employeeId)
@@ -265,7 +269,7 @@ class EmployeeController(
         responses = [
             ApiResponse(
                 responseCode = "200",
-                description = "ПРолфиль успешно получен",
+                description = "Профиль успешно получен",
                 content = [Content(schema = Schema(implementation = EmployeeWithMetricsDetailsResponse::class))]
             ),
             ApiResponse(
@@ -285,7 +289,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/emp/getProfile/{id}")
+    @GetMapping("/emp/profile/{id}")
     fun getProfileInformation(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeWithMetricsDetailsResponse>{
         val profileId = EmployeeId(empId)
         val command = GetProfileInformationCommand(profileId)

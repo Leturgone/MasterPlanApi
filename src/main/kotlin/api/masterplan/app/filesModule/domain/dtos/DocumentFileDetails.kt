@@ -8,4 +8,8 @@ data class DocumentFileDetails(
     val fileId: DocumentFileId,
     val fileData: DocumentFileData,
     val fileName: DocumentFileName,
-)
+){
+    override fun toString(): String {
+        return "DocumentFileDetails(fileId=$fileId, fileName=$fileName)"
+    }
+}

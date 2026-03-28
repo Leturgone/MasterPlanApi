@@ -1,8 +1,8 @@
-package api.masterplan.app.plansModule.presentation.dto.response
+package api.masterplan.app.filesModule.presentation.dto.response
 
 import org.springframework.http.HttpHeaders
 
-data class ExportPlanResponse(
+data class FileResponse(
     val fileHeaders: HttpHeaders,
     val fileData: ByteArray,
 ) {
@@ -10,7 +10,7 @@ data class ExportPlanResponse(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ExportPlanResponse
+        other as FileResponse
 
         if (fileHeaders != other.fileHeaders) return false
         if (!fileData.contentEquals(other.fileData)) return false

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class LoggingDatabaseAspect {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Pointcut("@annotation(LoggingDatabaseMethod)")
+    @Pointcut("@annotation(api.masterplan.app.logging.annotations.LoggingDatabaseMethod)")
     fun logDatabasePointcut() {}
 
     private fun getModule(methodSignature: MethodSignature): String{
@@ -25,7 +25,7 @@ class LoggingDatabaseAspect {
     }
 
     @AfterThrowing(pointcut = "logDatabasePointcut()", throwing = "exception")
-    fun logAfterThrowing(joinPoint: JoinPoint,exception: Exception) {
+    fun logAfterDatabaseThrowing(joinPoint: JoinPoint,exception: Exception) {
         val methodSignature = joinPoint.signature as MethodSignature
         val moduleName = getModule(methodSignature)
         val methodName = methodSignature.name
@@ -37,5 +37,6 @@ class LoggingDatabaseAspect {
             exception,
             exceptionMessage
         )
+        throw exception
     }
 }

@@ -1,13 +1,10 @@
 package api.masterplan.app.filesModule.domain.interfaces
 
 import api.masterplan.app.filesModule.domain.model.entity.DocumentFile
-import api.masterplan.app.filesModule.domain.model.value.DocumentFileBaseName
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileName
 
 interface DocumentFileRepository {
-
-    fun isFileExist(documentFileBaseName: DocumentFileBaseName): Boolean
 
     fun saveFile(documentFile: DocumentFile): DocumentFileId?
 
