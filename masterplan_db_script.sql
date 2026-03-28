@@ -53,7 +53,7 @@ CREATE TABLE task_status (
 
 CREATE TABLE document (
     id UUID PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(200) NOT NULL,
     path VARCHAR(255) NOT NULL
 );
 
@@ -268,3 +268,8 @@ INSERT INTO plan_status (status) VALUES
 ('COMPLETED'),
 ('IN_PROGRESS'),
 ('NOT_STARTED');
+
+INSERT INTO report_status (status) VALUES
+('NOT_CHECKED'),
+('CHECKED'),
+('CHECKING');

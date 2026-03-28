@@ -12,11 +12,14 @@ object TaskReportDatabaseMapper {
         return Report.create(
             id = ReportId(entity.id),
             title = ReportTitle.validate(entity.title),
+            creationDate = ReportDate(entity.creationDate),
+            editDate = entity.editDate?.let { ReportDate(it) },
             description = entity.description?.let { ReportDescription.validate(it)},
+            reportStatus = domainStatus,
             employeeId = ReportEmployeeId(entity.employeeId),
             referenceId = ReportReferenceId.ForTask(ReportTaskId(entity.taskId)),
             documentId = ReportDocumentId(entity.documentId),
-        ).changeReportStatus(domainStatus)
+        )
     }
 
     fun toDomain(entities: List<TaskReportEntity>): List<Report> {

@@ -18,43 +18,9 @@ data class CreateTaskRequest (
     @Schema(description = "Описание задачи", example = "Провести анализ")
     val description: String,
     @NotBlank(message = "End date cant be blank")
-    @Schema(description = "Финальный срок выполнения задачи", example = "01.01.2026")
+    @Schema(description = "Финальный срок выполнения задачи", example = "2026-05-06")
     val endDate: LocalDate,
-    @Schema(description = "Название файла", example = "PlanExport23022026172732")
-    val documentName: String? = null,
-    @Schema(description = "Файл")
-    val document: ByteArray? = null,
     @NotBlank(message = "Executors ids be blank")
     @Schema(description = "Список id исполнителей в UUIDv7")
     val executorsIds: List<UUID>
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CreateTaskRequest
-
-        if (planId != other.planId) return false
-        if (taskId != other.taskId) return false
-        if (title != other.title) return false
-        if (description != other.description) return false
-        if (endDate != other.endDate) return false
-        if (documentName != other.documentName) return false
-        if (!document.contentEquals(other.document)) return false
-        if (executorsIds != other.executorsIds) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = planId.hashCode()
-        result = 31 * result + (taskId?.hashCode() ?: 0)
-        result = 31 * result + title.hashCode()
-        result = 31 * result + description.hashCode()
-        result = 31 * result + endDate.hashCode()
-        result = 31 * result + (documentName?.hashCode() ?: 0)
-        result = 31 * result + (document?.contentHashCode() ?: 0)
-        result = 31 * result + executorsIds.hashCode()
-        return result
-    }
-}
+)

@@ -1,6 +1,6 @@
 package api.masterplan.app.userManagementModule.infrastructure.adapters
 
-import api.masterplan.app.employeeModule.EmployeeDataDto
+import api.masterplan.app.apiContracts.employee.EmployeeDataDto
 import api.masterplan.app.userManagementModule.application.dto.EmployeeInfo
 import api.masterplan.app.userManagementModule.domain.models.value.UserId
 

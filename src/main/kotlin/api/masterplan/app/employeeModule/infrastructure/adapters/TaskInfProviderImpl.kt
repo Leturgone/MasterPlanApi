@@ -3,7 +3,7 @@ package api.masterplan.app.employeeModule.infrastructure.adapters
 import api.masterplan.app.employeeModule.application.dto.EmpTaskModel
 import api.masterplan.app.employeeModule.application.ports.TaskInfProvider
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
-import api.masterplan.app.plansModule.PlanModuleService
+import api.masterplan.app.apiContracts.plans.PlanModuleService
 import org.springframework.stereotype.Component
 
 @Component

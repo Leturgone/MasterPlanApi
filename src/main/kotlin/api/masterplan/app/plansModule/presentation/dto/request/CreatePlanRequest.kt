@@ -15,46 +15,12 @@ data class CreatePlanRequest(
     @NotBlank(message = "Description cant be blank")
     @Schema(description = "Описание плана", example = "Выполнить мероприятия для выполнения цели")
     val description: String,
-    @Schema(description = "Дата начала выполнения плана", example = "01.01.2026")
+    @Schema(description = "Дата начала выполнения плана", example = "2026-05-06")
     val startDate: LocalDate? = null,
     @NotBlank(message = "End date cant be blank")
-    @Schema(description = "Финальный срок выполнения плана", example = "01.01.2026")
+    @Schema(description = "Финальный срок выполнения плана", example = "2026-05-06")
     val endDate: LocalDate,
     @NotBlank(message = "Director id cant be blank")
     @Schema(description = "ID руководителя плана", example = "06115aa098-9277-0087-49a8-cb901fc2f7")
-    val directorId: UUID,
-    @Schema(description = "Название файла", example = "PlanExport23022026172732")
-    val documentName: String? = null,
-    @Schema(description = "Файл")
-    val document: ByteArray? = null
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CreatePlanRequest
-
-        if (id != other.id) return false
-        if (title != other.title) return false
-        if (description != other.description) return false
-        if (startDate != other.startDate) return false
-        if (endDate != other.endDate) return false
-        if (directorId != other.directorId) return false
-        if (documentName != other.documentName) return false
-        if (!document.contentEquals(other.document)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id?.hashCode() ?: 0
-        result = 31 * result + title.hashCode()
-        result = 31 * result + description.hashCode()
-        result = 31 * result + (startDate?.hashCode() ?: 0)
-        result = 31 * result + endDate.hashCode()
-        result = 31 * result + directorId.hashCode()
-        result = 31 * result + (documentName?.hashCode() ?: 0)
-        result = 31 * result + (document?.contentHashCode() ?: 0)
-        return result
-    }
-}
+    val directorId: UUID
+)

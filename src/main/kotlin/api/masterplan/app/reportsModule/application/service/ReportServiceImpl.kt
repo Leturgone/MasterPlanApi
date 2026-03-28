@@ -1,7 +1,7 @@
 package api.masterplan.app.reportsModule.application.service
 
-import api.masterplan.app.logging.LoggingMethod
-import api.masterplan.app.reportsModule.application.mapper.ReportToEntityMapper
+import api.masterplan.app.logging.annotations.LoggingMethod
+import api.masterplan.app.reportsModule.application.mapper.ReportToDetailsMapper
 import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.dtos.ReportUpdateData
 import api.masterplan.app.reportsModule.domain.exceptions.ReportException
@@ -21,18 +21,18 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun getReport(reportId: ReportId, reportType: ReportType): ReportDetails {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
-        return ReportToEntityMapper.toReportDetails(report)
+        return ReportToDetailsMapper.toReportDetails(report)
     }
 
 
     @LoggingMethod("reportModule")
     override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportId {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val updatedReport = report.update(
@@ -42,8 +42,8 @@ class ReportServiceImpl(
         )
 
         val updatedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.updatePlanReport(reportId, updatedReport)
-            ReportType.PLAN -> taskReportRepository.updateTaskReport(reportId, updatedReport)
+            ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, updatedReport)
+            ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, updatedReport)
         }?: throw ReportException.FailedToUpdateReport(reportId, reportType)
 
         return updatedReportId
@@ -53,8 +53,8 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun deleteReport(reportId: ReportId, reportType: ReportType): ReportId {
         val deletedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.deletePlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.deleteTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.deletePlanReport(reportId)
+            ReportType.TASK -> taskReportRepository.deleteTaskReport(reportId)
         }?: throw ReportException.FailedToDeleteReport(reportId,reportType)
 
         return deletedReportId
@@ -98,7 +98,7 @@ class ReportServiceImpl(
             ReportType.PLAN -> planReportRepository.getPlanReportsByEmployeeId(employeeId)
         }
 
-        return reportList.map { ReportToEntityMapper.toReportDetails(it) }
+        return reportList.map { ReportToDetailsMapper.toReportDetails(it) }
     }
 
 
@@ -113,7 +113,7 @@ class ReportServiceImpl(
         return reportList.filter { planReport ->
             planReport.reportStatus == status
         }.map {
-            ReportToEntityMapper.toReportDetails(it)
+            ReportToDetailsMapper.toReportDetails(it)
         }
     }
 
@@ -121,15 +121,15 @@ class ReportServiceImpl(
     @LoggingMethod("reportModule")
     override fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportId {
         val report =  when(reportType) {
-            ReportType.TASK -> planReportRepository.getPlanReport(reportId)
-            ReportType.PLAN -> taskReportRepository.getTaskReport(reportId)
+            ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
+            ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
         }?: throw ReportException.ReportNotExist(reportId, reportType)
 
         val reportWithNewStatus = report.changeReportStatus(status)
 
         val updatedReportId = when(reportType) {
-            ReportType.TASK -> planReportRepository.updatePlanReport(reportId, reportWithNewStatus)
-            ReportType.PLAN -> taskReportRepository.updateTaskReport(reportId, reportWithNewStatus)
+            ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, reportWithNewStatus)
+            ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, reportWithNewStatus)
         }?: throw ReportException.FailedToUpdateReportStatus(status,reportId, reportType)
 
         return updatedReportId
@@ -141,7 +141,7 @@ class ReportServiceImpl(
     override fun getSubordinatesTaskReports(subordinatesIds: Set<ReportEmployeeId>): List<ReportDetails> {
         val reportList = taskReportRepository.getTaskReportByEmployeeIds(subordinatesIds)
 
-        return reportList.map { ReportToEntityMapper.toReportDetails(it) }
+        return reportList.map { ReportToDetailsMapper.toReportDetails(it) }
     }
 
 
@@ -153,7 +153,7 @@ class ReportServiceImpl(
         return reportList.filter { taskReport ->
             taskReport.reportStatus == status
         }.map {
-            ReportToEntityMapper.toReportDetails(it)
+            ReportToDetailsMapper.toReportDetails(it)
         }
     }
 

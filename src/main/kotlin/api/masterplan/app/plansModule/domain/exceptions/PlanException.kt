@@ -1,14 +1,7 @@
 package api.masterplan.app.plansModule.domain.exceptions
 
-import api.masterplan.app.plansModule.domain.model.value.PlanDirectorId
-import api.masterplan.app.plansModule.domain.model.value.PlanDocumentId
-import api.masterplan.app.plansModule.domain.model.value.PlanId
-import api.masterplan.app.plansModule.domain.model.value.PlanStatus
-import api.masterplan.app.plansModule.domain.model.value.PlanTitle
-import api.masterplan.app.plansModule.domain.model.value.TaskDocumentId
-import api.masterplan.app.plansModule.domain.model.value.TaskId
-import api.masterplan.app.plansModule.domain.model.value.TaskStatus
-import api.masterplan.app.plansModule.domain.model.value.TaskTitle
+import api.masterplan.app.plansModule.domain.model.value.*
+import java.util.*
 
 sealed class PlanException(message: String): Exception(message){
 
@@ -23,6 +16,11 @@ sealed class PlanException(message: String): Exception(message){
     class InvalidTaskDesc(message: String?) : PlanException(
         "Invalid task description: ${message?.let {": $it"  }}"
     )
+
+    class ExecutorNotExist(id: UUID) : PlanException(
+        "Executor with Id = $id does not exist"
+    )
+
 
     class InvalidPlanDesc(message: String?) : PlanException(
         "Invalid plan description: ${message?.let {": $it"  }}"
@@ -41,7 +39,7 @@ sealed class PlanException(message: String): Exception(message){
     )
 
     class FailedToCreatePlan(planTitle: PlanTitle, directorId: PlanDirectorId) : PlanException(
-        "Failed to create plan with id =  ${planTitle.value} with director id = ${directorId.value}"
+        "Failed to create plan with title =  ${planTitle.value} with director id = ${directorId.value}"
     )
 
     class FailedToUpdatePlan(planId: PlanId) : PlanException(
@@ -95,7 +93,31 @@ sealed class PlanException(message: String): Exception(message){
     class InvalidTaskStatusTitle(status: String) : PlanException(
         "Invalid task status title: $status"
     )
+    class InvalidPlanFileName(val errorMessage: String?) : PlanException(
+        "Invalid plan file name: ${errorMessage?.let { ": $it" } ?: ""}"
+    )
 
+    class PlanFileNotExist(val fileId: UUID): PlanException(
+        "Plan file with id $fileId not found"
+    )
+
+    class PlanFileAlreadyExists(val fileName: String): PlanException(
+        "Plan file with name: $fileName already exists"
+    )
+
+    class FailedToCreatePlanFile(val fileName: String): PlanException(
+        "Failed to create plan file with name: $fileName"
+    )
+
+    class FailedToUpdatePlanFile(val fileId: UUID): PlanException(
+        "Failed to update plan file with id: $fileId"
+    )
+
+    class FailedToDeletePlanFile(val fileId: UUID): PlanException(
+        "Failed to delete plan file with id: $fileId"
+    )
+
+    class InternalServerError(message: String?) : PlanException(message?:"Internal plan module server error")
 
 
 }

@@ -15,7 +15,7 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
 import api.masterplan.app.employeeModule.domain.model.value.EmployeePatronymic
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeSurname
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeUserId
-import api.masterplan.app.logging.LoggingMethod
+import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -67,13 +67,21 @@ class EmployeeServiceImpl(
     @LoggingMethod("employeeModule")
     @Transactional
     override suspend fun getAllDirectorsEmployeesWithMetrics(directorId: EmployeeId): List<EmployeeWithMetricsDetails> {
+        val directorInf = employeeRepository.getEmployeeById(directorId) ?: throw EmployeeException.EmployeeNotExist(directorId)
+
         val employees = employeeRepository.findByDirectorId(directorId)
 
+        val directorDetails = DirectorDetails(
+            name = directorInf.name,
+            surname = directorInf.surname,
+            patronymic = directorInf.patronymic,
+        )
         val metricsMap = employeeMetricsService.calculateMetricsForEmployees(employees)
         return employees.map { employee ->
             val metrics = metricsMap[employee]?: EmployeeMetrics(0.0,0.0,0)
             EmpEntityToDtoMapper.toEmployeeWithMetricsDetails(
                 entity = employee,
+                directorDetails = directorDetails,
                 metrics = metrics
             )
         }

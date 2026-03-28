@@ -1,16 +1,6 @@
 package api.masterplan.app.reportsModule.domain.models.entity
 
-import api.masterplan.app.reportsModule.domain.models.value.ReportDate
-import api.masterplan.app.reportsModule.domain.models.value.ReportDescription
-import api.masterplan.app.reportsModule.domain.models.value.ReportDocumentId
-import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
-import api.masterplan.app.reportsModule.domain.models.value.ReportId
-import api.masterplan.app.reportsModule.domain.models.value.ReportPlanId
-import api.masterplan.app.reportsModule.domain.models.value.ReportReferenceId
-import api.masterplan.app.reportsModule.domain.models.value.ReportStatus
-import api.masterplan.app.reportsModule.domain.models.value.ReportTaskId
-import api.masterplan.app.reportsModule.domain.models.value.ReportTitle
-import api.masterplan.app.reportsModule.domain.models.value.ReportType
+import api.masterplan.app.reportsModule.domain.models.value.*
 import java.time.LocalDateTime
 
 @ConsistentCopyVisibility
@@ -42,6 +32,26 @@ data class Report private constructor (
                 editDate = null,
                 description = description,
                 reportStatus = ReportStatus.NOT_CHECKED,
+                employeeId = employeeId,
+                referenceId = referenceId,
+                type = type,
+                documentId = documentId,
+            )
+        }
+
+        fun create(id: ReportId, title: ReportTitle, creationDate: ReportDate, editDate: ReportDate? = null, description: ReportDescription? = null,
+                   reportStatus: ReportStatus, employeeId: ReportEmployeeId,referenceId: ReportReferenceId, documentId: ReportDocumentId): Report {
+            val type = when(referenceId){
+                is ReportReferenceId.ForPlan -> ReportType.PLAN
+                is ReportReferenceId.ForTask -> ReportType.TASK
+            }
+            return Report(
+                id = id,
+                title = title,
+                creationDate = creationDate,
+                editDate = editDate,
+                description = description,
+                reportStatus = reportStatus,
                 employeeId = employeeId,
                 referenceId = referenceId,
                 type = type,

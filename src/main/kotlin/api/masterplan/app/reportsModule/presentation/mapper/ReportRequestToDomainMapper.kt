@@ -28,9 +28,9 @@ object ReportRequestToDomainMapper {
 
     fun toReportEmployeeId(id: UUID) = ReportEmployeeId(id)
 
-    fun toReportFile(fileName: String,fileData: ByteArray): ReportFile{
+    fun toReportFile(fileName: String?,fileData: ByteArray): ReportFile{
         return ReportFile(
-            fileName = fileName,
+            fileName = fileName?:"report.pdf",
             fileData = fileData,
         )
     }

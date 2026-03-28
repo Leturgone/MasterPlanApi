@@ -21,4 +21,8 @@ data class PlanFile(
         result = 31 * result + fileName.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "PlanFile(fileName='$fileName')"
+    }
 }

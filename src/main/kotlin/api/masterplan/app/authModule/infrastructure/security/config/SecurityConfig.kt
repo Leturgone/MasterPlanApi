@@ -24,15 +24,22 @@ class SecurityConfig(
         http.csrf { it.disable() }
 
         http.authorizeHttpRequests { auth ->
-            auth.requestMatchers("/swagger-ui/**", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
+            auth.requestMatchers("/swagger-ui/**","/error", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
             auth.requestMatchers("/api/v1/auth/login").permitAll()
             auth.requestMatchers("/api/v1/users/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/dir/**").hasAuthority("DIRECTOR")
             auth.requestMatchers("/api/v1/employees/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/files/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/plans/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/plans/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/tasks/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/tasks/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/reports/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/reports/emp/**").hasAuthority("EMPLOYEE")
             auth.anyRequest().authenticated()
         }
-        // СДЕЛАТЬ ФИЛЬТР ДЛЯ АДМИНА  И ДИРЕКТОРА В ЕМПЛОЙ
+
         // Загрузка пользователя при аутентификации
         http.userDetailsService(appUserDetailsService)
 
@@ -45,5 +52,7 @@ class SecurityConfig(
         http.logout { it.disable() }
 
         return http.build()
+
+
     }
 }

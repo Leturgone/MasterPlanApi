@@ -1,6 +1,6 @@
 package api.masterplan.app.reportsModule.infrastructure.database.repository
 
-import api.masterplan.app.logging.LoggingDatabaseMethod
+import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
 import api.masterplan.app.reportsModule.domain.interfaces.TaskReportRepository
 import api.masterplan.app.reportsModule.domain.models.entity.Report
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
