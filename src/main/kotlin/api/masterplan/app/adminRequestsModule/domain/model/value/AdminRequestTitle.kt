@@ -4,14 +4,15 @@ import api.masterplan.app.adminRequestsModule.domain.exception.AdminRequestExcep
 
 class AdminRequestTitle(val value: String) {
     companion object {
-        fun validate(desc: String):AdminRequestTitle{
+        fun validate(title: String):AdminRequestTitle{
             try {
-                require(desc.isNotEmpty()) { "Title cant be blank" }
-                require(desc.length <=100){ "Title too long" }
+                require(title.isNotEmpty()) { "Title cant be blank" }
+                require(title.length <=100){ "Title too long" }
             }catch(e:IllegalStateException){
                 throw AdminRequestException.InvalidAdminRequestTitle(e.message)
             }
-            return AdminRequestTitle(desc)
+            val text = title.replace("[^a-zA-Zа-яА-я0-9 ]".toRegex(), "_")
+            return AdminRequestTitle(text)
         }
     }
 }

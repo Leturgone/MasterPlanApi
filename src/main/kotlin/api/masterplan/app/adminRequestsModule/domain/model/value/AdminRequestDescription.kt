@@ -11,7 +11,8 @@ class AdminRequestDescription(val value: String) {
             }catch(e:IllegalStateException){
                 throw AdminRequestException.InvalidAdminRequestDesc(e.message)
             }
-            return AdminRequestDescription(desc)
+            val text = desc.replace("[^a-zA-Zа-яА-я0-9 ]".toRegex(), "_")
+            return AdminRequestDescription(text)
         }
     }
 }
