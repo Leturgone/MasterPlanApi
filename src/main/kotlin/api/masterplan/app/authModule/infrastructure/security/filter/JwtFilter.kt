@@ -2,6 +2,7 @@ package api.masterplan.app.authModule.infrastructure.security.filter
 
 import api.masterplan.app.authModule.infrastructure.security.service.JwtService
 import api.masterplan.app.authModule.infrastructure.security.service.AppUserDetailsService
+import api.masterplan.app.authModule.presentation.dto.AuthErrorResponse
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,7 +30,11 @@ class JwtFilter(
         }
 
         val token = authHeader.substring("Bearer ".length)
-        val username = jwtService.extractUsername(token)
+        val username = try {
+            jwtService.extractUsername(token)
+        }catch (_: Exception){
+            null
+        }
 
         // Проверка, что пользователь еще не аутентифицирован в текущем контексте безопасности
         if ((username != null) && SecurityContextHolder.getContext().authentication == null) {
