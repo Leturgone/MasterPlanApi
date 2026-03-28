@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 class LoggingAspect {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Pointcut("@annotation(LoggingMethod)")
+    @Pointcut("@annotation(api.masterplan.app.logging.annotations.LoggingMethod)")
     fun logPointcut() {}
 
     private fun getModule(methodSignature: MethodSignature): String{
