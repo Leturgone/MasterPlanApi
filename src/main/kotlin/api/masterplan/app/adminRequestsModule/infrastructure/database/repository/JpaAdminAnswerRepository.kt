@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import java.util.*
 
 interface JpaAdminAnswerRepository: CrudRepository<AdminAnswerEntity, UUID>  {
+
+    fun findByAdminRequestId(adminRequestId: UUID): AdminAnswerEntity?
+
 }
