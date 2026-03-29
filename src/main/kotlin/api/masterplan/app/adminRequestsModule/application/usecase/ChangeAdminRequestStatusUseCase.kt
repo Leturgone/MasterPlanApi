@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class ChangeAdminRequestStatusUseCase(
     private val adminRequestsService: AdminRequestsService
 ) {
-    operator fun invoke(command: ChangeAdminRequestStatusCommand) : Result<AdminRequestId>{
+    operator fun invoke(command: ChangeAdminRequestStatusCommand): Result<AdminRequestId>{
         return try {
             val requestId = adminRequestsService.changeAdminRequestStatus(
                 id = command.id,
