@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "task")
-data class TaskEntity(
+class TaskEntity(
     @Id
     @Column(name = "id")
     val id: UUID,
