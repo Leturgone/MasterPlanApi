@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import java.util.UUID
 
 interface JpaAdminRequestRepository: CrudRepository<AdminRequestEntity, UUID> {
+
+    fun findBySenderId(senderId: UUID): List<AdminRequestEntity>
+
 }
