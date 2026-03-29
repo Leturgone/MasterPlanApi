@@ -1,5 +1,5 @@
 create database masterplan_db;
-\c masterplan_db;
+\c masterplan_db
 psql \! chcp 1251
 
 
@@ -50,6 +50,10 @@ CREATE TABLE task_status (
     status VARCHAR(45) NOT NULL UNIQUE
 );
 
+CREATE TABLE admin_request_status (
+    id SERIAL PRIMARY KEY,
+    status VARCHAR(45) NOT NULL UNIQUE
+);
 
 CREATE TABLE document (
     id UUID PRIMARY KEY,
@@ -273,3 +277,8 @@ INSERT INTO report_status (status) VALUES
 ('NOT_CHECKED'),
 ('CHECKED'),
 ('CHECKING');
+
+INSERT INTO admin_request_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');
