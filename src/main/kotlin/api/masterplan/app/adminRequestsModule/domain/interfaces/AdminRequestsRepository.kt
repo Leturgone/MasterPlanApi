@@ -1,25 +1,25 @@
 package api.masterplan.app.adminRequestsModule.domain.interfaces
 
-import api.masterplan.app.adminRequestsModule.domain.dtos.AdminAnswerDetails
-import api.masterplan.app.adminRequestsModule.domain.dtos.AdminRequestDetails
+import api.masterplan.app.adminRequestsModule.domain.model.entity.AdminAnswer
 import api.masterplan.app.adminRequestsModule.domain.model.entity.AdminRequest
-import api.masterplan.app.adminRequestsModule.domain.model.value.*
+import api.masterplan.app.adminRequestsModule.domain.model.value.AdminAnswerId
+import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestId
+import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestSenderId
 
 interface AdminRequestsRepository {
 
-    fun createAdminRequest(id: AdminRequestId? = null, title: AdminRequestTitle,
-                           description: AdminRequestDescription, senderId: AdminRequestSenderId): AdminRequestId
+    fun saveAdminRequest(adminRequest: AdminRequest): AdminRequestId?
 
-    fun createAdminAnswer(id: AdminAnswerId? = null, title: AdminAnswerTitle,
-                          description: AdminAnswerDescription, adminRequestId: AdminRequestId): AdminAnswerId
+    fun saveAdminAnswer(adminAnswer: AdminAnswer): AdminAnswerId?
 
-    fun changeAdminRequestStatusById(id: AdminRequestId,status: AdminRequestStatus): AdminRequestId
+    fun updateAdminRequest(id: AdminRequestId,updatedAdminRequest: AdminRequest): AdminRequestId?
 
-    fun getAllAdminRequestsList(): List<AdminRequestDetails>
 
-    fun getAdminRequestById(id: AdminAnswerId): AdminRequest
+    fun getAllAdminRequestsList(): List<AdminRequest>
 
-    fun getAdminRequestsListBySenderId(senderId: AdminRequestSenderId ): List<AdminRequestDetails>
+    fun getAdminRequestById(id: AdminRequestId): AdminRequest?
 
-    fun getAdminAnswerByRequestId(id: AdminRequestId): AdminAnswerDetails
+    fun getAdminRequestsListBySenderId(senderId: AdminRequestSenderId ): List<AdminRequest>
+
+    fun getAdminAnswerByRequestId(id: AdminRequestId): AdminAnswer?
 }

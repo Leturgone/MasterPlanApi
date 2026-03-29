@@ -23,7 +23,7 @@ interface AdminRequestsService {
 
     fun getAdminRequestsList(): List<AdminRequestDetails>
 
-    fun getAdminRequest(id: AdminAnswerId): AdminRequestDetails
+    fun getAdminRequest(id: AdminRequestId): AdminRequestDetails
 
     fun getCreatedAdminRequestsBySenderList(senderId: AdminRequestSenderId ): List<AdminRequestDetails>
 
