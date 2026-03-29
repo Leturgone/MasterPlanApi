@@ -208,19 +208,24 @@ CREATE TABLE admin_request (
     description VARCHAR(255) NOT NULL,
     c_date TIMESTAMP NOT NULL,
     sender_id UUID NOT NULL,
-    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    admin_request_status_id INT NOT NULL,
     CONSTRAINT fk_admin_request_employee
     FOREIGN KEY (sender_id)
     REFERENCES employee(id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT fk_admin_admin_request_status
+    FOREIGN KEY (admin_request_status_id)
+    REFERENCES admin_request_status(id)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
 );
 
 
 CREATE TABLE admin_answer (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    description VARCHAR(45) NOT NULL,
+    description VARCHAR(255) NOT NULL,
     admin_request_id UUID NOT NULL,
     CONSTRAINT fk_admin_answer_admin_request
     FOREIGN KEY (admin_request_id)
