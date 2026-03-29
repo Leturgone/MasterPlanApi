@@ -98,7 +98,7 @@ class AdminRequestsServiceImpl(
 
     @LoggingMethod("adminRequestsModule")
     override fun getAdminAnswerForRequest(id: AdminRequestId): AdminAnswerDetails {
-        val answer = adminRequestRepository.getAdminAnswerByRequestId(id) ?: throw AdminRequestException.AdminAnswertNotExistForRequest(id)
+        val answer = adminRequestRepository.getAdminAnswerByRequestId(id) ?: throw AdminRequestException.AdminAnswerNotExistForRequest(id)
 
         return AdminRequestToDetailsMapper.toDetails(answer)
     }
