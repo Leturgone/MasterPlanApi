@@ -9,7 +9,7 @@ import java.util.*
 
 @Entity
 @Table(name = "employee")
-data class EmployeeEntity(
+class EmployeeEntity(
     @Id
     @Column(name = "id")
     val id: UUID,
