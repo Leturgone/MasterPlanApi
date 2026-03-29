@@ -163,7 +163,7 @@ class AdminRequestsController(
     )
     @PostMapping(("/dir/requests/sender/{senderId}"))
     fun createAdminRequest(
-        @PathVariable(value = "senderId}") senderId: UUID,
+        @PathVariable(value = "senderId") senderId: UUID,
         @RequestBody request: CreateAdminRequestRequest
     ): ResponseEntity<AdminRequestIdResponse>{
         val command = CreateAdminRequestCommand(
