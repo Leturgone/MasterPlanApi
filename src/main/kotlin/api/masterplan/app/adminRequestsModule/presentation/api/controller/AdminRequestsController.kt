@@ -22,7 +22,7 @@ import java.util.*
 @RestController
 @AdminRequestsControllerExceptionHandler
 @RequestMapping("/api/v1/requests")
-@Tag(name = "Reports", description = "Управление заявками администратору и ответами администратора на них")
+@Tag(name = "Admin Requests", description = "Управление заявками администратору и ответами администратора на них")
 class AdminRequestsController(
     private val changeAdminRequestStatusUseCase: ChangeAdminRequestStatusUseCase,
     private val createAdminAnswerUseCase: CreateAdminAnswerUseCase,
