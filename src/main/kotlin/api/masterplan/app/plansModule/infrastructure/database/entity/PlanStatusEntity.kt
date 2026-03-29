@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "plan_status")
-data class PlanStatusEntity(
+class PlanStatusEntity(
     @Id
     @Column(name = "id")
     val id: Int,
