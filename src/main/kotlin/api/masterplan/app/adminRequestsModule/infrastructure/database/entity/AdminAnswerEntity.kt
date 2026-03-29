@@ -12,7 +12,7 @@ class AdminAnswerEntity(
 
     @Id
     @Column(name = "id")
-    val id: Int,
+    val id: UUID,
 
     @Column(name = "title", length = 100, nullable = false)
     val title: String,
