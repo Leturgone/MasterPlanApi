@@ -223,7 +223,7 @@ CREATE TABLE admin_request (
 
 
 CREATE TABLE admin_answer (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(255) NOT NULL,
     admin_request_id UUID NOT NULL,
