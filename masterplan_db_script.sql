@@ -1,5 +1,5 @@
 create database masterplan_db;
-\c masterplan_db;
+\c masterplan_db
 psql \! chcp 1251
 
 
@@ -50,6 +50,10 @@ CREATE TABLE task_status (
     status VARCHAR(45) NOT NULL UNIQUE
 );
 
+CREATE TABLE admin_request_status (
+    id SERIAL PRIMARY KEY,
+    status VARCHAR(45) NOT NULL UNIQUE
+);
 
 CREATE TABLE document (
     id UUID PRIMARY KEY,
@@ -204,19 +208,24 @@ CREATE TABLE admin_request (
     description VARCHAR(255) NOT NULL,
     c_date TIMESTAMP NOT NULL,
     sender_id UUID NOT NULL,
-    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    admin_request_status_id INT NOT NULL,
     CONSTRAINT fk_admin_request_employee
     FOREIGN KEY (sender_id)
     REFERENCES employee(id)
     ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT fk_admin_admin_request_status
+    FOREIGN KEY (admin_request_status_id)
+    REFERENCES admin_request_status(id)
+    ON DELETE NO ACTION
     ON UPDATE CASCADE
 );
 
 
 CREATE TABLE admin_answer (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    description VARCHAR(45) NOT NULL,
+    description VARCHAR(255) NOT NULL,
     admin_request_id UUID NOT NULL,
     CONSTRAINT fk_admin_answer_admin_request
     FOREIGN KEY (admin_request_id)
@@ -273,3 +282,8 @@ INSERT INTO report_status (status) VALUES
 ('NOT_CHECKED'),
 ('CHECKED'),
 ('CHECKING');
+
+INSERT INTO admin_request_status (status) VALUES
+('COMPLETED'),
+('IN_PROGRESS'),
+('NOT_STARTED');

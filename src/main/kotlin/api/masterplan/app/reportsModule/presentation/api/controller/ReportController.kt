@@ -456,7 +456,7 @@ class ReportController(
             ),
             ApiResponse(
                 responseCode = "500",
-                description = "Внутренняя ошибка сервера: сбой при удалении отчета",
+                description = "Внутренняя ошибка сервера: сбой при изменении статуса",
                 content = [Content(schema = Schema(implementation = ReportErrorResponse::class))]
             ),
             ApiResponse(
