@@ -218,7 +218,7 @@ CREATE TABLE admin_request (
     FOREIGN KEY (admin_request_status_id)
     REFERENCES admin_request_status(id)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE CASCADE
 );
 
 
