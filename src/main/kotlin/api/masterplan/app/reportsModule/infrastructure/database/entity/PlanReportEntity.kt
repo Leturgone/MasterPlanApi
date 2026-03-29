@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "plan_report")
-data class PlanReportEntity(
+class PlanReportEntity(
     @Id
     @Column(name = "id")
     val id: UUID,
