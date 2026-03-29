@@ -53,7 +53,7 @@ class FilesController(
 
         ]
     )
-    @GetMapping("/emp/downloadFile/{fileId}/")
+    @GetMapping("/emp/file/{fileId}")
     fun downloadFile(@PathVariable(value = "fileId") fileId: UUID): ResponseEntity<ByteArray>{
         val command = DownloadFileCommand(
             fileId = FIleRequestToDomainMapper.toDocumentFileId(fileId)
