@@ -39,7 +39,11 @@ sealed class AdminRequestException(message: String):Exception(message) {
         "Failed to change status to {${status.name} for request with id = ${id.value}"
     )
 
-    class AdminAnswertNotExistForRequest(id: AdminRequestId) : AdminRequestException(
+    class AdminAnswerNotExistForRequest(id: AdminRequestId) : AdminRequestException(
         "Admin answer for admin request with id = ${id.value} not found"
+    )
+
+    class InvalidAdminRequestStatus(status: String) : AdminRequestException(
+        "Invalid admin request status: $status"
     )
 }

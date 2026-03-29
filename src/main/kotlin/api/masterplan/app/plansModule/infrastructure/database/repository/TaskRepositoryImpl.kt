@@ -33,8 +33,8 @@ class TaskRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun saveTask(task: Task): TaskId? {
-        val statusList = jpaTaskStatusRepository.findAll().toSet()
-        val taskEntity = TaskDatabaseMapper.toEntity(task, statusList)
+        val statusSet = jpaTaskStatusRepository.findAll().toSet()
+        val taskEntity = TaskDatabaseMapper.toEntity(task, statusSet)
         val taskId = jpaTaskRepository.save(taskEntity).id
         return TaskId(taskId)
     }
@@ -53,6 +53,7 @@ class TaskRepositoryImpl(
         return TaskDatabaseMapper.toDomain(tasks)
     }
 
+    @LoggingDatabaseMethod(moduleName = "planModule")
     override fun getTasksByExecutorIds(executorIds: Set<ExecutorId>): List<Task> {
         val executorIdsFields = executorIds.map { it.value }.toSet()
         val tasks = jpaTaskRepository.findByExecutorIds(executorIdsFields)
@@ -68,8 +69,8 @@ class TaskRepositoryImpl(
 
     @LoggingDatabaseMethod(moduleName = "planModule")
     override fun updateTask(taskId: TaskId, task: Task): TaskId? {
-        val statusList = jpaTaskStatusRepository.findAll().toSet()
-        val taskEntity = TaskDatabaseMapper.toEntity(task, statusList)
+        val statusSet = jpaTaskStatusRepository.findAll().toSet()
+        val taskEntity = TaskDatabaseMapper.toEntity(task, statusSet)
         val taskId = jpaTaskRepository.save(taskEntity).id
         return TaskId(taskId)
     }

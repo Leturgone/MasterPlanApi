@@ -35,8 +35,11 @@ class AdminRequestsServiceImpl(
             senderId = senderId,
         )
 
-        val adminRequestId = adminRequestRepository.saveAdminRequest(adminRequestEntity)
-            ?: throw AdminRequestException.FailedToCreateAdminRequest(title)
+        val adminRequestId = try {
+            adminRequestRepository.saveAdminRequest(adminRequestEntity)
+        }catch (_: Exception){
+            throw AdminRequestException.FailedToCreateAdminRequest(title)
+        }
 
         return adminRequestId
     }
@@ -52,8 +55,11 @@ class AdminRequestsServiceImpl(
             adminRequestId = adminRequestId
         )
 
-        val adminAnswerId = adminRequestRepository.saveAdminAnswer(adminAnswerEntity)
-            ?: throw AdminRequestException.FailedToCreateAdminAnswer(title)
+        val adminAnswerId = try {
+            adminRequestRepository.saveAdminAnswer(adminAnswerEntity)
+        } catch (_: Exception){
+            throw AdminRequestException.FailedToCreateAdminAnswer(title)
+        }
 
         return adminAnswerId
     }
@@ -65,8 +71,12 @@ class AdminRequestsServiceImpl(
 
         val requestWithNewStatus = oldAdminRequest.changeStatus(status)
 
-        val adminRequestId = adminRequestRepository.updateAdminRequest(id,requestWithNewStatus) ?:
-        throw AdminRequestException.FailedToChangeAdminRequestStatus(id, status)
+        val adminRequestId = try {
+            adminRequestRepository.updateAdminRequest(id,requestWithNewStatus)
+        }catch (_: Exception){
+            throw AdminRequestException.FailedToChangeAdminRequestStatus(id, status)
+        }
+
 
         return adminRequestId
     }
@@ -98,7 +108,7 @@ class AdminRequestsServiceImpl(
 
     @LoggingMethod("adminRequestsModule")
     override fun getAdminAnswerForRequest(id: AdminRequestId): AdminAnswerDetails {
-        val answer = adminRequestRepository.getAdminAnswerByRequestId(id) ?: throw AdminRequestException.AdminAnswertNotExistForRequest(id)
+        val answer = adminRequestRepository.getAdminAnswerByRequestId(id) ?: throw AdminRequestException.AdminAnswerNotExistForRequest(id)
 
         return AdminRequestToDetailsMapper.toDetails(answer)
     }

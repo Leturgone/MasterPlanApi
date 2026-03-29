@@ -8,11 +8,11 @@ import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestSen
 
 interface AdminRequestsRepository {
 
-    fun saveAdminRequest(adminRequest: AdminRequest): AdminRequestId?
+    fun saveAdminRequest(adminRequest: AdminRequest): AdminRequestId
 
-    fun saveAdminAnswer(adminAnswer: AdminAnswer): AdminAnswerId?
+    fun saveAdminAnswer(adminAnswer: AdminAnswer): AdminAnswerId
 
-    fun updateAdminRequest(id: AdminRequestId,updatedAdminRequest: AdminRequest): AdminRequestId?
+    fun updateAdminRequest(id: AdminRequestId,updatedAdminRequest: AdminRequest): AdminRequestId
 
 
     fun getAllAdminRequestsList(): List<AdminRequest>
