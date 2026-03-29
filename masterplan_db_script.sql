@@ -218,12 +218,12 @@ CREATE TABLE admin_request (
     FOREIGN KEY (admin_request_status_id)
     REFERENCES admin_request_status(id)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE CASCADE
 );
 
 
 CREATE TABLE admin_answer (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(255) NOT NULL,
     admin_request_id UUID NOT NULL,

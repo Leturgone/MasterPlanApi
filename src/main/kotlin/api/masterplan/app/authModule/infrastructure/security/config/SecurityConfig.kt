@@ -37,6 +37,8 @@ class SecurityConfig(
             auth.requestMatchers("/api/v1/tasks/emp/**").hasAuthority("EMPLOYEE")
             auth.requestMatchers("/api/v1/reports/dir/**").hasAuthority("DIRECTOR")
             auth.requestMatchers("/api/v1/reports/emp/**").hasAuthority("EMPLOYEE")
+            auth.requestMatchers("/api/v1/requests/dir/").hasAnyRole("ADMIN", "DIRECTOR")
+            auth.requestMatchers("/api/v1/requests/admin/").hasRole("ADMIN")
             auth.anyRequest().authenticated()
         }
 
