@@ -70,7 +70,7 @@ class EmployeeController(
 
         ]
     )
-    @PostMapping("/admin/createEmployee")
+    @PostMapping("/admin/employee")
     fun createEmployee(@RequestBody request: CreateEmployeeRequest): ResponseEntity<EmployeeIdResponse> {
         val name = EmployeeName.validate(request.name)
         val surname = EmployeeSurname.validate(request.surname)
@@ -116,7 +116,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/exportMyEmployees/")
+    @GetMapping("/dir/employee/{directorId}/employees/export")
     suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<ByteArray> {
         val domainId = EmployeeId(directorId)
         val command = ExportDirEmployeesCommand(directorId = domainId)
@@ -150,7 +150,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/myEmployees/")
+    @GetMapping("/dir/employee/{directorId}/employees")
     fun getDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
 
         val domainId = EmployeeId(directorId)
@@ -184,7 +184,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/admin/allEmployees")
+    @GetMapping("/admin/employee")
     fun getAllEmployees(): ResponseEntity<List<EmployeeDetailsResponse>> {
         val result = getAllEmployeesUseCase().getOrThrow()
         val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
@@ -216,7 +216,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/myEmployeesWithoutTasks/")
+    @GetMapping("/dir/employee/{directorId}/employees/withoutTasks")
     suspend fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
         val domainId = EmployeeId(directorId)
         val command = GetDirEmployeesWithoutTasksCommand(domainId)
@@ -323,7 +323,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/searchEmployee/")
+    @GetMapping("/dir/employee/{directorId}/employees/search/")
     fun searchDirEmployeeByName(
         @PathVariable(value = "directorId") directorId: UUID,
         @RequestParam query: String): ResponseEntity<List<EmployeeDetailsResponse>>{
@@ -358,7 +358,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/admin/searchEmployee/")
+    @GetMapping("/admin/employee/search/")
     fun searchEmployeeByName(@RequestParam query: String): ResponseEntity<List<EmployeeDetailsResponse>>{
         val command = SearchEmployeeByNameCommand(query)
         val result = searchEmployeeByNameUseCase(command).getOrThrow()
@@ -424,7 +424,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/getSortedEmpByWorkload/")
+    @GetMapping("/dir/{directorId}/employeesgetSortedEmpByWorkload/")
     suspend fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
         val directorId = EmployeeId(directorId)
         val command = SortDirEmployeesByWorkloadCommand(directorId)
@@ -462,7 +462,7 @@ class EmployeeController(
 
         ]
     )
-    @PatchMapping("/admin/updateEmployee/")
+    @PatchMapping("/admin/employee/")
     fun updateEmployee(@RequestBody request: UpdateEmployeeRequest): ResponseEntity<EmployeeIdResponse>{
         val employeeId = EmployeeId(request.id)
         val newName = EmployeeName.validate(request.newName)
