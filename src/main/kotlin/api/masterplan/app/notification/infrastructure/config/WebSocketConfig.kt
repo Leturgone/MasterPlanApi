@@ -1,4 +1,4 @@
-package api.masterplan.app.notification.config
+package api.masterplan.app.notification.infrastructure.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
