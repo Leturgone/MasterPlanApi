@@ -71,7 +71,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/emp/report/{reportType}/{reportId}")
+    @GetMapping("/emp/report/{reportId}/type/{reportType}")
     fun getReportInformation(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID
@@ -114,7 +114,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/emp/{employeeId}/createdReports/{reportType}")
+    @GetMapping("/emp/{employeeId}/report/type/{reportType}/all")
     fun getCreatedReports(
         @PathVariable(value = "employeeId") employeeId: UUID,
         @PathVariable(value = "reportType") reportType: String,
@@ -157,7 +157,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/subordinatesReports/TASK")
+    @GetMapping("/dir/{directorId}/subordinatesReports/type/TASK")
     fun getSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID
     ):ResponseEntity<List<ReportResponse>> {
@@ -202,7 +202,7 @@ class ReportController(
 
         ]
     )
-    @PostMapping("/emp/createReport/{reportType}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/emp/report/type/{reportType}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun  createReport(
         @PathVariable(value = "reportType") reportType: String,
         @RequestPart("request") request: CreateReportRequest,
@@ -264,7 +264,7 @@ class ReportController(
 
         ]
     )
-    @PatchMapping("/emp/updateReport/{reportType}/{reportId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PatchMapping("/emp/report/{reportId}/type/{reportType}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun  updateReport(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
@@ -323,7 +323,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/subordinatesReports/TASK/filterStatus/{reportStatus}")
+    @GetMapping("/dir/{directorId}/subordinatesReports/type/TASK/status/{reportStatus}")
     fun getFilterByStatusSubordinatesTaskReports(
         @PathVariable(value = "directorId") directorId: UUID,
         @PathVariable(value = "reportStatus") reportStatus: String
@@ -368,7 +368,7 @@ class ReportController(
 
         ]
     )
-    @GetMapping("/emp/{employeeId}/createdReports/{reportType}/filterStatus/{reportStatus}")
+    @GetMapping("/emp/{employeeId}/report/type/{reportType}/status/{reportStatus}")
     fun getFilterByStatusCreatedReports(
         @PathVariable(value = "employeeId") employeeId: UUID,
         @PathVariable(value = "reportType") reportType: String,
@@ -418,7 +418,7 @@ class ReportController(
 
         ]
     )
-    @DeleteMapping(("/emp/deleteReport/{reportType}/{reportId}"))
+    @DeleteMapping(("/emp/report/{reportId}/type/{reportType}"))
     fun deleteReport(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,
@@ -466,7 +466,7 @@ class ReportController(
 
         ]
     )
-    @PatchMapping(("/dir/updateReportStatus/{reportType}/{reportId}"))
+    @PatchMapping(("/dir/report/{reportId}/type/{reportType}/status"))
     fun changeReportStatus(
         @PathVariable(value = "reportType") reportType: String,
         @PathVariable(value = "reportId") reportId: UUID,

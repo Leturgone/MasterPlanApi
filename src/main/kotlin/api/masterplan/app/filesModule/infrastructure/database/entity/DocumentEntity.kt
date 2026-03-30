@@ -8,7 +8,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "document")
-data class DocumentEntity(
+class DocumentEntity(
     @Id
     @Column(name = "id")
     val id: UUID,

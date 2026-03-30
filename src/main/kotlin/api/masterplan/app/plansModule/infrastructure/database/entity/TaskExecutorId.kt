@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 import java.util.UUID
 
 @Embeddable
-data class TaskExecutorId(
+class TaskExecutorId(
     @Column(name = "task_id")
     val taskId: UUID,
 

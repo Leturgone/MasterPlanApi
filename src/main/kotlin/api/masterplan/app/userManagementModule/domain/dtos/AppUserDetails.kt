@@ -10,4 +10,8 @@ data class AppUserDetails(
     val login: UserLogin,
     val password: UserPassword,
     val roles: Set<UserRole>
-)
+){
+    override fun toString(): String {
+        return "AppUserDetails(id=$id, login=$login, roles=$roles)"
+    }
+}

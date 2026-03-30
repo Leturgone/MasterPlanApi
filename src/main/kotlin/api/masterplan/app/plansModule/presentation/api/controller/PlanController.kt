@@ -182,7 +182,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/plan/{planId}/tasks/filterStatus/{status}")
+    @GetMapping("/plans/dir/plan/{planId}/tasks/status/{status}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
         @PathVariable(value = "status") status: String): ResponseEntity<List<TaskInformationResponse>>{
@@ -325,7 +325,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/tasks/emp/{executorId}/assignedTasks/filterStatus/{status}")
+    @GetMapping("/tasks/emp/{executorId}/assignedTasks/status/{status}")
     fun getAssignedTasksFilterByStatus(
         @PathVariable(value = "executorId") executorId: UUID,
         @PathVariable(value = "status") status: String
@@ -440,7 +440,7 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/plans/dir/createPlan",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/plans/dir/plan",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun createPLan(
         @RequestPart("request") request: CreatePlanRequest,
         @RequestPart(value = "file", required = false) file: MultipartFile?
@@ -504,7 +504,7 @@ class PlanController(
 
         ]
     )
-    @PostMapping("/tasks/dir/createTask",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/tasks/dir/task",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun addTaskToPlan(
         @RequestPart("request") request: CreateTaskRequest,
         @RequestPart(value = "file", required = false) file: MultipartFile?
@@ -552,7 +552,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/{directorId}/myPlans")
+    @GetMapping("/plans/dir/{directorId}/plans")
     fun getDirPlans(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = GetDirPlansCommand(PlanRequestToDomainMapper.toDirectorId(directorId))
         val result = getDirPlansUseCase(command).getOrThrow()
@@ -589,7 +589,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/{directorId}/myPlans/filterStatus/{status}")
+    @GetMapping("/plans/dir/{directorId}/plans/status/{status}")
     fun getDirPlansFilterByStatus(
         @PathVariable(value = "directorId") directorId: UUID,
         @PathVariable(value = "status") status: String): ResponseEntity<List<PlanInformationResponse>>{
@@ -625,7 +625,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/{directorId}/myPlans/sortTime")
+    @GetMapping("/plans/dir/{directorId}/plans/sortTime")
     fun getDirPlansSortByTime(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<PlanInformationResponse>>{
         val command = SortDirPlansByEndDateCommand(
             directorId = PlanRequestToDomainMapper.toDirectorId(directorId)
@@ -668,7 +668,7 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/tasks/dir/updateTask/{taskId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PutMapping("/tasks/dir/task/{taskId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun updateTask(
         @PathVariable(value = "taskId") taskId: UUID,
         @RequestPart("request") request: UpdateTaskRequest,
@@ -735,7 +735,7 @@ class PlanController(
 
         ]
     )
-    @PutMapping("/plans/dir/updatePlan/{planId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PutMapping("/plans/dir/plan/{planId}",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun updatePlan(
         @PathVariable(value = "planId") planId: UUID,
         @RequestPart("request") request: UpdatePlanRequest,
@@ -796,7 +796,7 @@ class PlanController(
 
         ]
     )
-    @DeleteMapping("/plans/dir/deletePlan/{planId}")
+    @DeleteMapping("/plans/dir/plan/{planId}")
     fun deletePlan(@PathVariable(value = "planId") planId: UUID): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
         val command = DeletePlanCommand(planDomainId)
@@ -833,7 +833,7 @@ class PlanController(
 
         ]
     )
-    @DeleteMapping("/tasks/dir/deleteTask/{taskId}")
+    @DeleteMapping("/tasks/dir/task/{taskId}")
     fun deleteTask(@PathVariable(value = "taskId") taskId: UUID): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)
         val command = DeleteTaskFromPlanCommand(taskDomainId)
@@ -875,7 +875,7 @@ class PlanController(
 
         ]
     )
-    @PatchMapping("/plans/dir/updatePlanStatus/{planId}")
+    @PatchMapping("/plans/dir/plan/{planId}/status")
     fun updatePlanStatus(@PathVariable(value = "planId") planId: UUID,
                          @RequestBody request: UpdatePlanStatusRequest): ResponseEntity<PlanIdResponse>{
         val planDomainId = PlanRequestToDomainMapper.toPlanId(planId)
@@ -922,7 +922,7 @@ class PlanController(
 
         ]
     )
-    @PatchMapping("/tasks/dir/updateTaskStatus/{taskId}")
+    @PatchMapping("/tasks/dir/task/{taskId}/status")
     fun updateTaskStatus(@PathVariable(value = "taskId") taskId: UUID,
                          @RequestBody request: UpdateTaskStatusRequest): ResponseEntity<TaskIdResponse>{
         val taskDomainId = PlanRequestToDomainMapper.toTaskId(taskId)

@@ -14,7 +14,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "task_report")
-data class TaskReportEntity(
+class TaskReportEntity(
     @Id
     @Column(name = "id")
     val id: UUID,

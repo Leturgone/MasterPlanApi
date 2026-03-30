@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "task_status")
-data class TaskStatusEntity(
+class TaskStatusEntity(
     @Id
     @Column(name = "id")
     val id: Int,

@@ -6,7 +6,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "executor_has_task")
-data class TaskHasExecutorEntity(
+class TaskHasExecutorEntity(
     @EmbeddedId
     val id: TaskExecutorId
 ){
