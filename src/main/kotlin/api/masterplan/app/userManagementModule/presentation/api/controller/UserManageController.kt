@@ -66,7 +66,7 @@ class UserManageController(
 
         ]
     )
-    @PostMapping("/createProfile")
+    @PostMapping("/user")
     fun createUser(@RequestBody request: CreateProfileRequest): ResponseEntity<UserUidResponse>{
         val employeeInfo = EmployeeInfo(
             name = request.name,
@@ -121,7 +121,7 @@ class UserManageController(
             )
         ]
     )
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/user/{id}")
     fun deleteUser(@PathVariable(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
 
         val userId = UserRequestToDomainMapper.idToDomain(id)
@@ -164,7 +164,7 @@ class UserManageController(
             )
         ]
     )
-    @GetMapping("/getUserByLogin/{login}")
+    @GetMapping("/user/login/{login}")
     fun getUserByLogin(@PathVariable(value = "login") login: String): ResponseEntity<UserDataResponse> {
         val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
         val command = GetUserByLoginCommand(loginValidated)
@@ -200,7 +200,7 @@ class UserManageController(
             )
         ]
     )
-    @GetMapping("/getUserById/{id}")
+    @GetMapping("/user/id/{id}")
     fun getUserById(@PathVariable(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
         val idValidated = UserRequestToDomainMapper.idToDomain(id)
         val command = GetUserByIdCommand(idValidated)
@@ -241,9 +241,11 @@ class UserManageController(
             )
         ]
     )
-    @PatchMapping("/resetPassword")
-    fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
-        val id = UserId(request.userId)
+    @PatchMapping("/user/{id}/password")
+    fun resetPassword(
+        @PathVariable(value = "id") id: UUID,
+        @RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
+        val id = UserId(id)
         val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
         val command = ResetPasswordCommand(id,passwordValidated)
 
