@@ -13,4 +13,9 @@ interface NotificationService {
                          notificationType: NotificationType,
                          title: NotificationTitle,
                          message: NotificationMessage)
+
+    fun sendAdminNotification(channel: NotificationChannel,
+                              notificationType: NotificationType,
+                              title: NotificationTitle,
+                              message: NotificationMessage)
 }

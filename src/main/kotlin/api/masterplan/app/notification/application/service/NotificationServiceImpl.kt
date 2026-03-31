@@ -40,5 +40,26 @@ class NotificationServiceImpl(
         }
     }
 
+    override fun sendAdminNotification(
+        channel: NotificationChannel,
+        notificationType: NotificationType,
+        title: NotificationTitle,
+        message: NotificationMessage
+    ) {
+        val notification = GenericNotification.create(
+            title = title,
+            message = message,
+            notificationType = notificationType,
+        )
+
+        when(channel){
+            NotificationChannel.PUSH -> try {
+                notificationSender.sendPushNotification(customerId, notification)
+            }catch (e : Exception){
+                throw NotificationException.FailedToSendPushNotification(e.message)
+            }
+        }
+    }
+
 
 }
