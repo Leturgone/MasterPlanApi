@@ -6,6 +6,7 @@ import org.springframework.modulith.ApplicationModule
     "apiContracts :: plans",
     "apiContracts :: employee",
     "apiContracts :: files",
+    "apiContracts :: notifications",
     "logging :: annotations",
     "export :: annotations"
 ])
