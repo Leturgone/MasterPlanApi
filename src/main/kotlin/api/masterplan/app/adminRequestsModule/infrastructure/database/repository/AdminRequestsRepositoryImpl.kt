@@ -35,11 +35,12 @@ class AdminRequestsRepositoryImpl(
     }
 
     @LoggingDatabaseMethod(moduleName = "adminRequestsModule")
-    override fun updateAdminRequest(id: AdminRequestId, updatedAdminRequest: AdminRequest): AdminRequestId {
+    override fun updateAdminRequest(id: AdminRequestId, updatedAdminRequest: AdminRequest): AdminRequest {
         val statusSet = jpaAdminRequestStatusRepository.findAll().toSet()
         val updatedAdminRequestEntity = AdminRequestDatabaseMapper.toEntity(updatedAdminRequest, statusSet)
-        val requestId = jpaAdminRequestRepository.save(updatedAdminRequestEntity).id
-        return AdminRequestId(requestId)
+        val request = jpaAdminRequestRepository.save(updatedAdminRequestEntity)
+        val model = AdminRequestDatabaseMapper.toDomain(request)
+        return model
     }
 
     @LoggingDatabaseMethod(moduleName = "adminRequestsModule")
