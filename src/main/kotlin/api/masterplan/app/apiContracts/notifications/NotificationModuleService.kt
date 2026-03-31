@@ -1,4 +1,4 @@
-package api.masterplan.app.apiContracts.notification
+package api.masterplan.app.apiContracts.notifications
 
 import java.util.*
 
