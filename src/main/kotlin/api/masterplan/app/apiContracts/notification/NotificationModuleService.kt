@@ -4,15 +4,15 @@ import java.util.*
 
 interface NotificationModuleService {
 
-    fun sendTaskAssignmentNotification(consumerId: UUID, notification: NotificationDto)
+    fun sendTaskAssignmentNotification(consumerId: UUID, message:String)
 
-    fun sendTaskChangeStatusNotification(consumerId: UUID, notification: NotificationDto)
+    fun sendTaskChangeStatusNotification(consumerId: UUID, message:String)
 
-    fun sendNewRequestNotification(notification: NotificationDto)
+    fun sendNewRequestNotification(message:String)
 
-    fun sendRequestChangeStatusNotification(consumerId: UUID, notification: NotificationDto)
+    fun sendRequestChangeStatusNotification(consumerId: UUID, message:String)
 
-    fun sendNewReportNotification(consumerId: UUID, notification: NotificationDto)
+    fun sendNewReportNotification(consumerId: UUID, message:String)
 
-    fun sendNewReportChangeStatusNotification(consumerId: UUID, notification: NotificationDto)
+    fun sendNewReportChangeStatusNotification(consumerId: UUID, message:String)
 }
