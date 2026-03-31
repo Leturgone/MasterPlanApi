@@ -14,7 +14,6 @@ class SendNotificationUseCase(
                 customerId = command.customerId,
                 channel = command.channel,
                 notificationType = command.notificationType,
-                title = command.title,
                 message = command.message
             )
             Result.success(result)
