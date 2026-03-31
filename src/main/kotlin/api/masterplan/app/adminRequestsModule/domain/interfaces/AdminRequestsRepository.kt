@@ -12,7 +12,7 @@ interface AdminRequestsRepository {
 
     fun saveAdminAnswer(adminAnswer: AdminAnswer): AdminAnswerId
 
-    fun updateAdminRequest(id: AdminRequestId,updatedAdminRequest: AdminRequest): AdminRequestId
+    fun updateAdminRequest(id: AdminRequestId,updatedAdminRequest: AdminRequest): AdminRequest
 
 
     fun getAllAdminRequestsList(): List<AdminRequest>
