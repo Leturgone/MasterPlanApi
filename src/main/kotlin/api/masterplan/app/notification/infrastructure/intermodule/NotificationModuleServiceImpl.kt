@@ -21,7 +21,6 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.TASK_ASSIGNMENT,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendNotificationUseCase(command)
@@ -35,7 +34,6 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.TASK_CHANGE_STATUS,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendNotificationUseCase(command)
@@ -45,7 +43,6 @@ class NotificationModuleServiceImpl(
         val command = SendAdminNotificationCommand(
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.NEW_REQUEST,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendAdminNotificationUseCase(command)
@@ -59,7 +56,6 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.REQUEST_CHANGE_STATUS,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendNotificationUseCase(command)
@@ -70,7 +66,6 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.NEW_REPORT,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendNotificationUseCase(command)
@@ -81,7 +76,6 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.REPORT_CHANGE_STATUS,
-            title = NotificationTitle.validate(notification.title),
             message = NotificationMessage.validate(notification.message)
         )
         sendNotificationUseCase(command)
