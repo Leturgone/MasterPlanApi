@@ -1,6 +1,7 @@
 package api.masterplan.app.notification.application.service
 
 import api.masterplan.app.logging.annotations.LoggingMethod
+import api.masterplan.app.notification.domain.exception.NotificationException
 import api.masterplan.app.notification.domain.interfaces.NotificationSender
 import api.masterplan.app.notification.domain.interfaces.NotificationService
 import api.masterplan.app.notification.domain.model.entity.GenericNotification
@@ -31,7 +32,11 @@ class NotificationServiceImpl(
         )
 
         when(channel){
-            NotificationChannel.PUSH -> notificationSender.sendPushNotification(customerId, notification)
+            NotificationChannel.PUSH -> try {
+                notificationSender.sendPushNotification(customerId, notification)
+            }catch (e : Exception){
+                throw NotificationException.FailedToSendPushNotification(e.message)
+            }
         }
     }
 
