@@ -1,5 +1,6 @@
-package api.masterplan.app.notification.infrastructure.websocket.config
+package api.masterplan.app.authModule.infrastructure.security.config
 
+import api.masterplan.app.authModule.infrastructure.security.filter.JwtHandshakeInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
@@ -8,7 +9,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-class WebSocketConfig: WebSocketMessageBrokerConfigurer {
+class WebSocketConfig(
+    private val jwtHandshakeInterceptor: JwtHandshakeInterceptor
+): WebSocketMessageBrokerConfigurer {
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
         // Создание простого брокера для отправки сообщений (исходящая рассылка)
@@ -19,7 +22,8 @@ class WebSocketConfig: WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         // Создание точки входа для клиентов
-        registry.addEndpoint("/websocket").setAllowedOrigins("*").withSockJS()
+        registry.addEndpoint("/websocket").addInterceptors(jwtHandshakeInterceptor).setAllowedOriginPatterns("*")
+        registry.addEndpoint("/websocket").addInterceptors(jwtHandshakeInterceptor).setAllowedOriginPatterns("*").withSockJS()
     }
 
 }
