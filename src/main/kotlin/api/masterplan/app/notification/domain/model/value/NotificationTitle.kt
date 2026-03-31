@@ -1,16 +1,16 @@
 package api.masterplan.app.notification.domain.model.value
 
-import api.masterplan.app.notification.domain.exception.NotificationException
-
 @JvmInline
 value class NotificationTitle(val value:String) {
     companion object {
-        fun validate(title: String): NotificationTitle {
-            try {
-                require(title.isNotBlank()) { "Title cant be blank" }
-                require(title.length <= 50) { "Title too long" }
-            } catch (e: IllegalArgumentException) {
-                throw NotificationException.InvalidNotificationTitle(e.message)
+        fun generate(type:NotificationType): NotificationTitle {
+            val title = when (type) {
+                NotificationType.TASK_ASSIGNMENT -> "Назначена новая задача"
+                NotificationType.TASK_CHANGE_STATUS -> "Статус задачи изменился"
+                NotificationType.NEW_REQUEST -> "Новая заявка"
+                NotificationType.REQUEST_CHANGE_STATUS ->  "Статус заявки изменился"
+                NotificationType.NEW_REPORT -> "Новый отчет"
+                NotificationType.REPORT_CHANGE_STATUS -> "Статус отчета изменился"
             }
             return NotificationTitle(title)
         }
