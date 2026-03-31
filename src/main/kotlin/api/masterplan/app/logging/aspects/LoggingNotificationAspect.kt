@@ -13,21 +13,20 @@ import org.springframework.stereotype.Component
 class LoggingNotificationAspect {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Pointcut("@annotation(api.masterplan.app.logging.annotations.LoggingNotificationMethod")
+    @Pointcut("@annotation(api.masterplan.app.logging.annotations.LoggingNotificationMethod)")
     fun logNotificationPointcut() {}
 
     @AfterThrowing(pointcut = "logNotificationPointcut()", throwing = "exception")
-    fun logAfterDatabaseThrowing(joinPoint: JoinPoint,exception: Exception) {
+    fun logAfterNotificationThrowing(joinPoint: JoinPoint,exception: Exception) {
         val methodSignature = joinPoint.signature as MethodSignature
         val methodName = methodSignature.name
         val exceptionMessage = exception.message
-        logger.debug(
+        logger.warn(
             "Module {}: Notification Method {} thrown an exception: {}: {}",
             "notificationModule",
             methodName,
             exception,
             exceptionMessage
         )
-        throw exception
     }
 }
