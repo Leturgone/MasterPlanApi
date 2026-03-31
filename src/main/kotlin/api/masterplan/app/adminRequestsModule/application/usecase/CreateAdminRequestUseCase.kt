@@ -19,8 +19,7 @@ class CreateAdminRequestUseCase(
                 description = command.description,
                 senderId = command.senderId
             )
-            val notificationMessage = "Новая заявка"
-            requestsNotificationPort.sendNewRequestNotification(notificationMessage)
+            requestsNotificationPort.sendNewRequestNotification(command.title)
             Result.success(requestId)
         }catch (e: Exception){
             Result.failure(e)
