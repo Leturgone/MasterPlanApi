@@ -1,6 +1,6 @@
 package api.masterplan.app.notification.infrastructure.intermodule
 
-import api.masterplan.app.apiContracts.notification.NotificationModuleService
+import api.masterplan.app.apiContracts.notifications.NotificationModuleService
 import api.masterplan.app.notification.application.command.SendAdminNotificationCommand
 import api.masterplan.app.notification.application.command.SendNotificationCommand
 import api.masterplan.app.notification.application.usecase.SendAdminNotificationUseCase
