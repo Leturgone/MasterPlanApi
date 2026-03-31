@@ -14,5 +14,5 @@ interface NotificationModuleService {
 
     fun sendNewReportNotification(consumerId: UUID, message:String)
 
-    fun sendNewReportChangeStatusNotification(consumerId: UUID, message:String)
+    fun sendReportChangeStatusNotification(consumerId: UUID, message:String)
 }

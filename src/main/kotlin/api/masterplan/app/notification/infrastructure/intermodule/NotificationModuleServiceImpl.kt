@@ -64,7 +64,7 @@ class NotificationModuleServiceImpl(
         sendNotificationUseCase(command)
     }
 
-    override fun sendNewReportChangeStatusNotification(consumerId: UUID, message:String) {
+    override fun sendReportChangeStatusNotification(consumerId: UUID, message:String) {
         val command = SendNotificationCommand(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
