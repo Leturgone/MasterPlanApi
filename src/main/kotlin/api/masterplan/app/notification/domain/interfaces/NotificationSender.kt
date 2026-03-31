@@ -6,4 +6,6 @@ import api.masterplan.app.notification.domain.model.value.CustomerId
 
 interface NotificationSender {
     fun sendPushNotification(customerId: CustomerId, notification: GenericNotification)
+
+    fun sendPushAdminNotification(notification: GenericNotification)
 }

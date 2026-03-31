@@ -14,7 +14,13 @@ class NotificationSenderImpl(
 
     @LoggingNotificationMethod
     override fun sendPushNotification(customerId: CustomerId, notification: GenericNotification) {
-        val destination = "/topic/notifications/${customerId.value}"
+        val destination = "/topic/notifications/user/${customerId.value}"
+        messagingTemplate.convertAndSend(destination, notification)
+    }
+
+    @LoggingNotificationMethod
+    override fun sendPushAdminNotification(notification: GenericNotification) {
+        val destination = "/topic/notifications/admin"
         messagingTemplate.convertAndSend(destination, notification)
     }
 }
