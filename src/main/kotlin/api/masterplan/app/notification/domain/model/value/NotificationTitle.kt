@@ -2,7 +2,8 @@ package api.masterplan.app.notification.domain.model.value
 
 import api.masterplan.app.notification.domain.exception.NotificationException
 
-class NotificationTitle(val value:String) {
+@JvmInline
+value class NotificationTitle(val value:String) {
     companion object {
         fun validate(title: String): NotificationTitle {
             try {
