@@ -13,10 +13,10 @@ data class GenericNotification(
     val timestamp: NotificationTimestamp
 ){
     companion object{
-        fun create(notificationType: NotificationType, title: NotificationTitle, message: NotificationMessage): GenericNotification{
+        fun create(notificationType: NotificationType, message: NotificationMessage): GenericNotification{
             return GenericNotification(
                 notificationType = notificationType,
-                title = title,
+                title = NotificationTitle.generate(notificationType),
                 message = message,
                 timestamp = NotificationTimestamp(LocalDateTime.now())
             )
