@@ -35,6 +35,16 @@ class NotificationModuleServiceImpl(
         sendNotificationUseCase(command)
     }
 
+    override fun sendTaskUpdatedNotification(consumerId: UUID, message: String) {
+        val command = SendNotificationCommand(
+            customerId = CustomerId(consumerId),
+            channel = NotificationChannel.PUSH,
+            notificationType = NotificationType.TASK_UPDATED,
+            message = NotificationMessage.validate(message)
+        )
+        sendNotificationUseCase(command)
+    }
+
     override fun sendNewRequestNotification(message:String) {
         val command = SendAdminNotificationCommand(
             channel = NotificationChannel.PUSH,
@@ -69,6 +79,16 @@ class NotificationModuleServiceImpl(
             customerId = CustomerId(consumerId),
             channel = NotificationChannel.PUSH,
             notificationType = NotificationType.REPORT_CHANGE_STATUS,
+            message = NotificationMessage.validate(message)
+        )
+        sendNotificationUseCase(command)
+    }
+
+    override fun sendReportUpdatedNotification(consumerId: UUID, message: String) {
+        val command = SendNotificationCommand(
+            customerId = CustomerId(consumerId),
+            channel = NotificationChannel.PUSH,
+            notificationType = NotificationType.REPORT_UPDATED,
             message = NotificationMessage.validate(message)
         )
         sendNotificationUseCase(command)
