@@ -6,4 +6,6 @@ interface ReportEmployeesPort {
 
     fun getSubordinates(directorId: ReportEmployeeId): Set<ReportEmployeeId>
 
+    fun getDirectorId(employeeId: ReportEmployeeId): ReportEmployeeId?
+
 }
