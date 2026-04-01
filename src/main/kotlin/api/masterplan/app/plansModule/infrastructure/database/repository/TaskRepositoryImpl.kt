@@ -68,11 +68,11 @@ class TaskRepositoryImpl(
 
 
     @LoggingDatabaseMethod(moduleName = "planModule")
-    override fun updateTask(taskId: TaskId, task: Task): TaskId? {
+    override fun updateTask(taskId: TaskId, task: Task): Task? {
         val statusSet = jpaTaskStatusRepository.findAll().toSet()
         val taskEntity = TaskDatabaseMapper.toEntity(task, statusSet)
-        val taskId = jpaTaskRepository.save(taskEntity).id
-        return TaskId(taskId)
+        val task = jpaTaskRepository.save(taskEntity)
+        return TaskDatabaseMapper.toDomain(task)
     }
 
 

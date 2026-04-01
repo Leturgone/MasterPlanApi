@@ -1,6 +1,7 @@
 package api.masterplan.app.reportsModule.infrastructure.database.repository
 
 import api.masterplan.app.logging.annotations.LoggingDatabaseMethod
+import api.masterplan.app.reportsModule.domain.dtos.ReportDetails
 import api.masterplan.app.reportsModule.domain.interfaces.PlanReportRepository
 import api.masterplan.app.reportsModule.domain.models.entity.Report
 import api.masterplan.app.reportsModule.domain.models.value.ReportEmployeeId
@@ -54,12 +55,12 @@ class PlanReportRepositoryImpl(
 
 
     @LoggingDatabaseMethod(moduleName = "reportModule")
-    override fun updatePlanReport(planReportId: ReportId, updatedReport: Report): ReportId? {
+    override fun updatePlanReport(planReportId: ReportId, updatedReport: Report): Report? {
         jpaPlanReportRepository.findById(planReportId.value).getOrElse { return null }
         val statusSet = jpaPlanStatusRepository.findAll().toSet()
         val updatedPlanReportEntity = PlanReportDatabaseMapper.toEntity(updatedReport, statusSet)
-        val planReportId = jpaPlanReportRepository.save(updatedPlanReportEntity).id
-        return ReportId(planReportId)
+        val planReport = jpaPlanReportRepository.save(updatedPlanReportEntity)
+        return PlanReportDatabaseMapper.toDomain(planReport)
 
     }
 }

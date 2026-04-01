@@ -66,19 +66,19 @@ class AdminRequestsServiceImpl(
 
 
     @LoggingMethod("adminRequestsModule")
-    override fun changeAdminRequestStatus(id: AdminRequestId, status: AdminRequestStatus): AdminRequestId {
+    override fun changeAdminRequestStatus(id: AdminRequestId, status: AdminRequestStatus): AdminRequestDetails {
         val oldAdminRequest = adminRequestRepository.getAdminRequestById(id) ?: throw AdminRequestException.AdminRequestNotExist(id)
 
         val requestWithNewStatus = oldAdminRequest.changeStatus(status)
 
-        val adminRequestId = try {
+        val adminRequest = try {
             adminRequestRepository.updateAdminRequest(id,requestWithNewStatus)
         }catch (_: Exception){
             throw AdminRequestException.FailedToChangeAdminRequestStatus(id, status)
         }
 
 
-        return adminRequestId
+        return AdminRequestToDetailsMapper.toDetails(adminRequest)
     }
 
 

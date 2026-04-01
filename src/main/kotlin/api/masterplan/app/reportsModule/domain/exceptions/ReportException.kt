@@ -78,4 +78,8 @@ sealed class ReportException(message: String) : Exception(message) {
     class FailedToDeleteReportFile(val fileId: UUID): ReportException(
         "Failed to delete report file with id: $fileId"
     )
+
+    class ExecutorNotExist(executorId: UUID): ReportException(
+        "Executor not found with id: $executorId"
+    )
 }

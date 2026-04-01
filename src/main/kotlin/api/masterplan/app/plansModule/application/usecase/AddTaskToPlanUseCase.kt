@@ -2,6 +2,7 @@ package api.masterplan.app.plansModule.application.usecase
 
 import api.masterplan.app.plansModule.application.command.AddTaskToPlanCommand
 import api.masterplan.app.plansModule.application.ports.PlanFilesPort
+import api.masterplan.app.plansModule.application.ports.PlanNotificationPort
 import api.masterplan.app.plansModule.domain.interfaces.PlanService
 import api.masterplan.app.plansModule.domain.interfaces.TaskService
 import api.masterplan.app.plansModule.domain.model.value.TaskId
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 class AddTaskToPlanUseCase(
     private val taskService: TaskService,
     private val planService: PlanService,
-    private val planFilesPort: PlanFilesPort
+    private val planFilesPort: PlanFilesPort,
+    private val notificationPort: PlanNotificationPort
 ) {
     operator fun invoke(command: AddTaskToPlanCommand): Result<TaskId> {
         return try {
@@ -25,6 +27,10 @@ class AddTaskToPlanUseCase(
                 planId = command.planId,
                 documentId = taskFileId,
                 executorsId = command.executorsId,
+            )
+            notificationPort.sendTaskAssignmentNotification(
+                executorsIds = command.executorsId,
+                taskTitle = command.title
             )
             Result.success(taskId)
         }catch (e: Exception){

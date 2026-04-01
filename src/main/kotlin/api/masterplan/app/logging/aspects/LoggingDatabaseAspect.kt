@@ -30,13 +30,12 @@ class LoggingDatabaseAspect {
         val moduleName = getModule(methodSignature)
         val methodName = methodSignature.name
         val exceptionMessage = exception.message
-        logger.debug(
+        logger.warn(
             "Module {}: Database Method {} thrown an exception: {}: {}",
             moduleName,
             methodName,
             exception,
             exceptionMessage
         )
-        throw exception
     }
 }

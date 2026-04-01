@@ -2,13 +2,21 @@ package api.masterplan.app.authModule.infrastructure.security.config
 
 import api.masterplan.app.authModule.infrastructure.security.filter.JwtFilter
 import api.masterplan.app.authModule.infrastructure.security.service.AppUserDetailsService
+import io.jsonwebtoken.security.Message
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authorization.AuthorizationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 
 
 @Configuration
@@ -24,7 +32,12 @@ class SecurityConfig(
         http.csrf { it.disable() }
 
         http.authorizeHttpRequests { auth ->
-            auth.requestMatchers("/swagger-ui/**","/error", "/api/v1/api-docs/**","/api/v1/api-docs.yaml").permitAll()
+            auth.requestMatchers(
+                "/swagger-ui/**","/error",
+                "/api/v1/api-docs/**",
+                "/api/v1/api-docs.yaml",
+                "/websocket/**"
+            ).permitAll()
             auth.requestMatchers("/api/v1/auth/login").permitAll()
             auth.requestMatchers("/api/v1/users/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")

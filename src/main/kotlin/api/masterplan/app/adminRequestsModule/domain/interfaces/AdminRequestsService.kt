@@ -19,7 +19,7 @@ interface AdminRequestsService {
     fun createAdminAnswer(id: AdminAnswerId? = null, title: AdminAnswerTitle,
                           description: AdminAnswerDescription, adminRequestId: AdminRequestId): AdminAnswerId
 
-    fun changeAdminRequestStatus(id: AdminRequestId,status: AdminRequestStatus): AdminRequestId
+    fun changeAdminRequestStatus(id: AdminRequestId,status: AdminRequestStatus): AdminRequestDetails
 
     fun getAdminRequestsList(): List<AdminRequestDetails>
 

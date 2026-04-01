@@ -8,7 +8,7 @@ interface ReportService {
 
     fun getReport(reportId: ReportId, reportType: ReportType): ReportDetails
 
-    fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportId
+    fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportDetails
 
     fun deleteReport(reportId: ReportId,reportType: ReportType): ReportId
 
@@ -21,7 +21,7 @@ interface ReportService {
     fun filterCreatedReportsByStatus(employeeId: ReportEmployeeId ,reportType: ReportType,
                                      status: ReportStatus): List<ReportDetails>
 
-    fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportId
+    fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportDetails
 
     fun getSubordinatesTaskReports(subordinatesIds:Set<ReportEmployeeId>): List<ReportDetails>
 

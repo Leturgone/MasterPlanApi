@@ -22,7 +22,7 @@ interface TaskRepository {
 
     fun isTaskExist(taskTitle: TaskTitle,planId: PlanId): Boolean
 
-    fun updateTask(taskId: TaskId, task: Task): TaskId?
+    fun updateTask(taskId: TaskId, task: Task): Task?
 
     fun searchExecutorTasksByTitle(executorId: ExecutorId, query: String): List<Task>
 }
