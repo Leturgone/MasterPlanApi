@@ -16,7 +16,7 @@ interface TaskService {
 
     fun deleteTask(taskId: TaskId): TaskId
 
-    fun updateTask(taskId: TaskId,updatedTask: Task): TaskId
+    fun updateTask(taskId: TaskId,updatedTask: Task): TaskDetails
 
     fun getAssignedTasks(executorId: ExecutorId): List<TaskDetails>
 
@@ -34,5 +34,5 @@ interface TaskService {
 
     fun assignTaskDocumentToTask(taskId: TaskId, documentId: TaskDocumentId ): TaskId
 
-    fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskId
+    fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskDetails
 }

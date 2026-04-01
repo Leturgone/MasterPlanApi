@@ -70,15 +70,15 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
-    override fun updateTask(taskId: TaskId, updatedTask: Task): TaskId {
+    override fun updateTask(taskId: TaskId, updatedTask: Task): TaskDetails {
         val oldTask = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val updatedTaskWithUrgency = if (oldTask.endDate != updatedTask.endDate) {
             updatedTask.recalculateUrgency()
         } else {
             updatedTask
         }
-        val updatedTaskId = taskRepository.updateTask(taskId, updatedTaskWithUrgency)?: throw PlanException.FailedToUpdateTask(taskId)
-        return updatedTaskId
+        val updatedTask = taskRepository.updateTask(taskId, updatedTaskWithUrgency)?: throw PlanException.FailedToUpdateTask(taskId)
+        return TasksPlanToDetailsMapper.toTaskDetails(updatedTask)
     }
 
 
@@ -149,23 +149,23 @@ class TaskServiceImpl(
         val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val taskWithPlan = task.addDocument(documentId)
 
-        val updatedTaskId = taskRepository.updateTask(taskId, taskWithPlan)?: throw PlanException.FailedToAssignDocumentToTask(
+        val updatedTask = taskRepository.updateTask(taskId, taskWithPlan)?: throw PlanException.FailedToAssignDocumentToTask(
             taskId,documentId
         )
 
-        return updatedTaskId
+        return updatedTask.id
     }
 
 
     @LoggingMethod("planModule")
-    override fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskId {
+    override fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskDetails {
         val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val taskWithNewStatus = task.changeTaskStatus(taskStatus)
-        val updatedTaskId = taskRepository.updateTask(taskId, taskWithNewStatus)?: throw PlanException.FailedToUpdateTaskStatus(
+        val updatedTask = taskRepository.updateTask(taskId, taskWithNewStatus)?: throw PlanException.FailedToUpdateTaskStatus(
             taskId,taskStatus
         )
 
-        return updatedTaskId
+        return TasksPlanToDetailsMapper.toTaskDetails(updatedTask)
     }
 
 }
