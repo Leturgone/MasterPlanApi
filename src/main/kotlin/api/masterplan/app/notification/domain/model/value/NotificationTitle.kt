@@ -11,6 +11,8 @@ value class NotificationTitle(val value:String) {
                 NotificationType.REQUEST_CHANGE_STATUS ->  "Статус заявки изменился"
                 NotificationType.NEW_REPORT -> "Новый отчет"
                 NotificationType.REPORT_CHANGE_STATUS -> "Статус отчета изменился"
+                NotificationType.TASK_UPDATED -> "Задча обновена"
+                NotificationType.REPORT_UPDATED -> "Отчет обновлен"
             }
             return NotificationTitle(title)
         }
