@@ -11,4 +11,6 @@ internal object ReportInnerModuleSuccessMapper {
     }
 
     fun toReportDocumentId(id: UUID) = ReportDocumentId(id)
+
+    fun toReportEmployeeId(employeeId: UUID) = ReportEmployeeId(employeeId)
 }
