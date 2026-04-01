@@ -9,6 +9,7 @@ internal object ReportInnerModuleErrorMapper {
     fun exceptionToModuleException(ex: Throwable): ReportException{
         return when(ex){
             is EmployeeModuleErrorDto.InternalServerError -> InternalServerError(ex.message)
+            is EmployeeModuleErrorDto.EmployeeNotExist -> ExecutorNotExist(ex.employeeId)
             is FilesModuleErrorDto.FailedToCreateFile -> FailedToCreateReportFile(ex.fileName)
             is FilesModuleErrorDto.FailedToDeleteFile -> FailedToDeleteReportFile(ex.fileId)
             is FilesModuleErrorDto.FailedToUpdateFile -> FailedToUpdateReportFile(ex.fileId)
