@@ -29,7 +29,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
-    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportId {
+    override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportDetails {
         val report =  when(reportType) {
             ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
             ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
@@ -41,12 +41,12 @@ class ReportServiceImpl(
             documentId = updatedData.documentId,
         )
 
-        val updatedReportId = when(reportType) {
+        val updatedReportEntity = when(reportType) {
             ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, updatedReport)
             ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, updatedReport)
         }?: throw ReportException.FailedToUpdateReport(reportId, reportType)
 
-        return updatedReportId
+        return ReportToDetailsMapper.toReportDetails(updatedReportEntity)
     }
 
 
@@ -119,7 +119,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
-    override fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportId {
+    override fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportDetails {
         val report =  when(reportType) {
             ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
             ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
@@ -127,12 +127,12 @@ class ReportServiceImpl(
 
         val reportWithNewStatus = report.changeReportStatus(status)
 
-        val updatedReportId = when(reportType) {
+        val updatedReport = when(reportType) {
             ReportType.PLAN -> planReportRepository.updatePlanReport(reportId, reportWithNewStatus)
             ReportType.TASK -> taskReportRepository.updateTaskReport(reportId, reportWithNewStatus)
         }?: throw ReportException.FailedToUpdateReportStatus(status,reportId, reportType)
 
-        return updatedReportId
+        return ReportToDetailsMapper.toReportDetails(updatedReport)
 
     }
 
