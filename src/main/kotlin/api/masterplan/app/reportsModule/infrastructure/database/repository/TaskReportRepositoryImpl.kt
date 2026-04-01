@@ -61,11 +61,11 @@ class TaskReportRepositoryImpl(
 
 
     @LoggingDatabaseMethod(moduleName = "reportModule")
-    override fun updateTaskReport(taskReportId: ReportId, updatedReport: Report): ReportId? {
+    override fun updateTaskReport(taskReportId: ReportId, updatedReport: Report): Report? {
         jpaTaskReportRepository.findById(taskReportId.value).getOrElse { return null }
         val statusSet = jpaPlanStatusRepository.findAll().toSet()
         val updatedTaskReportEntity = TaskReportDatabaseMapper.toEntity(updatedReport,statusSet)
-        val taskReportId = jpaTaskReportRepository.save(updatedTaskReportEntity).id
-        return ReportId(taskReportId)
+        val taskReport = jpaTaskReportRepository.save(updatedTaskReportEntity)
+        return TaskReportDatabaseMapper.toDomain(taskReport)
     }
 }

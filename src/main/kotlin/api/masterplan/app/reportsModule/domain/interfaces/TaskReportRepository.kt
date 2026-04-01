@@ -18,5 +18,5 @@ interface TaskReportRepository {
 
     fun isTaskReportExist(employeeId: ReportEmployeeId, taskReportTitle: ReportTitle): Boolean
 
-    fun updateTaskReport(taskReportId: ReportId, updatedReport: Report): ReportId?
+    fun updateTaskReport(taskReportId: ReportId, updatedReport: Report): Report?
 }
