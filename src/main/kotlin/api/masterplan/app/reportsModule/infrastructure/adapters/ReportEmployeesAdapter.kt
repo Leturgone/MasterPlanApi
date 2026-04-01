@@ -17,4 +17,12 @@ class ReportEmployeesAdapter(
         val subordinatesModelList = ReportInnerModuleSuccessMapper.toReportEmpIdSet(subordinatesList)
         return subordinatesModelList
     }
+
+    override fun getDirectorId(employeeId: ReportEmployeeId): ReportEmployeeId? {
+        val executor = employeeModuleService.getEmployeeById(employeeId.value).getOrElse {
+            throw ReportInnerModuleErrorMapper.exceptionToModuleException(it)
+        }
+        val directorId =executor.directorId?.let { ReportInnerModuleSuccessMapper.toReportEmployeeId(it)}
+        return directorId
+    }
 }
