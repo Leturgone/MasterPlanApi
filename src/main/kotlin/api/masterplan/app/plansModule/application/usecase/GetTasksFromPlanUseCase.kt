@@ -14,7 +14,7 @@ class GetTasksFromPlanUseCase(
             val tasks = taskService.getTasksByPlanId(command.planId)
             Result.success(tasks)
         }catch (e: Exception){
-        Result.failure(e)
+            Result.failure(e)
         }
     }
 }

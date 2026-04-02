@@ -26,8 +26,7 @@ class UpdateTaskUseCase(
                 taskTitle = updatedTask.title,
             )
             Result.success(updatedTask.id)
-        }
-        catch (e: Exception){
+        }catch (e: Exception){
             Result.failure(e)
         }
     }
