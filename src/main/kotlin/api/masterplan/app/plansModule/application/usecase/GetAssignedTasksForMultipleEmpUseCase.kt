@@ -5,6 +5,7 @@ import api.masterplan.app.plansModule.domain.dtos.TaskDetails
 import api.masterplan.app.plansModule.domain.interfaces.TaskService
 import org.springframework.stereotype.Service
 
+// Для межмодульного использования
 @Service
 class GetAssignedTasksForMultipleEmpUseCase(
     private val taskService: TaskService
