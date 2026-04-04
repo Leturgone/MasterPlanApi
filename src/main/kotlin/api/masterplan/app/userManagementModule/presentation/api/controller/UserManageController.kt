@@ -67,7 +67,9 @@ class UserManageController(
         ]
     )
     @PostMapping("/user")
-    fun createUser(@RequestBody request: CreateProfileRequest): ResponseEntity<UserUidResponse>{
+    fun createUser(
+        @RequestBody request: CreateProfileRequest
+    ): ResponseEntity<UserUidResponse>{
         val employeeInfo = EmployeeInfo(
             name = request.name,
             surname = request.surname,
@@ -122,7 +124,9 @@ class UserManageController(
         ]
     )
     @DeleteMapping("/user/{id}")
-    fun deleteUser(@PathVariable(value = "id")id: UUID): ResponseEntity<UserUidResponse> {
+    fun deleteUser(
+        @PathVariable(value = "id")id: UUID
+    ): ResponseEntity<UserUidResponse> {
 
         val userId = UserRequestToDomainMapper.idToDomain(id)
         val command = DeleteUserCommand(userId)
@@ -165,7 +169,9 @@ class UserManageController(
         ]
     )
     @GetMapping("/user/login/{login}")
-    fun getUserByLogin(@PathVariable(value = "login") login: String): ResponseEntity<UserDataResponse> {
+    fun getUserByLogin(
+        @PathVariable(value = "login") login: String
+    ): ResponseEntity<UserDataResponse> {
         val loginValidated = UserRequestToDomainMapper.loginToDomain(login)
         val command = GetUserByLoginCommand(loginValidated)
 
@@ -201,7 +207,9 @@ class UserManageController(
         ]
     )
     @GetMapping("/user/id/{id}")
-    fun getUserById(@PathVariable(value = "id") id: UUID): ResponseEntity<UserDataResponse> {
+    fun getUserById(
+        @PathVariable(value = "id") id: UUID
+    ): ResponseEntity<UserDataResponse> {
         val idValidated = UserRequestToDomainMapper.idToDomain(id)
         val command = GetUserByIdCommand(idValidated)
 
@@ -244,7 +252,8 @@ class UserManageController(
     @PatchMapping("/user/{id}/password")
     fun resetPassword(
         @PathVariable(value = "id") id: UUID,
-        @RequestBody request: ResetPasswordRequest): ResponseEntity<UserUidResponse>{
+        @RequestBody request: ResetPasswordRequest
+    ): ResponseEntity<UserUidResponse>{
         val id = UserId(id)
         val passwordValidated = UserRequestToDomainMapper.passwordToDomain(request.password)
         val command = ResetPasswordCommand(id,passwordValidated)
@@ -287,7 +296,9 @@ class UserManageController(
         ]
     )
     @PostMapping("/validateCredentials")
-    fun validateCredentials(@RequestBody credentials: ValidateCredentialsRequest):ResponseEntity<UserDataResponse>{
+    fun validateCredentials(
+        @RequestBody credentials: ValidateCredentialsRequest
+    ):ResponseEntity<UserDataResponse>{
         val loginValidated = UserRequestToDomainMapper.loginToDomain(credentials.login)
         val passwordValidated = UserRequestToDomainMapper.passwordToDomain(credentials.password)
         val command = ValidateCredentialsCommand(loginValidated,passwordValidated)
