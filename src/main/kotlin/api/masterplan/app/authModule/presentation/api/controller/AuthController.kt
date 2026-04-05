@@ -6,6 +6,7 @@ import api.masterplan.app.authModule.presentation.api.exceptionHandler.AuthContr
 import api.masterplan.app.authModule.presentation.dto.AuthErrorResponse
 import api.masterplan.app.authModule.presentation.dto.LoginRequest
 import api.masterplan.app.authModule.presentation.dto.LoginResponse
+import api.masterplan.app.authModule.presentation.mapper.AuthDomainToResponseMapper
 import api.masterplan.app.authModule.presentation.mapper.RequestToDomainMapper
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -58,8 +59,7 @@ class AuthController(
         )
 
         val result = loginUseCase(loginCommand).getOrThrow()
-        return ResponseEntity.ok(LoginResponse(
-            token = result.token
-        ))
+        val response = AuthDomainToResponseMapper.toLoginResponse(result)
+        return ResponseEntity.ok(response)
     }
 }

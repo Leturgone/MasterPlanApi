@@ -1,7 +1,6 @@
 package api.masterplan.app.authModule.presentation.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
 
 @Schema(description = "Ответ на аутентификацию")
 data class LoginResponse(
@@ -16,6 +15,11 @@ data class LoginResponse(
         defaultValue = "Bearer"
     )
     val type: String = "Bearer",
+
+    @Schema(description = "Роли пользователя",
+        example = "ADMIN,DIRECTOR"
+    )
+    val roles: List<String>,
 )
 
 
