@@ -16,6 +16,11 @@ data class LoginResponse(
         defaultValue = "Bearer"
     )
     val type: String = "Bearer",
+
+    @Schema(description = "Роли пользователя",
+        example = "ADMIN,DIRECTOR"
+    )
+    val roles: List<String>,
 )
 
 
