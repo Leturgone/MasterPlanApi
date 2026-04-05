@@ -1,7 +1,6 @@
 package api.masterplan.app.authModule.presentation.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
 
 @Schema(description = "Ответ на аутентификацию")
 data class LoginResponse(
