@@ -18,7 +18,7 @@ data class CreateProfileRequest(
 
     @NotEmpty(message = "Roles cant be empty")
     @Schema(description = "Роли пользователя", example = "ADMIN,DIRECTOR, EMPLOYEE")
-    val roles: Set<String>,
+    val roles: List<String>,
 
     @NotBlank(message = "Name cant be blank")
     @Schema(description = "Имя пользователя", example = "Иван")
