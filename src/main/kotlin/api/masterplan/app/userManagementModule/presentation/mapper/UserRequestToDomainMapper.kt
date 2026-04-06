@@ -15,7 +15,7 @@ object UserRequestToDomainMapper {
 
     fun passwordToDomain(password: String) = UserPassword.validate(password)
 
-    fun rolesToDomain(roles: Set<String>): Set<UserRole> {
+    fun rolesToDomain(roles: List<String>): Set<UserRole> {
         return roles.map {
             try {
                 UserRole.valueOf(it.uppercase())
