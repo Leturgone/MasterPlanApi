@@ -1,12 +1,10 @@
 package api.masterplan.app.notification.domain.model.entity
 
-import api.masterplan.app.notification.domain.model.value.NotificationMessage
-import api.masterplan.app.notification.domain.model.value.NotificationTimestamp
-import api.masterplan.app.notification.domain.model.value.NotificationTitle
-import api.masterplan.app.notification.domain.model.value.NotificationType
+import api.masterplan.app.notification.domain.model.value.*
 import java.time.LocalDateTime
 
 data class GenericNotification(
+    val notificationId: NotificationId,
     val notificationType: NotificationType,
     val title: NotificationTitle,
     val message: NotificationMessage,
@@ -15,6 +13,7 @@ data class GenericNotification(
     companion object{
         fun create(notificationType: NotificationType, message: NotificationMessage): GenericNotification{
             return GenericNotification(
+                notificationId = NotificationId.generate(),
                 notificationType = notificationType,
                 title = NotificationTitle.generate(notificationType),
                 message = message,
