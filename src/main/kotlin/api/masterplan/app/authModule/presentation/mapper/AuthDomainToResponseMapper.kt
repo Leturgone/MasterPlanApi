@@ -7,7 +7,8 @@ object AuthDomainToResponseMapper {
     fun toLoginResponse(token: JwtToken): LoginResponse {
         return LoginResponse(
             token = token.token,
-            roles = token.roles.map { it.name }.toList()
+            roles = token.roles.map { it.name }.toList(),
+            id = token.authUserId.value
         )
     }
 }
