@@ -41,7 +41,7 @@ class SecurityConfig(
             auth.requestMatchers("/api/v1/auth/login").permitAll()
             auth.requestMatchers("/api/v1/users/admin/**").hasAuthority("ADMIN")
             auth.requestMatchers("/api/v1/employees/admin/**").hasAuthority("ADMIN")
-            auth.requestMatchers("/api/v1/employees/dir/**").hasAuthority("DIRECTOR")
+            auth.requestMatchers("/api/v1/employees/dir/**").hasAnyAuthority("ADMIN", "DIRECTOR")
             auth.requestMatchers("/api/v1/employees/emp/**").hasAuthority("EMPLOYEE")
             auth.requestMatchers("/api/v1/files/emp/**").hasAuthority("EMPLOYEE")
             auth.requestMatchers("/api/v1/plans/dir/**").hasAuthority("DIRECTOR")
@@ -50,8 +50,8 @@ class SecurityConfig(
             auth.requestMatchers("/api/v1/tasks/emp/**").hasAuthority("EMPLOYEE")
             auth.requestMatchers("/api/v1/reports/dir/**").hasAuthority("DIRECTOR")
             auth.requestMatchers("/api/v1/reports/emp/**").hasAuthority("EMPLOYEE")
-            auth.requestMatchers("/api/v1/requests/dir/").hasAnyRole("ADMIN", "DIRECTOR")
-            auth.requestMatchers("/api/v1/requests/admin/").hasRole("ADMIN")
+            auth.requestMatchers("/api/v1/requests/dir/").hasAnyAuthority("ADMIN", "DIRECTOR")
+            auth.requestMatchers("/api/v1/requests/admin/").hasAuthority("ADMIN")
             auth.anyRequest().authenticated()
         }
 
