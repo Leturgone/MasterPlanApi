@@ -8,6 +8,7 @@ object EmployeeExceptionToHttpCodeMapper {
         return when (ex) {
             is EmployeeException.EmployeeAlreadyExists -> HttpStatus.CONFLICT
             is EmployeeException.EmployeeNotExist -> HttpStatus.NOT_FOUND
+            is EmployeeException.EmployeeNotExistWithUserId -> HttpStatus.NOT_FOUND
             is EmployeeException.FailedToCreateEmployee -> HttpStatus.INTERNAL_SERVER_ERROR
             is EmployeeException.FailedToGetDirectorDetailsForEmployee -> HttpStatus.NOT_FOUND
             is EmployeeException.FailedToUpdateEmployee -> HttpStatus.INTERNAL_SERVER_ERROR
