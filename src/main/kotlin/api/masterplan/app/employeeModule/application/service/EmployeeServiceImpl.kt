@@ -44,6 +44,15 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
+    override fun getEmployeeByUserId(userId: EmployeeUserId): EmployeeDetails {
+        val employee = employeeRepository.getEmployeeByUserId(userId)
+            ?: throw EmployeeException.EmployeeNotExistWithUserId(userId)
+
+        return EmpEntityToDtoMapper.toEmployeeDetails(employee)
+    }
+
+
+    @LoggingMethod("employeeModule")
     override fun searchEmployee(query: String): List<EmployeeDetails> {
         val searchResult = employeeRepository.searchByNameOrSurname(query)
 

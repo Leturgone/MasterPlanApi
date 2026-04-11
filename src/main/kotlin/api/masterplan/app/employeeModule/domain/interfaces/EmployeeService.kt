@@ -15,6 +15,8 @@ interface EmployeeService {
 
     fun getEmployeeById(id: EmployeeId): EmployeeDetails
 
+    fun getEmployeeByUserId(userId: EmployeeUserId): EmployeeDetails
+
     fun searchEmployee(query: String): List<EmployeeDetails>
 
     fun searchDirEmployee(query: String,directorId: EmployeeId): List<EmployeeDetails>
