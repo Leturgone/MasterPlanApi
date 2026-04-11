@@ -10,6 +10,8 @@ interface EmployeeRepository {
 
     fun getEmployeeById(employeeId: EmployeeId): Employee?
 
+    fun getEmployeeByUserId(userId: EmployeeUserId): Employee?
+
     fun saveEmployee(employee: Employee): EmployeeId
 
     fun searchByNameOrSurname(query: String): List<Employee>

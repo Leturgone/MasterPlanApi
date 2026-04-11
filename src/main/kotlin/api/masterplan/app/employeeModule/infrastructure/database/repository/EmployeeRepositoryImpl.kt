@@ -23,6 +23,11 @@ class EmployeeRepositoryImpl(
         return EmployeeDatabaseMapper.toDomain(employee)
     }
 
+    override fun getEmployeeByUserId(userId: EmployeeUserId): Employee? {
+        val employee = jpaEmployeeRepository.findByAppUserId(userId.value) ?: return null
+        return EmployeeDatabaseMapper.toDomain(employee)
+    }
+
     override fun saveEmployee(employee: Employee): EmployeeId {
         val employeeEntity = EmployeeDatabaseMapper.toEntity(employee)
         val savedEmployee = jpaEmployeeRepository.save(employeeEntity)
