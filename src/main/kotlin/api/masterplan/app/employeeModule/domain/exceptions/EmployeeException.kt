@@ -4,6 +4,7 @@ import api.masterplan.app.employeeModule.domain.model.value.EmployeeId
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeName
 import api.masterplan.app.employeeModule.domain.model.value.EmployeePatronymic
 import api.masterplan.app.employeeModule.domain.model.value.EmployeeSurname
+import api.masterplan.app.employeeModule.domain.model.value.EmployeeUserId
 
 sealed class EmployeeException(message: String): Exception(message) {
 
@@ -21,6 +22,10 @@ sealed class EmployeeException(message: String): Exception(message) {
 
     class EmployeeNotExist(val id: EmployeeId) : EmployeeException(
         "Employee with id = ${id.value} not found"
+    )
+
+    class EmployeeNotExistWithUserId(val id: EmployeeUserId) : EmployeeException(
+        "Employee with user id = ${id.value} not found"
     )
 
     class EmployeeAlreadyExists(val name: EmployeeName,val surname: EmployeeSurname,
