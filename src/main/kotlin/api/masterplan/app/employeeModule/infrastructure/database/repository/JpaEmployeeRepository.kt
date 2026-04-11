@@ -29,4 +29,6 @@ interface JpaEmployeeRepository: CrudRepository<EmployeeEntity, UUID> {
     @Query("SELECT COUNT(e) > 0 FROM EmployeeEntity e WHERE e.appUserId = :userId")
     fun existsByUserId(userId: UUID): Boolean
 
+    fun findByAppUserId(userId: UUID): EmployeeEntity?
+
 }
