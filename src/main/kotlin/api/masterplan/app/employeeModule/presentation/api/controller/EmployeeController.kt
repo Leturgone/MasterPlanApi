@@ -31,6 +31,7 @@ class EmployeeController(
     private val getAllEmployeesUseCase: GetAllEmployeesUseCase,
     private val getDirEmployeesWithoutTasksUseCase: GetDirEmployeesWithoutTasksUseCase,
     private val getEmployeeByIdUseCase: GetEmployeeByIdUseCase,
+    private val getEmployeeByUserIdUseCase: GetEmployeeByUserIdUseCase,
     private val getProfileInformationUseCase: GetProfileInformationUseCase,
     private val searchDirEmployeeByNameUseCase: SearchDirEmployeeByNameUseCase,
     private val searchEmployeeByNameUseCase: SearchEmployeeByNameUseCase,
@@ -257,6 +258,41 @@ class EmployeeController(
         val employeeId = EmployeeId(empId)
         val command = GetEmployeeByIdCommand(employeeId)
         val result = getEmployeeByIdUseCase(command).getOrThrow()
+        val resp = EmployeeDomainToResponseMapper.empDetailsToResponse(result)
+        return ResponseEntity.ok(resp)
+    }
+
+    @Operation(
+        summary = "Получение данных сотрудника по id пользователя",
+        description = "Получение данных сотрудника по id пользователя",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Сотрудник успешно получен",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Сотрудник не найден",
+                content = [Content(schema = Schema(implementation = EmployeeDetailsResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Внутренняя ошибка сервера: сбой при получении данных сотрудника",
+                content = [Content(schema = Schema(implementation = EmployeeErrorResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Нет роли руководителя"
+            )
+
+        ]
+    )
+    @GetMapping("/emp/employee/userId/{id}")
+    fun getEmployeeByUserId(@PathVariable(value = "id") userId: UUID): ResponseEntity<EmployeeDetailsResponse> {
+        val userId = EmployeeUserId(userId)
+        val command = GetEmployeeByUserIdCommand(userId)
+        val result = getEmployeeByUserIdUseCase(command).getOrThrow()
         val resp = EmployeeDomainToResponseMapper.empDetailsToResponse(result)
         return ResponseEntity.ok(resp)
     }
