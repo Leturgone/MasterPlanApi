@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -118,12 +119,16 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/employee/{directorId}/employees/export")
-    suspend fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<ByteArray> {
-        val domainId = EmployeeId(directorId)
-        val command = ExportDirEmployeesCommand(directorId = domainId)
-        val result = exportDirEmployeesUseCase(command).getOrThrow()
-        val resp = EmployeeDomainToResponseMapper.empFileToResponse(result)
-        return ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
+    fun exportDirEmployees(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<ByteArray> {
+        return runBlocking {
+            val domainId = EmployeeId(directorId)
+            val command = ExportDirEmployeesCommand(directorId = domainId)
+            val result = exportDirEmployeesUseCase(command).getOrThrow()
+            val resp = EmployeeDomainToResponseMapper.empFileToResponse(result)
+            ResponseEntity.ok().headers(resp.fileHeaders).body(resp.fileData)
+        }
+
+
     }
 
 
@@ -218,12 +223,15 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/employee/{directorId}/employees/withoutTasks")
-    suspend fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
-        val domainId = EmployeeId(directorId)
-        val command = GetDirEmployeesWithoutTasksCommand(domainId)
-        val result = getDirEmployeesWithoutTasksUseCase(command).getOrThrow()
-        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
-        return ResponseEntity.ok(resp)
+    fun getDirEmployeesWithoutTasks(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>> {
+        return runBlocking {
+            val domainId = EmployeeId(directorId)
+            val command = GetDirEmployeesWithoutTasksCommand(domainId)
+            val result = getDirEmployeesWithoutTasksUseCase(command).getOrThrow()
+            val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+            ResponseEntity.ok(resp)
+        }
+
     }
 
 
@@ -427,12 +435,15 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/{directorId}/getSortedEmpByRating/")
-    suspend fun sortDirEmployeesByRating(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val directorId = EmployeeId(directorId)
-        val command = SortDirEmployeesByRatingCommand(directorId)
-        val result = sortDirEmployeesByRatingUseCase(command).getOrThrow()
-        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
-        return ResponseEntity.ok(resp)
+    fun sortDirEmployeesByRating(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
+        return runBlocking {
+            val directorId = EmployeeId(directorId)
+            val command = SortDirEmployeesByRatingCommand(directorId)
+            val result = sortDirEmployeesByRatingUseCase(command).getOrThrow()
+            val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+            ResponseEntity.ok(resp)
+        }
+
     }
 
 
@@ -461,12 +472,15 @@ class EmployeeController(
         ]
     )
     @GetMapping("/dir/{directorId}/employeesgetSortedEmpByWorkload/")
-    suspend fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
-        val directorId = EmployeeId(directorId)
-        val command = SortDirEmployeesByWorkloadCommand(directorId)
-        val result = sortDirEmployeesByWorkloadUseCase(command).getOrThrow()
-        val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
-        return ResponseEntity.ok(resp)
+    fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
+        return runBlocking {
+            val directorId = EmployeeId(directorId)
+            val command = SortDirEmployeesByWorkloadCommand(directorId)
+            val result = sortDirEmployeesByWorkloadUseCase(command).getOrThrow()
+            val resp = EmployeeDomainToResponseMapper.empDetailsListToResponse(result)
+            ResponseEntity.ok(resp)
+        }
+
     }
 
 

@@ -41,7 +41,7 @@ class FileStorageRepositoryImpl(
     override fun delete(fileName: String): String? {
         return try {
             // Формирование пути к файлу
-            val filePath = storageFolder.resolve(fileName)
+            val filePath = storageFolder.resolve("$fileName.enc")
             Files.delete(filePath)
             return filePath.toString()
         }catch (_:java.io.IOException){
