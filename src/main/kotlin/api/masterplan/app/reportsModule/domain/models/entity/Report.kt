@@ -69,10 +69,14 @@ data class Report private constructor (
     }
 
     fun update(title: ReportTitle, description: ReportDescription?, documentId: ReportDocumentId):Report{
+        val status = when(type){
+            ReportType.TASK -> ReportStatus.NOT_CHECKED
+            ReportType.PLAN -> reportStatus
+        }
         return this.copy(
             title = title,
             description = description,
-            reportStatus = ReportStatus.NOT_CHECKED,
+            reportStatus = status,
             editDate = ReportDate(LocalDateTime.now()),
             documentId = documentId, )
     }
