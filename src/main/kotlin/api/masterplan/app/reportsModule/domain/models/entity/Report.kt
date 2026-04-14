@@ -25,13 +25,17 @@ data class Report private constructor (
                 is ReportReferenceId.ForPlan -> ReportType.PLAN
                 is ReportReferenceId.ForTask -> ReportType.TASK
             }
+            val reportStatus = when(type){
+                ReportType.TASK -> ReportStatus.NOT_CHECKED
+                ReportType.PLAN -> ReportStatus.CHECKED
+            }
             return Report(
                 id = id ?: ReportId.generate(),
                 title = title,
                 creationDate = ReportDate(LocalDateTime.now()),
                 editDate = null,
                 description = description,
-                reportStatus = ReportStatus.NOT_CHECKED,
+                reportStatus = reportStatus,
                 employeeId = employeeId,
                 referenceId = referenceId,
                 type = type,

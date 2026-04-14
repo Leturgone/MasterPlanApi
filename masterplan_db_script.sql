@@ -281,7 +281,8 @@ INSERT INTO plan_status (status) VALUES
 INSERT INTO report_status (status) VALUES
 ('NOT_CHECKED'),
 ('CHECKED'),
-('CHECKING');
+('CHECKING'),
+('TO_UPDATE');
 
 INSERT INTO admin_request_status (status) VALUES
 ('COMPLETED'),
