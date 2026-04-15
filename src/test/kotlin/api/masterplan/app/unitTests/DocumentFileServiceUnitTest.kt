@@ -17,15 +17,15 @@ import org.junit.jupiter.api.assertThrows
 
 class DocumentFileServiceUnitTest {
 
-    private val documentFileRepository = mockk<DocumentFileRepository>()
-    private val documentFileService = DocumentFileServiceImpl(documentFileRepository)
-
+    // Данные для моков
     private val fileId = DocumentFileId.generate()
     private val baseName = DocumentFileBaseName("test-file")
     private val updatedBaseName = DocumentFileBaseName("updated-file")
     private val fileData = DocumentFileData(byteArrayOf(0x01, 0x02, 0x03))
     private val fileName = DocumentFileName("test-file_20231010_123456")
 
+    private val documentFileRepository = mockk<DocumentFileRepository>()
+    private val documentFileService = DocumentFileServiceImpl(documentFileRepository)
 
     @Test
     fun `uploadFile upload new file successfully`() {

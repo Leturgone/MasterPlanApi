@@ -19,10 +19,7 @@ import java.util.*
 
 class ReportServiceUnitTest {
 
-    private val planReportRepository = mockk<PlanReportRepository>()
-    private val taskReportRepository = mockk<TaskReportRepository>()
-    private val reportService = ReportServiceImpl(planReportRepository, taskReportRepository)
-
+    // Данные для моков
     private val reportId = ReportId.generate()
     private val employeeId = ReportEmployeeId(UUID.randomUUID())
     private val title = ReportTitle.validate("Test Report")
@@ -38,6 +35,11 @@ class ReportServiceUnitTest {
         description = ReportDescription.validate("Updated Description"),
         documentId = documentId
     )
+
+
+    private val planReportRepository = mockk<PlanReportRepository>()
+    private val taskReportRepository = mockk<TaskReportRepository>()
+    private val reportService = ReportServiceImpl(planReportRepository, taskReportRepository)
 
     @Test
     fun `getReport return report details for task type when report exists`() {

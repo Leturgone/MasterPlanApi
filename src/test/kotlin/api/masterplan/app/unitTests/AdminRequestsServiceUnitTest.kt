@@ -15,9 +15,7 @@ import java.util.*
 
 class AdminRequestsServiceUnitTest {
 
-    private val adminRequestRepository = mockk<AdminRequestsRepository>()
-    private val adminRequestsService = AdminRequestsServiceImpl(adminRequestRepository)
-
+    // Данные для моков
     private val adminRequestId = AdminRequestId.generate()
     private val adminAnswerId = AdminAnswerId.generate()
     private val senderId = AdminRequestSenderId(UUID.randomUUID())
@@ -26,6 +24,9 @@ class AdminRequestsServiceUnitTest {
     private val description = AdminRequestDescription.validate("Test Description")
     private val answerDescription = AdminAnswerDescription.validate("Answer Description")
     private val status = AdminRequestStatus.IN_PROGRESS
+
+    private val adminRequestRepository = mockk<AdminRequestsRepository>()
+    private val adminRequestsService = AdminRequestsServiceImpl(adminRequestRepository)
 
     @Test
     fun `createAdminRequest create new admin request successfully`() {
