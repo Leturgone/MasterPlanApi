@@ -47,7 +47,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `getPlanById throw exception when plan does not exist`() {
+    fun `getPlanById throw PlanNotExist when plan does not exist`() {
 
         every { planRepository.getPlan(planId) } returns null
 
@@ -78,7 +78,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `createPlan throw exception when plan already exists`() {
+    fun `createPlan throw PlanAlreadyExists when plan already exists`() {
 
         every { planRepository.isPlanExist(title, directorId) } returns true
 
@@ -96,7 +96,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `createPlan throw exception when save fails`() {
+    fun `createPlan throw FailedToCreatePlan when save fails`() {
 
         every { planRepository.isPlanExist(title, directorId) } returns false
         every { planRepository.savePlan(any()) } returns null
@@ -170,7 +170,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `updatePlan throw exception when plan does not exist`() {
+    fun `updatePlan throw PlanNotExist when plan does not exist`() {
 
         val updatedPlan = Plan.create(
             id = planId,
@@ -197,7 +197,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `deletePlan throw exception when delete fails`() {
+    fun `deletePlan throw FailedToDeletePlan when delete fails`() {
         every { planRepository.deletePlan(planId) } returns null
 
         assertThrows<PlanException.FailedToDeletePlan> {
@@ -300,7 +300,7 @@ class PlanServiceUnitTest {
     }
 
     @Test
-    fun `updatePlanStatus throw exception when plan does not exist`() {
+    fun `updatePlanStatus throw PlanNotExist when plan does not exist`() {
         every { planRepository.getPlan(planId) } returns null
         assertThrows<PlanException.PlanNotExist> {
             planService.updatePlanStatus(planId, PlanStatus.COMPLETED)
