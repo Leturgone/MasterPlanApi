@@ -35,15 +35,15 @@ dependencies {
 	implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("io.jsonwebtoken:jjwt:0.13.0")
     runtimeOnly("org.postgresql:postgresql")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-websocket-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.mockk:mockk:1.13.8")
 	testImplementation("io.rest-assured:rest-assured:6.0.0")
-	testImplementation("org.hamcrest:hamcrest:3.0")
-	testImplementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.hamcrest:hamcrest:2.2")
+	testImplementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.0")
+
+
 	implementation("com.github.f4b6a3:uuid-creator:6.1.0")
 	implementation("org.bouncycastle:bcprov-jdk18on:1.83")
 	implementation("org.apache.poi:poi-ooxml:5.5.1")
