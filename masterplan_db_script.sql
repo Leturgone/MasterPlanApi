@@ -1,8 +1,3 @@
-create database masterplan_db;
-\c masterplan_db
-psql \! chcp 1251
-
-
 CREATE TABLE app_user (
     id UUID PRIMARY KEY,
     login VARCHAR(45) NOT NULL UNIQUE,
