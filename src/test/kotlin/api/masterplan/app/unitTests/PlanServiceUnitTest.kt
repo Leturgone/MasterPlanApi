@@ -13,7 +13,7 @@ import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 import java.util.*
 
-class PlanServiceTest {
+class PlanServiceUnitTest {
 
     private val planRepository = mockk<PlanRepository>()
     private val planService = PlanServiceImpl(planRepository)
@@ -27,7 +27,7 @@ class PlanServiceTest {
     private val endDate = PlanDate(LocalDate.now().plusDays(7))
 
     @Test
-    fun `getPlanById should return plan details when plan exists`() {
+    fun `getPlanById return plan details when plan exists`() {
 
         val planEntity = Plan.create(
             id = planId,
@@ -47,7 +47,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `getPlanById should throw exception when plan does not exist`() {
+    fun `getPlanById throw exception when plan does not exist`() {
 
         every { planRepository.getPlan(planId) } returns null
 
@@ -57,7 +57,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `createPlan should create new plan successfully`() {
+    fun `createPlan create new plan successfully`() {
 
 
         every { planRepository.isPlanExist(title, directorId) } returns false
@@ -78,7 +78,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `createPlan should throw exception when plan already exists`() {
+    fun `createPlan throw exception when plan already exists`() {
 
         every { planRepository.isPlanExist(title, directorId) } returns true
 
@@ -96,7 +96,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `createPlan should throw exception when save fails`() {
+    fun `createPlan throw exception when save fails`() {
 
         every { planRepository.isPlanExist(title, directorId) } returns false
         every { planRepository.savePlan(any()) } returns null
@@ -116,7 +116,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `getAllDirPlans should return list of plan details`() {
+    fun `getAllDirPlans return list of plan details`() {
 
         val plan1 = Plan.create(
             id = PlanId(UUID.randomUUID()),
@@ -144,7 +144,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `updatePlan should update plan successfully`() {
+    fun `updatePlan update plan successfully`() {
 
         val updatedPlan = Plan.create(
             id = planId,
@@ -170,7 +170,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `updatePlan should throw exception when plan does not exist`() {
+    fun `updatePlan throw exception when plan does not exist`() {
 
         val updatedPlan = Plan.create(
             id = planId,
@@ -188,7 +188,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `deletePlan should delete plan successfully`() {
+    fun `deletePlan delete plan successfully`() {
         every { planRepository.deletePlan(planId) } returns planId
 
         val result = planService.deletePlan(planId)
@@ -197,7 +197,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `deletePlan should throw exception when delete fails`() {
+    fun `deletePlan throw exception when delete fails`() {
         every { planRepository.deletePlan(planId) } returns null
 
         assertThrows<PlanException.FailedToDeletePlan> {
@@ -206,8 +206,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `sortDirPlansByDate should return sorted plans`() {
-        // Given
+    fun `sortDirPlansByDate return sorted plans`() {
         val earlyDate = PlanDate(LocalDate.now().plusDays(1))
         val laterDate = PlanDate(LocalDate.now().plusDays(10))
 
@@ -229,18 +228,15 @@ class PlanServiceTest {
 
         every { planRepository.getDirPlans(directorId) } returns plans
 
-        // When
         val result = planService.sortDirPlansByDate(directorId)
 
-        // Then
         assertEquals(2, result.size)
-        assertEquals("Plan 2", result[0].title.value) // Should be first (earlier date)
-        assertEquals("Plan 1", result[1].title.value) // Should be second (later date)
+        assertEquals("Plan 2", result[0].title.value)
+        assertEquals("Plan 1", result[1].title.value)
     }
 
     @Test
-    fun `filterDirPlansByStatus should return filtered plans`() {
-        // Given
+    fun `filterDirPlansByStatus return filtered plans`() {
         val plan1 = Plan.create(
             id = PlanId(UUID.randomUUID()),
             title = PlanTitle("Plan 1"),
@@ -268,7 +264,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `assignPlanDocumentToPlan should assign document successfully`() {
+    fun `assignPlanDocumentToPlan assign document successfully`() {
         val plan = Plan.create(
             id = planId,
             title = title,
@@ -286,7 +282,7 @@ class PlanServiceTest {
     }
 
     @Test
-    fun `updatePlanStatus should update status successfully`() {
+    fun `updatePlanStatus update status successfully`() {
         val plan = Plan.create(
             id = planId,
             title = title,
@@ -299,17 +295,13 @@ class PlanServiceTest {
         every { planRepository.getPlan(planId) } returns plan
         every { planRepository.updatePlan(planId, any()) } returns planId
 
-
         val result = planService.updatePlanStatus(planId, newStatus)
-
         assertEquals(planId, result)
     }
 
     @Test
     fun `updatePlanStatus throw exception when plan does not exist`() {
-
         every { planRepository.getPlan(planId) } returns null
-
         assertThrows<PlanException.PlanNotExist> {
             planService.updatePlanStatus(planId, PlanStatus.COMPLETED)
         }
