@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  masterplan_db:
+    image: postgres:15
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: masterplan_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d masterplan_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./masterplan_db_script.sql:/docker-entrypoint-initdb.d/masterplan_db_script.sql
+      - datastore:/app/datastore
+
+  masterplan:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      SPRING_APPLICATION_NAME: MasterPlanApi
+      SPRING_DATASOURCE_URL: jdbc:postgresql://masterplan_db:5432/masterplan_db
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DOC_API_DOCS_ENABLED: "true"
+      SPRING_DOC_SWAGGER_UI_ENABLED: "true"
+      SPRING_DOC_API_DOCS_PATH: /api/v1/api-docs
+      JWT_SECRET: ${MASTERPLAN_JWT_SECRET}
+      JWT_EXPIRATION: 12
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SOCKET: TRACE
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_MESSAGING: TRACE
+      LOGGING_LEVEL_API_MASTERPLAN_APP: DEBUG
+      STORAGE_PATH: ${MASTERPLAN_FILES_STORAGE}
+      STORAGE_ENCRYPT_KEY: ${MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY}
+      SPRING_SERVLET_MULTIPART_ENABLED: "true"
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 25MB
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 25MB
+      SPRING_SERVLET_MULTIPART_RESOLVE_LAZILY: "true"
+    depends_on:
+      masterplan_db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+  datastore:
