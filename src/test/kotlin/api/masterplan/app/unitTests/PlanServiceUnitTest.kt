@@ -15,16 +15,16 @@ import java.util.*
 
 class PlanServiceUnitTest {
 
-    private val planRepository = mockk<PlanRepository>()
-    private val planService = PlanServiceImpl(planRepository)
-
-    // Дефоолтные данные для моков
+    // Данные для моков
     private val planId = PlanId(UUID.randomUUID())
     private val directorId = PlanDirectorId(UUID.randomUUID())
     private val documentId = PlanDocumentId(UUID.randomUUID())
     private val title = PlanTitle("Test Plan")
     private val description = PlanDescription("Test Description")
     private val endDate = PlanDate(LocalDate.now().plusDays(7))
+
+    private val planRepository = mockk<PlanRepository>()
+    private val planService = PlanServiceImpl(planRepository)
 
     @Test
     fun `getPlanById return plan details when plan exists`() {

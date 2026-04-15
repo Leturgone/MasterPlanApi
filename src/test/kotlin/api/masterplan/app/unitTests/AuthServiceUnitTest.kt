@@ -17,14 +17,15 @@ import java.util.*
 
 class AuthServiceUnitTest {
 
-    private val userCredentialsProvider = mockk<UserCredentialsProvider>()
-    private val authService = AuthServiceImpl(userCredentialsProvider)
-
-
+    // Данные для моков
     private val login = AuthUserLogin("login")
     private val password = AuthUserPassword("password")
     private val userId = AuthUserId(UUID.randomUUID())
     private val roles = setOf(AuthUserRole.ADMIN, AuthUserRole.EMPLOYEE)
+
+
+    private val userCredentialsProvider = mockk<UserCredentialsProvider>()
+    private val authService = AuthServiceImpl(userCredentialsProvider)
 
     @Test
     fun `authenticate success when credentials are valid`() {

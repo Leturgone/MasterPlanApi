@@ -20,10 +20,7 @@ import java.util.UUID
 
 class EmployeeServiceUnitTest {
 
-    private val employeeRepository = mockk<EmployeeRepository>()
-    private val employeeMetricsService = mockk<EmployeeMetricsService>()
-    private val employeeService = EmployeeServiceImpl(employeeRepository, employeeMetricsService)
-
+    // Данные для моков
     private val employeeId = EmployeeId.generate()
     private val directorId = EmployeeId.generate()
     private val userId = EmployeeUserId(UUID.randomUUID())
@@ -31,6 +28,10 @@ class EmployeeServiceUnitTest {
     private val surname = EmployeeSurname("Surname")
     private val patronymic = EmployeePatronymic("Patronymic")
     private val query = "Name"
+
+    private val employeeRepository = mockk<EmployeeRepository>()
+    private val employeeMetricsService = mockk<EmployeeMetricsService>()
+    private val employeeService = EmployeeServiceImpl(employeeRepository, employeeMetricsService)
 
     @Test
     fun `getAllEmployees return list of employee details`() {

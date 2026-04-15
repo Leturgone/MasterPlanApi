@@ -18,9 +18,8 @@ import java.time.LocalDate
 import java.util.*
 
 class TaskServiceUnitTest {
-    private val taskRepository = mockk<TaskRepository>()
-    private val taskService = TaskServiceImpl(taskRepository)
 
+    // Данные для моков
     private val taskId = TaskId(UUID.randomUUID())
     private val planId = PlanId(UUID.randomUUID())
     private val executorId = ExecutorId(UUID.randomUUID())
@@ -54,6 +53,9 @@ class TaskServiceUnitTest {
         urgency = urgency,
         executorsIds = executorsIds
     )
+
+    private val taskRepository = mockk<TaskRepository>()
+    private val taskService = TaskServiceImpl(taskRepository)
 
     @Test
     fun `getTaskById return task details when task exists`() {

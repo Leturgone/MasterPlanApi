@@ -20,11 +20,7 @@ import org.junit.jupiter.api.assertThrows
 
 class UserServiceUnitTest {
 
-    private val userRepository = mockk<UserRepository>()
-    private val employeeCreationPort = mockk<EmployeeCreationPort>()
-    private val userService = UserServiceImpl(userRepository, employeeCreationPort)
-
-
+    // Данные для моков
     private val userId = UserId.generate()
     private val login = UserLogin("testuser")
     private val password = UserPassword("oldpassword")
@@ -32,6 +28,11 @@ class UserServiceUnitTest {
     private val roles = setOf(UserRole.EMPLOYEE)
     private val adminRoles = setOf(UserRole.ADMIN)
     private val employeeInfo = mockk<EmployeeInfo>()
+
+
+    private val userRepository = mockk<UserRepository>()
+    private val employeeCreationPort = mockk<EmployeeCreationPort>()
+    private val userService = UserServiceImpl(userRepository, employeeCreationPort)
 
     @Test
     fun `getUserById return user details when user exists`() {
