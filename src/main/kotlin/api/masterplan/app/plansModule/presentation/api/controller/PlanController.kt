@@ -949,7 +949,7 @@ class PlanController(
 
         ]
     )
-    @PatchMapping("/tasks/dir/task/{taskId}/status")
+    @PatchMapping("/tasks/emp/task/{taskId}/status")
     fun updateTaskStatus(
         @PathVariable(value = "taskId") taskId: UUID,
         @RequestBody request: UpdateTaskStatusRequest
