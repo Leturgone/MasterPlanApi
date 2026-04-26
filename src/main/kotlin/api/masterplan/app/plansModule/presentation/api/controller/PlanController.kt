@@ -148,7 +148,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/plan/{planId}/tasks")
+    @GetMapping("/plans/emp/plan/{planId}/tasks")
     fun getPlanTasks(
         @PathVariable(value = "planId") planId: UUID
     ): ResponseEntity<List<TaskInformationResponse>>{
@@ -188,7 +188,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/plan/{planId}/tasks/status/{status}")
+    @GetMapping("/plans/emp/plan/{planId}/tasks/status/{status}")
     fun getPlanTasksFilterByStatus(
         @PathVariable(value = "planId") planId: UUID,
         @PathVariable(value = "status") status: String
@@ -226,7 +226,7 @@ class PlanController(
 
         ]
     )
-    @GetMapping("/plans/dir/plan/{planId}/tasks/sortTime")
+    @GetMapping("/plans/emp/plan/{planId}/tasks/sortTime")
     fun getPlanTasksSortByTime(
         @PathVariable(value = "planId") planId: UUID
     ): ResponseEntity<List<TaskInformationResponse>>{

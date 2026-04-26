@@ -261,7 +261,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/employee/{id}")
+    @GetMapping("/emp/employee/{id}")
     fun getEmployeeById(@PathVariable(value = "id") empId: UUID): ResponseEntity<EmployeeDetailsResponse> {
         val employeeId = EmployeeId(empId)
         val command = GetEmployeeByIdCommand(employeeId)
