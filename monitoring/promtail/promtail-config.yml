@@ -23,15 +23,7 @@ scrape_configs:
         target_label: 'service'
       - source_labels: ['__meta_docker_container_image']
         target_label: 'image'
-      - target_label: '__path__'
-        replacement: /var/lib/docker/containers/*/*-json.log
     pipeline_stages:
-      - docker: {}
-      - json:
-          expressions:
-            log: log
-            container_id: container_id
-            source: source
       - regex:
           expression: '(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+(?P<level>\w+)\s+\d+\s+---\s+\[(?P<app>[^\]]+)\]\s+\[(?P<thread>[^\]]+)\]\s+(?P<logger>[^:]+):\s+Module\s+(?P<module>\w+)\s*:\s*(?P<message>.*)'
       - labels:
