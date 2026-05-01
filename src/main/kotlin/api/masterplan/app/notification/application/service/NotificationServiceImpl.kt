@@ -38,6 +38,7 @@ class NotificationServiceImpl(
         }
     }
 
+    @LoggingMethod("notificationModule")
     override fun sendAdminNotification(
         channel: NotificationChannel,
         notificationType: NotificationType,
