@@ -39,8 +39,6 @@ jobs:
       - name: Download Swagger UI directly from Spring Boot app
         run: |
           mkdir -p docs
-          curl -o docs/index.html http://localhost:8080/swagger-ui.html
-          # или для новых версий:
           curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
 
       - name: Deploy to GitHub Pages
