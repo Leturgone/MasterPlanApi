@@ -11,20 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Build and run Spring Boot app
+      - name: Build and start services with Docker Compose
         run: |
-          chmod +x gradlew
-          ./gradlew clean build -x test
-          nohup ./gradlew bootRun &
-          sleep 30
+          docker-compose up -d --build
+          sleep 60  # ждём старта приложения
+
+      - name: Wait for application readiness
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8080/actuator/health 2>/dev/null; then
+              echo "Application is ready"
+              break
+            fi
+            echo "Waiting for application... attempt $i/30"
+            sleep 10
+          done
 
       - name: Export Swagger JSON
         run: |
@@ -43,3 +49,8 @@ jobs:
           destination_dir: docs
           force_orphan: true
           commit_message: 'Update Swagger documentation'
+
+
+      - name: Clean up
+        if: always()
+        run: docker-compose down
