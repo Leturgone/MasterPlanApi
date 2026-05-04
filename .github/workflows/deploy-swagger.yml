@@ -39,6 +39,9 @@ jobs:
       - name: Download Swagger UI directly from Spring Boot app
         run: |
           mkdir -p docs
+          curl -o docs/swagger.json http://localhost:8080/api/v1/api-docs
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css -o docs/swagger-ui.css
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-ui-bundle.min.js -o docs/swagger-ui-bundle.min.js
           curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
           cp swagger.json docs/swagger.json
 
