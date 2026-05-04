@@ -48,7 +48,7 @@ jobs:
           curl -L https://unpkg.com/swagger-ui-dist@latest/favicon-32x32.png -o docs/favicon-32x32.png
           curl -L https://unpkg.com/swagger-ui-dist@latest/favicon-16x16.png -o docs/favicon-16x16.png
           curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
-          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.json"|' docs/index.html
+          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.json"|' docs/swagger-initializer.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
