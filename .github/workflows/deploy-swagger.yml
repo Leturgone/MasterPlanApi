@@ -36,18 +36,12 @@ jobs:
           docker compose up -d --build
           sleep 60
 
-      - name: Export Swagger JSON
-        run: |
-          curl -o swagger.json http://localhost:8080/api/v1/api-docs
-          
-
-      - name: Install swagger-ui-dist
-        run: npm install swagger-ui-dist@latest
-
-      - name: Generate HTML documentation
+      - name: Download Swagger UI directly from Spring Boot app
         run: |
           mkdir -p docs
-          node_modules/.bin/swagger-ui-dist -o docs --json swagger.json
+          curl -o docs/index.html http://localhost:8080/swagger-ui.html
+          # или для новых версий:
+          curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
