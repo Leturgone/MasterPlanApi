@@ -21,8 +21,8 @@ jobs:
 
       - name: Build and run Spring Boot app
         run: |
-          ./mvnw clean package -DskipTests
-          nohup java -jar target/*.jar &
+          ./gradlew clean build -x test
+          nohup ./gradlew bootRun &
           sleep 30
 
       - name: Export Swagger JSON
