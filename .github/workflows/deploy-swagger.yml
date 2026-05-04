@@ -18,7 +18,7 @@ jobs:
 
       - name: Build and start services with Docker Compose
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
           sleep 60  # ждём старта приложения
 
       - name: Wait for application readiness
