@@ -1,0 +1,65 @@
+name: Deploy Swagger Docs to GitHub Pages
+
+on:
+  push:
+    branches: [ dev/create-github-pages-with-docs ]
+  pull_request:
+    branches: [ dev/create-github-pages-with-docs ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Create relative storage directory
+        run: |
+          mkdir -p ./files-storage
+          echo "Created: $(pwd)/files-storage"
+
+      - name: Create .env for CI/CD
+        run: |
+          cat > .env << EOF
+          DATABASE_USER=${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          MASTERPLAN_JWT_SECRET=${{ secrets.MASTERPLAN_JWT_SECRET }}
+          MASTERPLAN_FILES_STORAGE=./files-storage
+          MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY=${{ secrets.MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY }}
+          EOF
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and start services with Docker Compose
+        run: |
+          docker compose up -d --build
+          sleep 60
+
+      - name: Download Swagger UI directly from Spring Boot app
+        run: |
+          mkdir -p docs
+          curl -o docs/swagger.json http://localhost:8080/api/v1/api-docs
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css -o docs/swagger-ui.css
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-ui-bundle.js -o docs/swagger-ui-bundle.js
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-ui-standalone-preset.js -o docs/swagger-ui-standalone-preset.js
+          curl -L https://unpkg.com/swagger-ui-dist@latest/swagger-initializer.js -o docs/swagger-initializer.js
+          curl -L https://unpkg.com/swagger-ui-dist@latest/index.css -o docs/index.css
+          curl -L https://unpkg.com/swagger-ui-dist@latest/favicon-32x32.png -o docs/favicon-32x32.png
+          curl -L https://unpkg.com/swagger-ui-dist@latest/favicon-16x16.png -o docs/favicon-16x16.png
+          curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
+          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.json"|' docs/swagger-initializer.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          destination_dir: docs
+          force_orphan: true
+          commit_message: 'Update Swagger documentation'
+
+
+      - name: Clean up
+        if: always()
+        run: docker compose down
