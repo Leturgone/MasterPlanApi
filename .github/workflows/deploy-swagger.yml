@@ -21,6 +21,7 @@ jobs:
 
       - name: Build and run Spring Boot app
         run: |
+          chmod +x gradlew
           ./gradlew clean build -x test
           nohup ./gradlew bootRun &
           sleep 30
