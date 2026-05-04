@@ -41,11 +41,13 @@ jobs:
           curl -o swagger.json http://localhost:8080/api/v1/api-docs
           
 
+      - name: Install swagger-ui-dist
+        run: npm install swagger-ui-dist@latest
+
       - name: Generate HTML documentation
         run: |
           mkdir -p docs
-          npx swagger-ui-dist@latest copy --output docs
-          cp swagger.json docs/swagger.json
+          node_modules/.bin/swagger-ui-dist -o docs --json swagger.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
