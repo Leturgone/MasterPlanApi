@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6.0.2
 
       - name: Create relative storage directory
         run: |
@@ -29,7 +29,7 @@ jobs:
           EOF
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4.0.0
 
       - name: Build and start services with Docker Compose
         run: |
@@ -51,7 +51,7 @@ jobs:
           sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.json"|' docs/swagger-initializer.js
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
