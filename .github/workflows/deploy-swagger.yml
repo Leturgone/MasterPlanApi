@@ -2,9 +2,9 @@ name: Deploy Swagger Docs to GitHub Pages
 
 on:
   push:
-    branches: [ dev/create-github-pages-with-docs ]
+    branches: [ main ]
   pull_request:
-    branches: [ dev/create-github-pages-with-docs ]
+    branches: [ main ]
 
 jobs:
   deploy:
