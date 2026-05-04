@@ -13,13 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Create .env from secrets
+      - name: Create relative storage directory
+        run: |
+          mkdir -p ./files-storage
+          echo "Created: $(pwd)/files-storage"
+
+      - name: Create .env for CI/CD
         run: |
           cat > .env << EOF
-          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
           DATABASE_USER=${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          MASTERPLAN_JWT_SECRET=${{ secrets.MASTERPLAN_JWT_SECRET }}
+          MASTERPLAN_FILES_STORAGE=./files-storage
+          MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY=${{ secrets.FILES_STORAGE_ENCRYPT_KEY }}
           EOF
-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -27,7 +34,7 @@ jobs:
       - name: Build and start services with Docker Compose
         run: |
           docker compose up -d --build
-          sleep 60  # ждём старта приложения
+          sleep 60
 
       - name: Wait for application readiness
         run: |
