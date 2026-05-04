@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Create .env from secrets
+        run: |
+          cat > .env << EOF
+          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_USER=${{ secrets.DATABASE_USER }}
+          EOF
+
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
