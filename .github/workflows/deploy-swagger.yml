@@ -25,7 +25,7 @@ jobs:
           DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
           MASTERPLAN_JWT_SECRET=${{ secrets.MASTERPLAN_JWT_SECRET }}
           MASTERPLAN_FILES_STORAGE=./files-storage
-          MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY=${{ secrets.FILES_STORAGE_ENCRYPT_KEY }}
+          MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY=${{ secrets.MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY }}
           EOF
 
       - name: Set up Docker Buildx
