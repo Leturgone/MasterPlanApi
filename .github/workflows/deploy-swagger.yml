@@ -36,9 +36,22 @@ jobs:
           docker compose up -d --build
           sleep 60
 
+      - name: Check service logs
+        run: docker compose logs
 
-      - name: Export Swagger JSON
+      - name: Wait for service to be ready and export Swagger JSON
         run: |
+          max_attempts=30
+          attempt=0
+          until curl -f http://localhost:8080/api/v1/api-docs || [ $attempt -eq $max_attempts ]; do
+            echo "Service not ready, waiting 10 seconds (attempt $((attempt + 1))/$max_attempts)..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
+          if [ $attempt -eq $max_attempts ]; then
+            echo "Error: Service did not become ready in time"
+            exit 1
+          fi
           curl -o swagger.json http://localhost:8080/api/v1/api-docs
 
       - name: Generate HTML documentation
