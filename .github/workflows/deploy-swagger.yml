@@ -1,0 +1,44 @@
+name: Deploy Swagger Docs to GitHub Pages
+
+on:
+  push:
+    branches: [ dev/create-github-pages-with-docs ]
+  pull_request:
+    branches: [ dev/create-github-pages-with-docs ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and run Spring Boot app
+        run: |
+          ./mvnw clean package -DskipTests
+          nohup java -jar target/*.jar &
+          sleep 30
+
+      - name: Export Swagger JSON
+        run: |
+          curl -o swagger.json http://localhost:8080/api-docs
+
+      - name: Generate HTML documentation
+        run: |
+          mkdir -p docs
+          npx swagger-ui-dist@latest -o docs --json swagger.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          destination_dir: docs
+          force_orphan: true
+          commit_message: 'Update Swagger documentation'
