@@ -40,6 +40,7 @@ jobs:
         run: |
           mkdir -p docs
           curl -o docs/index.html http://localhost:8080/swagger-ui/index.html
+          cp swagger.json docs/swagger.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
