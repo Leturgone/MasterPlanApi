@@ -1,5 +1,12 @@
 ## MasterPlanApi
 
+REST API для контроля выполнения планов мероприятий для приложения [MasterPlan](https://github.com/Leturgone/MasterPlan)
+
+## Описание
+
+MasterPlanApi - серверная часть системы MasterPlan. Позволяет контролировать планы мероприяти
+
+
 Swagger doc - http://localhost:8080/swagger-ui/index.html#/
 
 # Instalation 
