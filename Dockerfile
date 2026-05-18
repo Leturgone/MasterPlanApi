@@ -18,5 +18,9 @@ RUN gradle clean bootJar --no-daemon -D https.protocols=TLSv1.2
 FROM amazoncorretto:21 AS runtime
 EXPOSE 8080
 RUN mkdir /app
+
+RUN mkdir -p /var/lib/masterplan/files && \
+    chown -R 1000:1000 /var/lib/masterplan/files
+
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/master_plan_server.jar
 ENTRYPOINT ["java","-jar","/app/master_plan_server.jar"]

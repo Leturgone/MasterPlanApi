@@ -19,7 +19,6 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./masterplan_db_script.sql:/docker-entrypoint-initdb.d/masterplan_db_script.sql
-      - datastore:/app/datastore
 
   masterplan:
     container_name: "masterplan"
@@ -43,7 +42,7 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SOCKET: TRACE
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_MESSAGING: TRACE
       LOGGING_LEVEL_API_MASTERPLAN_APP: DEBUG
-      STORAGE_PATH: ${MASTERPLAN_FILES_STORAGE}
+      STORAGE_PATH: /var/lib/masterplan/files
       STORAGE_ENCRYPT_KEY: ${MASTERPLAN_FILES_STORAGE_ENCRYPT_KEY}
       SPRING_SERVLET_MULTIPART_ENABLED: "true"
       SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 25MB
@@ -51,6 +50,8 @@ services:
       SPRING_SERVLET_MULTIPART_RESOLVE_LAZILY: "true"
     labels:
       logging: "promtail"
+    volumes:
+      - datastore:/var/lib/masterplan/files
     depends_on:
       masterplan_db:
         condition: service_healthy
