@@ -81,8 +81,7 @@ docker-compose up
 
 ## Использование 
 
-Документация Swagger представлена после развертывания по адресу http://localhost:8080/swagger-ui/index.html#/
-
+Документация Swagger представлена после развертывания по адресу http://localhost:8080/swagger-ui/index.html#/ а также в gh pages
 
 <img width="1740" height="995" alt="изображение" src="https://github.com/user-attachments/assets/4b815173-7095-4106-9047-b432cadf8c39" />
 
