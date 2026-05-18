@@ -24,7 +24,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 
 ## Технологический стек
 
-- **Backend:** SpringBoot, Spring Modulith
+- **Backend:** SpringBoot, Spring Modulith. Spring MVC
 - **Работа с Exel файлами:** Apache POI
 - **Язык программирования:** Kotlin
 - **База данных:** PostgreSQL
@@ -32,7 +32,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 - **Документация API:** Swagger UI
 - **Тестирование:** JUnit, MockK
 - **Мониторинг:** Garafana, Loki, Promtail
-- **Архитектура:** Clean Architecture, Модульный монолит
+- **Архитектура:** Clean Architecture, Модульный монолит, MVC
 - **Развертывание:** Docker
 
 ## Установка 
