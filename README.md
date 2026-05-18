@@ -34,6 +34,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 - **Мониторинг:** Grafana, Loki, Promtail
 - **Архитектура:** Clean Architecture, Модульный монолит, MVC
 - **Развертывание:** Docker
+- **CI/CD**: gh-pages
 
 ## Установка 
 
