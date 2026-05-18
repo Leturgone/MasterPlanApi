@@ -31,7 +31,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 - **Безопасность:** JWT, Bouncy Castle
 - **Документация API:** Swagger UI
 - **Тестирование:** JUnit, MockK
-- **Мониторинг:** Garafna, Loki, Promtail
+- **Мониторинг:** Garafana, Loki, Promtail
 - **Архитектура:** Clean Architecture, Модульный монолит
 - **Развертывание:** Docker
 
