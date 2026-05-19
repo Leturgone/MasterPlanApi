@@ -28,7 +28,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 - **Работа с Exel файлами:** Apache POI
 - **Язык программирования:** Kotlin
 - **База данных:** PostgreSQL
-- **Безопасность:** JWT, Bouncy Castle
+- **Безопасность:** JWT, Bouncy Castle, Argon2
 - **Документация API:** Swagger UI
 - **Тестирование:** JUnit, MockK
 - **Мониторинг:** Grafana, Loki, Promtail
