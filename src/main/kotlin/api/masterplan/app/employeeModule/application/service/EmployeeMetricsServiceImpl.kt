@@ -66,7 +66,7 @@ class EmployeeMetricsServiceImpl(
         // Рассчет рейтинга
 
         val rating = if (sumWeightTotal > 0 && completedTasksCount >0){
-            (sumWeightCompleted / sumWeightTotal) * tasksCount
+            (sumWeightCompleted / sumWeightTotal) * completedTasksCount
         }else 0.0
 
         // Рассчет загруженности
