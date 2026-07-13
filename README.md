@@ -25,7 +25,7 @@ MasterPlanApi - серверная часть системы MasterPlan. Поз�
 ## Технологический стек
 
 - **Backend:** SpringBoot, Spring Modulith. Spring MVC
-- **Работа с Exel файлами:** Apache POI
+- **Работа с Excel файлами:** Apache POI
 - **Язык программирования:** Kotlin
 - **База данных:** PostgreSQL
 - **Безопасность:** JWT, Bouncy Castle, Argon2
