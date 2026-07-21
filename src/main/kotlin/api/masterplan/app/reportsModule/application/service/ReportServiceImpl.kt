@@ -11,6 +11,7 @@ import api.masterplan.app.reportsModule.domain.interfaces.TaskReportRepository
 import api.masterplan.app.reportsModule.domain.models.entity.Report
 import api.masterplan.app.reportsModule.domain.models.value.*
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ReportServiceImpl(
@@ -29,6 +30,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updateReport(reportId: ReportId, reportType: ReportType, updatedData: ReportUpdateData): ReportDetails {
         val report =  when(reportType) {
             ReportType.TASK -> taskReportRepository.getTaskReport(reportId)
@@ -51,6 +53,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun deleteReport(reportId: ReportId, reportType: ReportType): ReportId {
         val deletedReportId = when(reportType) {
             ReportType.PLAN -> planReportRepository.deletePlanReport(reportId)
@@ -62,6 +65,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun createReport(id: ReportId?, title: ReportTitle, description: ReportDescription?,
         employeeId: ReportEmployeeId, referenceId: ReportReferenceId, documentId: ReportDocumentId): ReportId {
 
@@ -119,6 +123,7 @@ class ReportServiceImpl(
 
 
     @LoggingMethod("reportModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun changeReportStatus(reportId: ReportId, reportType: ReportType, status: ReportStatus): ReportDetails {
         val report =  when(reportType) {
             ReportType.PLAN -> planReportRepository.getPlanReport(reportId)
