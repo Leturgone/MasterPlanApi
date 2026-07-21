@@ -3,10 +3,8 @@ package api.masterplan.app.plansModule.infrastructure.database.repository
 import api.masterplan.app.plansModule.infrastructure.database.entity.TaskEntity
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
-@Repository
 interface JpaTaskRepository: CrudRepository<TaskEntity, UUID> {
 
     fun findByPlanId(planId: UUID): List<TaskEntity>

@@ -4,10 +4,8 @@ import api.masterplan.app.employeeModule.infrastructure.database.entity.Employee
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import org.springframework.stereotype.Repository
 import java.util.*
 
-@Repository
 interface JpaEmployeeRepository: CrudRepository<EmployeeEntity, UUID> {
     @Query("SELECT e FROM EmployeeEntity e WHERE " +
             "LOWER(e.name) LIKE LOWER(CONCAT('%', :name, '%')) OR " +
