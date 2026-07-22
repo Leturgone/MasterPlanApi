@@ -18,6 +18,7 @@ import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestSta
 import api.masterplan.app.adminRequestsModule.domain.model.value.AdminRequestTitle
 import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AdminRequestsServiceImpl(
@@ -25,6 +26,7 @@ class AdminRequestsServiceImpl(
 ): AdminRequestsService {
 
     @LoggingMethod("adminRequestsModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun createAdminRequest(id: AdminRequestId?, title: AdminRequestTitle,
                                     description: AdminRequestDescription, senderId: AdminRequestSenderId): AdminRequestId {
 
@@ -45,6 +47,7 @@ class AdminRequestsServiceImpl(
     }
 
     @LoggingMethod("adminRequestsModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun createAdminAnswer(id: AdminAnswerId?, title: AdminAnswerTitle,
         description: AdminAnswerDescription, adminRequestId: AdminRequestId): AdminAnswerId {
 
@@ -66,6 +69,7 @@ class AdminRequestsServiceImpl(
 
 
     @LoggingMethod("adminRequestsModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun changeAdminRequestStatus(id: AdminRequestId, status: AdminRequestStatus): AdminRequestDetails {
         val oldAdminRequest = adminRequestRepository.getAdminRequestById(id) ?: throw AdminRequestException.AdminRequestNotExist(id)
 
