@@ -434,7 +434,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/getSortedEmpByRating/")
+    @GetMapping("/dir/employee/{directorId}/employees/sortedByRating")
     fun sortDirEmployeesByRating(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
         return runBlocking {
             val directorId = EmployeeId(directorId)
@@ -471,7 +471,7 @@ class EmployeeController(
 
         ]
     )
-    @GetMapping("/dir/{directorId}/employeesgetSortedEmpByWorkload/")
+    @GetMapping("/dir/employee/{directorId}/employees/sortedByWorkload")
     fun sortDirEmployeesByWorkload(@PathVariable(value = "directorId") directorId: UUID): ResponseEntity<List<EmployeeDetailsResponse>>{
         return runBlocking {
             val directorId = EmployeeId(directorId)
