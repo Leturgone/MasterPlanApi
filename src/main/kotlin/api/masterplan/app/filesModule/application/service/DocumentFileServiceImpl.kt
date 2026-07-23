@@ -11,6 +11,7 @@ import api.masterplan.app.filesModule.domain.model.value.DocumentFileData
 import api.masterplan.app.filesModule.domain.model.value.DocumentFileId
 import api.masterplan.app.logging.annotations.LoggingMethod
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DocumentFileServiceImpl(
@@ -18,6 +19,7 @@ class DocumentFileServiceImpl(
 ): DocumentFileService {
 
     @LoggingMethod("filesModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun uploadFile(documentFileBaseName: DocumentFileBaseName, documentFileData: DocumentFileData): DocumentFileId {
 
         val file = DocumentFile.create(
@@ -32,6 +34,7 @@ class DocumentFileServiceImpl(
     }
 
     @LoggingMethod("filesModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun removeFile(fileId: DocumentFileId): DocumentFileId {
         val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
         val deletedFileId = documentFileRepository.removeFile(fileId,file.fileName)
@@ -41,6 +44,7 @@ class DocumentFileServiceImpl(
     }
 
     @LoggingMethod("filesModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updateFile(fileId: DocumentFileId,documentFileBaseName: DocumentFileBaseName,
                                     documentFileData: DocumentFileData): DocumentFileId {
         val file = documentFileRepository.getFile(fileId)?: throw FilesException.FileNotExist(fileId)
