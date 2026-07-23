@@ -9,6 +9,7 @@ import api.masterplan.app.plansModule.domain.interfaces.PlanService
 import api.masterplan.app.plansModule.domain.model.entity.Plan
 import api.masterplan.app.plansModule.domain.model.value.*
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PlanServiceImpl(
@@ -24,6 +25,7 @@ class PlanServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun createPlan(id: PlanId? , title: PlanTitle, description: PlanDescription,
                             startDate: PlanDate?, endDate: PlanDate, directorId: PlanDirectorId, documentId: PlanDocumentId?): PlanId {
 
@@ -55,6 +57,7 @@ class PlanServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updatePlan(planId: PlanId, updatedPlan: Plan): PlanId {
         planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
 
@@ -64,6 +67,7 @@ class PlanServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun deletePlan(planId: PlanId): PlanId {
 
         val deletedPlanId = planRepository.deletePlan(planId)?: throw PlanException.FailedToDeletePlan(planId)
@@ -98,6 +102,7 @@ class PlanServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun assignPlanDocumentToPlan(planId: PlanId, documentId: PlanDocumentId): PlanId {
         val plan = planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
         val planWithDocument = plan.addDocument(documentId)
@@ -111,6 +116,7 @@ class PlanServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updatePlanStatus(planId: PlanId, status: PlanStatus): PlanId {
         val plan = planRepository.getPlan(planId)?: throw PlanException.PlanNotExist(planId)
 
