@@ -16,6 +16,7 @@ import api.masterplan.app.plansModule.domain.model.value.TaskId
 import api.masterplan.app.plansModule.domain.model.value.TaskStatus
 import api.masterplan.app.plansModule.domain.model.value.TaskTitle
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class TaskServiceImpl(
@@ -39,6 +40,7 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun createTask(id: TaskId?, title: TaskTitle, description: TaskDescription,
         endDate: TaskDate, planId: PlanId, documentId: TaskDocumentId?, executorsId: MutableList<ExecutorId>): TaskId {
 
@@ -62,6 +64,7 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun deleteTask(taskId: TaskId): TaskId {
         val deleteTaskId = taskRepository.deleteTask(taskId)?: throw PlanException.FailedToDeleteTask(taskId)
 
@@ -70,6 +73,7 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updateTask(taskId: TaskId, updatedTask: Task): TaskDetails {
         val oldTask = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val updatedTaskWithUrgency = if (oldTask.endDate != updatedTask.endDate) {
@@ -145,6 +149,7 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun assignTaskDocumentToTask(taskId: TaskId, documentId: TaskDocumentId): TaskId {
         val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val taskWithPlan = task.addDocument(documentId)
@@ -158,6 +163,7 @@ class TaskServiceImpl(
 
 
     @LoggingMethod("planModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updateTaskStatus(taskId: TaskId, taskStatus: TaskStatus): TaskDetails {
         val task = taskRepository.getTask(taskId)?: throw PlanException.TaskNotExist(taskId)
         val taskWithNewStatus = task.changeTaskStatus(taskStatus)
