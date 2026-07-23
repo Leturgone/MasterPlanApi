@@ -74,7 +74,6 @@ class EmployeeServiceImpl(
     }
 
     @LoggingMethod("employeeModule")
-    @Transactional
     override suspend fun getAllDirectorsEmployeesWithMetrics(directorId: EmployeeId): List<EmployeeWithMetricsDetails> {
         val directorInf = employeeRepository.getEmployeeById(directorId) ?: throw EmployeeException.EmployeeNotExist(directorId)
 
@@ -113,7 +112,6 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
-    @Transactional
     override suspend fun getAllDirectorsEmployeeSortByWorkLoad(directorId: EmployeeId): List<EmployeeDetails> {
         val employees = employeeRepository.findByDirectorId(directorId)
 
@@ -127,7 +125,6 @@ class EmployeeServiceImpl(
     }
 
     @LoggingMethod("employeeModule")
-    @Transactional
     override suspend fun getAllDirectorsEmployeesWithoutTasks(directorId: EmployeeId): List<EmployeeDetails> {
         val employees = employeeRepository.findByDirectorId(directorId)
 
@@ -142,7 +139,7 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
-    @Transactional
+    @Transactional(rollbackFor = [Exception::class])
     override fun createEmployee(
         id: EmployeeId?, name: EmployeeName, surname: EmployeeSurname,
         patronymic: EmployeePatronymic?, directorId: EmployeeId?, userId: EmployeeUserId
@@ -173,6 +170,7 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
+    @Transactional(rollbackFor = [Exception::class])
     override fun updateEmployee(id: EmployeeId, newEmployee: Employee): EmployeeId {
 
         employeeRepository.getEmployeeById(id) ?: throw EmployeeException.EmployeeNotExist(id)
@@ -191,7 +189,6 @@ class EmployeeServiceImpl(
 
 
     @LoggingMethod("employeeModule")
-    @Transactional
     override fun getEmployeeWithMetrics(employeeId: EmployeeId): EmployeeWithMetricsDetails {
         val employeeEntity = employeeRepository.getEmployeeById(employeeId) ?: throw EmployeeException
             .EmployeeNotExist(employeeId)
